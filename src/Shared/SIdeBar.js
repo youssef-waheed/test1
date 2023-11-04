@@ -47,6 +47,5 @@ const SIdeBar = () => {
     </Container>
   );
 };
-// ASdasdasdasdasd
 
 export default SIdeBar;
