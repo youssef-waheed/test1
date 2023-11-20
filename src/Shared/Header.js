@@ -3,31 +3,22 @@ import man from "../images/man.png";
 import woman from "../images/woman.png";
 import settings from "../images/settings.png";
 import "./Header.css";
-import SIdeBar from "./SIdeBar";
+import Container from "react-bootstrap/Container";
+import SideBarForm from "./SideBarForm";
+import "../Style/Bar.css";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
-function Text() {
-  return <SIdeBar />;
-}
-function text2() {
-  return <SIdeBar />;
-}
-function Content({ activeIndex, activeTab, show }) {
-  const buttonContent = [
-    [<Text />, <Text />, "Button C"],
-    ["Button X", "Button Y", "Button Z"],
-    ["Button M", "Button N", "Button O"],
-  ];
-  return show && <div>{buttonContent[activeTab][activeIndex]}</div>;
-}
+
+
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [show, setShow] = useState(false);
-
   const buttonSets = [
-    ["بيانات اساسية", "السكن", "Button C"],
-    ["Button X", "Button Y", "Button Z"],
+    ["بيانات اساسية", "السكن", "فصل الطلاب" , "الجزاءات" , "الغياب و التصاريح" , "الرسوم" , "بيان حالة" , "حجب وجبات" , "بيان الرسوم" , "تطبيقات" , "تقارير" , "احصائيات"],
+    ["بيانات اساسية", "السكن", "فصل الطالبات" , "الجزاءات" , "الغياب و التصاريح" , "الرسوم" , "بيان حالة" , "حجب وجبات" , "بيان الرسوم" , "تطبيقات" , "تقارير" , "احصائيات"],
     ["Button M", "Button N", "Button O"],
   ];
 
@@ -45,7 +36,72 @@ const Header = () => {
     setActiveTab(index);
     setShow(false);
   }
+  const activeButton = buttonSets[activeTab][activeIndex];
 
+  
+function SIdeBar ()  {
+  return (
+    <Container className="container">
+    
+          <div className="bar">{activeButton}</div>
+          <div className="select">
+            <p className="academicyear">العام الاكديمي</p>
+            <Form.Select size="sm" className="selectmenu">
+              <option>2025 - 2026</option>
+              <option>2024 - 2025</option>
+              <option>2023 - 2024</option>
+            </Form.Select>
+          </div>
+          <div className="select">
+            <p>الكلية</p>
+            <Form.Select size="sm" className="selectmenu">
+              <option>حاسبات</option>
+              <option>هندسة</option>
+              <option>آداب</option>
+            </Form.Select>
+          </div>
+          <div className="form">
+            <SideBarForm />
+          </div>
+          
+      
+      <Form className="d-flex">
+        <Form.Control
+          type="search"
+          placeholder="Search"
+          className="me-2"
+          aria-label="Search"
+        />
+        <Button variant="outline-success">Search</Button>
+      </Form>
+    </Container>
+  );
+};
+function Text() {
+
+  return (
+    <div className="two-column-wrapper">
+      <div className="col"><SIdeBar /></div>
+      <div className="coll">Column 2 (75% width)</div>
+    </div>
+  );
+
+}
+function Text2() {
+  return( 
+    <div className="two-column-wrapper">
+     <div className="col"><SIdeBar /></div>
+      <div className="coll">Column 2 (75% width)</div></div>
+  );
+}
+function Content({ activeIndex, activeTab, show }) {
+  const buttonContent = [
+    [<Text />, <Text2 />, "فصل الطلاب" , "الجزاءات" , "الغياب و التصاريح" , "الرسوم" , "بيان حالة" , "حجب وجبات" , "بيان الرسوم" , "تطبيقات" , "تقارير" , "احصائيات"],
+    ["بيانات اساسية", "السكن", "فصل الطالبات" , "الجزاءات" , "الغياب و التصاريح" , "الرسوم" , "بيان حالة" , "حجب وجبات" , "بيان الرسوم" , "تطبيقات" , "تقارير" , "احصائيات"],
+    ["Button M", "Button N", "Button O"],
+  ];
+  return show && <div>{buttonContent[activeTab][activeIndex]}</div>;
+}
   return (
     <div>
       <nav>
