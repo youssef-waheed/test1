@@ -16,11 +16,16 @@ import Fees from "../Pages/Fees";
 import StatementCase from "../Pages/StatementCase";
 import Meals from "../Pages/Meals";
 import FeeStatement from "../Pages/FeeStatement";
-
+import ApplicationDeadline from "../Pages/SystemManagment/ApplicationDeadline";
+// import TypesOfLiving from "../Pages/SystemManagment/TypesOfLiving";
+// import { Checkbox } from "@mui/material";
+import TypesOfLivings from "../Pages/TypesOfLivings";
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [show, setShow] = useState(false);
+  const [displayDiv, setDisplayDiv] = useState(false);
+
   const buttonSets = [
     [
       "بيانات اساسية",
@@ -50,7 +55,7 @@ const Header = () => {
       "تقارير",
       "احصائيات",
     ],
-    ["Button M", "Button N", "Button O"],
+    ["مواعيد التقديم", "تعليمات التقدم", "صور الجامعة", "أنواع السكن المميز"],
   ];
 
   const Tabs = [
@@ -211,6 +216,26 @@ const Header = () => {
       </div>
     );
   }
+  function Text10() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col"> مواعيد التقدم - جامعة حلوان</div>
+        <div className="coll">
+          <ApplicationDeadline />
+        </div>
+      </div>
+    );
+  }
+  function Text11() {
+    return (
+      <div className="two-column-wrapper">
+        {/* <div className="col"></div> */}
+        <div className="coll">
+          <TypesOfLivings />
+        </div>
+      </div>
+    );
+  }
 
   function Content({ activeIndex, activeTab, show }) {
     const buttonContent = [
@@ -242,7 +267,7 @@ const Header = () => {
         "تقارير",
         "احصائيات",
       ],
-      ["Button M", "Button N", "Button O"],
+      [<Text10 />, "Button N", "<Button O>", <Text11 />],
     ];
     return show && <div>{buttonContent[activeTab][activeIndex]}</div>;
   }
