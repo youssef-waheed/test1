@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
-import "../Style/Penalties.css";
+import "./Penalties.css";
 const Penalties = () => {
   const [isDivVisible, setIsDivVisible] = useState(false);
 

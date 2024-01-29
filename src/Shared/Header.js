@@ -10,7 +10,6 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Living from "../Pages/Living";
 import Students from "../Pages/Students";
-import Penalties from "../Pages/Penalties";
 import AbsenceandPermits from "../Pages/AbsenceandPermits";
 import Fees from "../Pages/Fees";
 import StatementCase from "../Pages/StatementCase";
@@ -20,6 +19,7 @@ import ApplicationDeadline from "../Pages/SystemManagment/ApplicationDeadline";
 // import TypesOfLiving from "../Pages/SystemManagment/TypesOfLiving";
 // import { Checkbox } from "@mui/material";
 import TypesOfLivings from "../Pages/TypesOfLivings";
+import Penalties from "../Pages/Penalties/Penalties";
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
