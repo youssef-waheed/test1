@@ -2,23 +2,33 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { Link, NavLink } from "react-router-dom";
-
+var idNewmale = 0;
+var idOldMale = 0;
+var idOldFemale = 0;
+var idNewFemale = 0;
 const ApplicationDeadline = () => {
-  var idNewmale = 0;
-  var idOldMale;
-  var idOldFemale;
-  var idNewFemale;
   const [tabs, setTabs] = useState([]);
   const [OldMales, setOldMales] = useState([]);
   const [NewMales, setNewMales] = useState([]);
   const [OldFeMales, setOldFemales] = useState([]);
   const [NewFemales, setNewFemales] = useState([]);
+  const [editText, setEditText] = useState("");
+  const [showEdit, setShowEdit] = useState(false);
+  // const [idToEdit, setIdToEdit] = useState(null);
+  const [fromDate, setFromDate] = useState(""); // State for the from date
+  const [toDate, setToDate] = useState(""); // State for the to date
+  const [editRow, setEditRow] = useState(null); // State to track which row is being edited
+  const [editRowData, setEditRowData] = useState({
+    fromDate: "",
+    toDate: "",
+  });
 
   useEffect(() => {
     fetchDates();
     // fetchOldMaleDates();
     // fetchOldFeMaleDates();
     // fetchNewFeMaleDates();
+    // updateDates();
   }, []);
 
   const fetchDates = async () => {
@@ -88,6 +98,7 @@ const ApplicationDeadline = () => {
     } catch (error) {
       console.log(error);
     }
+    window.location.reload();
   };
   const deleteOldMaleDate = async (idOldMale) => {
     try {
@@ -101,6 +112,7 @@ const ApplicationDeadline = () => {
     } catch (error) {
       console.log(error);
     }
+    window.location.reload();
   };
   const deleteOldFeMaleDate = async (idOldFemale) => {
     try {
@@ -111,6 +123,7 @@ const ApplicationDeadline = () => {
     } catch (error) {
       console.log(error);
     }
+    window.location.reload();
   };
   const deleteNewFeMaleDate = async (idNewFemale) => {
     try {
@@ -121,6 +134,183 @@ const ApplicationDeadline = () => {
     } catch (error) {
       console.log(error);
     }
+    window.location.reload();
+  };
+
+  // const handleEditClick = (index) => {
+  //   setFromDate(tabs[index].from);
+  //   setToDate(tabs[index].to);
+  //   setEditRow(index);
+  // };
+  const handleEditClick = (index) => {
+    // Set the fromDate and toDate based on the clicked row
+    setFromDate(tabs[index].from);
+    setToDate(tabs[index].to);
+    // Set the editRow to the index of the clicked row
+    setEditRow(index);
+  };
+
+  // Function to handle textarea change
+  const handleEditTextChange = (event) => {
+    // Update the corresponding field in editRowData
+    setEditRowData({
+      ...editRowData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSaveEditoldFemale = async () => {
+    try {
+      const response = await axios.put(
+        "http://localhost:5000/timingOld/updateOldFemales/" + idOldFemale,
+        {
+          to: editRowData.toDate, // Use editRowData instead of toDate/fromDate
+          from: editRowData.fromDate,
+        }
+      );
+
+      console.log("Update response:", response.data); // Log the response
+
+      // Reset local states
+      setFromDate("");
+      setToDate("");
+      setEditRow(null);
+
+      // Manually update the state to reflect the changes
+      setTabs((prevTabs) =>
+        prevTabs.map((tab, index) =>
+          index === editRow
+            ? { ...tab, from: editRowData.fromDate, to: editRowData.toDate }
+            : tab
+        )
+      );
+    } catch (error) {
+      console.log("Error updating date:", error);
+      console.log(editRowData.fromDate);
+      console.log(editRowData.toDate);
+    }
+  };
+  const handleSaveEditoldMale = async () => {
+    try {
+      const response = await axios.put(
+        "http://localhost:5000/timingOld/updateOldMales/" + idOldMale,
+        {
+          to: editRowData.toDate, // Use editRowData instead of toDate/fromDate
+          from: editRowData.fromDate,
+        }
+      );
+
+      console.log("Update response:", response.data); // Log the response
+
+      // Reset local states
+      setFromDate("");
+      setToDate("");
+      setEditRow(null);
+
+      // Manually update the state to reflect the changes
+      setTabs((prevTabs) =>
+        prevTabs.map((tab, index) =>
+          index === editRow
+            ? { ...tab, from: editRowData.fromDate, to: editRowData.toDate }
+            : tab
+        )
+      );
+    } catch (error) {
+      console.log("Error updating date:", error);
+      console.log(editRowData.fromDate);
+      console.log(editRowData.toDate);
+    }
+  };
+  const handleSaveEditNewMale = async () => {
+    try {
+      const response = await axios.put(
+        "http://localhost:5000/timingNew/updateNewMales/" + idNewmale,
+        {
+          to: editRowData.toDate, // Use editRowData instead of toDate/fromDate
+          from: editRowData.fromDate,
+        }
+      );
+
+      console.log("Update response:", response.data); // Log the response
+
+      // Reset local states
+      setFromDate("");
+      setToDate("");
+      setEditRow(null);
+
+      // Manually update the state to reflect the changes
+      setTabs((prevTabs) =>
+        prevTabs.map((tab, index) =>
+          index === editRow
+            ? { ...tab, from: editRowData.fromDate, to: editRowData.toDate }
+            : tab
+        )
+      );
+    } catch (error) {
+      console.log("Error updating date:", error);
+      console.log(editRowData.fromDate);
+      console.log(editRowData.toDate);
+    }
+  };
+  // const handleSaveEditNeFeMale = async () => {
+  //   try {
+  //     const response = await axios.put(
+  //       "http://localhost:5000/timingNew/updateNewFemales/" + idNewFemale,
+  //       {
+  //         to: toDate,
+  //         from: fromDate,
+  //       }
+  //     );
+
+  //     console.log("Update response:", response.data.data.date);
+  //     console.log("Saved changes:", fromDate, toDate);
+  //     // Reset local states
+  //     setFromDate("");
+  //     setToDate("");
+  //     setEditRow(null);
+  //   } catch (error) {
+  //     console.log("Error updating date:", error);
+  //     console.log(fromDate);
+  //     console.log(toDate);
+  //   }
+  //   // window.location.reload();
+  // };
+  const handleSaveEditNeFeMale = async () => {
+    try {
+      const response = await axios.put(
+        "http://localhost:5000/timingNew/updateNewFemales/" + idNewFemale,
+        {
+          to: editRowData.toDate, // Use editRowData instead of toDate/fromDate
+          from: editRowData.fromDate,
+        }
+      );
+
+      console.log("Update response:", response.data); // Log the response
+
+      // Reset local states
+      setFromDate("");
+      setToDate("");
+      setEditRow(null);
+
+      // Manually update the state to reflect the changes
+      setTabs((prevTabs) =>
+        prevTabs.map((tab, index) =>
+          index === editRow
+            ? { ...tab, from: editRowData.fromDate, to: editRowData.toDate }
+            : tab
+        )
+      );
+    } catch (error) {
+      console.log("Error updating date:", error);
+      console.log(editRowData.fromDate);
+      console.log(editRowData.toDate);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setFromDate("");
+    setToDate("");
+    setEditRow(null);
   };
   return (
     <div>
@@ -136,128 +326,236 @@ const ApplicationDeadline = () => {
           <tbody>
             {tabs.map((tab, index) => (
               <tr key={index}>
-                <td>الطالبات الجدد</td>
-                <td>{tab.from}</td>
-                <td>{tab.to}</td>
-                <Link
-                  to={"/AppDeadlineUpdate"}
-                  style={{
-                    color: "white",
-                    backgroundColor: "green",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  تعديل
-                </Link>
-                <button
-                  style={{
-                    color: "white",
-                    backgroundColor: "red",
-                    fontWeight: "bold",
-                  }}
-                  onClick={(e) => {
-                    deleteNewFeMaleDate(tab._id);
-                  }}
-                >
-                  حذف
-                </button>{" "}
+                <td>الطالبات الجدد </td>
+                <td>
+                  {editRow === index ? (
+                    <input
+                      type="text"
+                      name="fromDate"
+                      value={editRowData.fromDate}
+                      onChange={handleEditTextChange}
+                    />
+                  ) : (
+                    tab.from
+                  )}
+                </td>
+                <td>
+                  {editRow === index ? (
+                    <input
+                      type="text"
+                      name="toDate"
+                      value={editRowData.toDate}
+                      onChange={handleEditTextChange}
+                    />
+                  ) : (
+                    tab.to
+                  )}
+                </td>
+                <td>
+                  {editRow === index ? (
+                    <>
+                      <button onClick={handleSaveEditNeFeMale}>حفظ</button>
+                      <button onClick={handleCancelEdit}>إلغاء</button>
+                    </>
+                  ) : (
+                    <button onClick={() => handleEditClick(index)}>
+                      تعديل
+                    </button>
+                  )}
+                  <button
+                    style={{
+                      color: "white",
+                      backgroundColor: "red",
+                      fontWeight: "bold",
+                    }}
+                    onClick={(e) => {
+                      deleteNewFeMaleDate(tab._id);
+                    }}
+                  >
+                    حذف
+                  </button>{" "}
+                </td>
               </tr>
             ))}
             {OldFeMales.map((tab, index) => (
               <tr key={index}>
                 <td>الطالبات القدامي</td>
-                <td>{tab.from}</td>
-                <td>{tab.to}</td>
-                <Link
-                  to={"AppDeadLineUpdate"}
-                  style={{
-                    color: "white",
-                    backgroundColor: "green",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  تعديل
-                </Link>
-                <button
-                  style={{
-                    color: "white",
-                    backgroundColor: "red",
-                    fontWeight: "bold",
-                  }}
-                  onClick={(e) => {
-                    deleteOldFeMaleDate(tab._id);
-                  }}
-                >
-                  حذف
-                </button>{" "}
+                <td>
+                  {editRow === index ? (
+                    <input
+                      type="text"
+                      name="fromDate"
+                      value={editRowData.fromDate}
+                      onChange={handleEditTextChange}
+                    />
+                  ) : (
+                    tab.from
+                  )}
+                </td>
+                <td>
+                  {editRow === index ? (
+                    <input
+                      type="text"
+                      name="toDate"
+                      value={editRowData.toDate}
+                      onChange={handleEditTextChange}
+                    />
+                  ) : (
+                    tab.to
+                  )}
+                </td>
+                <td>
+                  {editRow === index ? (
+                    <>
+                      <button onClick={handleSaveEditoldFemale}>حفظ</button>
+                      <button onClick={handleCancelEdit}>إلغاء</button>
+                    </>
+                  ) : (
+                    <button onClick={() => handleEditClick(index)}>
+                      تعديل
+                    </button>
+                  )}
+                  <button
+                    style={{
+                      color: "white",
+                      backgroundColor: "red",
+                      fontWeight: "bold",
+                    }}
+                    onClick={(e) => {
+                      deleteOldFeMaleDate(tab._id);
+                    }}
+                  >
+                    حذف
+                  </button>{" "}
+                </td>
               </tr>
             ))}
             {NewMales.map((tab, index) => (
               <tr key={index}>
-                <td>الطلاب الجدد</td>
-                <td>{tab.from}</td>
-                <td>{tab.to}</td>
-                <Link
-                  to={"AppDeadLineUpdate"}
-                  style={{
-                    color: "white",
-                    backgroundColor: "green",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  تعديل
-                </Link>
-                <button
-                  style={{
-                    color: "white",
-                    backgroundColor: "red",
-                    fontWeight: "bold",
-                  }}
-                  onClick={(e) => {
-                    deleteNewMaleDate(tab._id);
-                  }}
-                >
-                  حذف
-                </button>{" "}
+                <td>الطلاب الجدد </td>
+                <td>
+                  {editRow === index ? (
+                    <input
+                      type="text"
+                      name="fromDate"
+                      value={editRowData.fromDate}
+                      onChange={handleEditTextChange}
+                    />
+                  ) : (
+                    tab.from
+                  )}
+                </td>
+                <td>
+                  {editRow === index ? (
+                    <input
+                      type="text"
+                      name="toDate"
+                      value={editRowData.toDate}
+                      onChange={handleEditTextChange}
+                    />
+                  ) : (
+                    tab.to
+                  )}
+                </td>
+                <td>
+                  {editRow === index ? (
+                    <>
+                      <button onClick={handleSaveEditNewMale}>حفظ</button>
+                      <button onClick={handleCancelEdit}>إلغاء</button>
+                    </>
+                  ) : (
+                    <button onClick={() => handleEditClick(index)}>
+                      تعديل
+                    </button>
+                  )}
+                  <button
+                    style={{
+                      color: "white",
+                      backgroundColor: "red",
+                      fontWeight: "bold",
+                    }}
+                    onClick={(e) => {
+                      deleteNewMaleDate(tab._id);
+                    }}
+                  >
+                    حذف
+                  </button>{" "}
+                </td>
               </tr>
             ))}
             {OldMales.map((tab, index) => (
               <tr key={index}>
-                <td>الطلاب القدامى</td>
-                <td>{tab.from}</td>
-                <td>{tab.to}</td>
-                <Link
-                  to={"AppDeadLineUpdate"}
-                  style={{
-                    color: "white",
-                    backgroundColor: "green",
-                    fontWeight: "bold",
-                  }}
-                >
-                  تعديل
-                </Link>
-                <button
-                  style={{
-                    color: "white",
-                    backgroundColor: "red",
-                    fontWeight: "bold",
-                  }}
-                  onClick={(e) => {
-                    deleteOldMaleDate(tab._id);
-                  }}
-                >
-                  حذف
-                </button>{" "}
+                <td>الطلاب القدامي </td>
+                <td>
+                  {editRow === index ? (
+                    <input
+                      type="text"
+                      name="fromDate"
+                      value={editRowData.fromDate}
+                      onChange={handleEditTextChange}
+                    />
+                  ) : (
+                    tab.from
+                  )}
+                </td>
+                <td>
+                  {editRow === index ? (
+                    <input
+                      type="text"
+                      name="toDate"
+                      value={editRowData.toDate}
+                      onChange={handleEditTextChange}
+                    />
+                  ) : (
+                    tab.to
+                  )}
+                </td>
+                <td>
+                  {editRow === index ? (
+                    <>
+                      <button onClick={handleSaveEditoldMale}>حفظ</button>
+                      <button onClick={handleCancelEdit}>إلغاء</button>
+                    </>
+                  ) : (
+                    <button
+                      style={{ color: "white", backgroundColor: "green" }}
+                      onClick={() => handleEditClick(index)}
+                    >
+                      تعديل
+                    </button>
+                  )}
+                  <button
+                    style={{
+                      color: "white",
+                      backgroundColor: "red",
+                      fontWeight: "bold",
+                    }}
+                    onClick={(e) => {
+                      deleteOldMaleDate(tab._id);
+                    }}
+                  >
+                    حذف
+                  </button>{" "}
+                </td>
               </tr>
             ))}
           </tbody>
         </Table>
       </div>
-
-      {/* asdasdasdasd */}
+      {/* {showEdit && (
+        <div>
+          <textarea
+            value={fromDate + " - " + toDate}
+            onChange={(e) => {
+              const [from, to] = e.target.value.split(" - ");
+              setFromDate(from);
+              setToDate(to);
+            }}
+          />
+          <button onClick={handleSaveEdit}>حفظ</button>
+          <button onClick={handleCancelEdit}>إلغاء</button>
+        </div>
+      )} */}
     </div>
   );
 };
