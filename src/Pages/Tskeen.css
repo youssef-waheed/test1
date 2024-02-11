@@ -1,0 +1,422 @@
+/* Tskeen.css */
+.city-container {
+  width: 50%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.city-list {
+  list-style: none;
+  padding: 0;
+}
+
+.city-list li {
+  margin-bottom: 10px;
+}
+
+.city-button {
+  width: 100%;
+  background-color: #007004; /* Green */
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.city-button:hover {
+  background-color: #45a049; /* Darker Green */
+}
+
+.edit-input-container {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.edit-input {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px;
+  width: 200px;
+}
+
+.action-buttons {
+  margin-left: 10px;
+}
+
+.action-buttons button {
+  background-color: #f44336; /* Red */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 5px;
+}
+
+.action-buttons button:hover {
+  background-color: #d32f2f; /* Darker Red */
+}
+
+.add-city-container {
+  margin-top: 20px;
+}
+
+.add-city-container input {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px;
+  width: 200px;
+}
+
+.add-city-container button {
+  background-color: #2196F3; /* Blue */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-city-container button:hover {
+  background-color: #1976D2; /* Darker Blue */
+}
+/* Tskeen.css */
+
+.building-wrapper {
+  display: flex;
+  justify-content: space-around;
+}
+
+.building-container {
+  width: 45%;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.building-container h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.building-list {
+  list-style: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.building-list li {
+  padding: 10px;
+  margin: 5px 0;
+  background-color: #ddd;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.building-list li:hover {
+  background-color: #cfd8dc;
+}
+
+.add-building {
+  width: 45%;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-building h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.add-building input[type="text"],
+.add-building select {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.add-building button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-building button:hover {
+  background-color: #0056b3;
+}
+
+.error-message,
+.success-message {
+  text-align: center;
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.error-message {
+  background-color: #ffcccc;
+  color: #ff0000;
+}
+
+.success-message {
+  background-color: #ccffcc;
+  color: #008000;
+}
+/* Building.css */
+.building-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.building-container {
+  width: 45%;
+  margin-bottom: 20px;
+}
+
+.building-container h2 {
+  margin-bottom: 10px;
+}
+
+.building-list {
+  list-style: none;
+  padding: 0;
+}
+
+.building-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.building-item span {
+  cursor: pointer;
+}
+
+.building-item div button {
+  margin-left: 8px;
+}
+
+.add-building input, .add-building select {
+  margin-right: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-building button {
+  padding: 8px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-building {
+  width: 45%;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.edit-building h2 {
+  margin-bottom: 10px;
+}
+
+.edit-building input {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.edit-building button {
+  padding: 8px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-building button + button {
+  margin-left: 10px;
+}
+/* Floor.css */
+.floor-container {
+  width: 50%;
+  margin: 20px;
+}
+
+.floor-list {
+  list-style: none;
+  padding: 0;
+}
+
+.floor-list li {
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.floor-list li button {
+  margin-left: 8px;
+}
+
+.add-floor input {
+  margin-right: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-floor button {
+  padding: 8px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+/* Tskeen.css */
+.floor-container {
+  width: 300px;
+  margin: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+}
+
+.floor-list {
+  list-style: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.floor-list li {
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #ddd;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.floor-list li input[type="text"] {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.floor-list li button {
+  margin-left: 8px;
+}
+
+.floor-list li:last-child {
+  margin-bottom: 0;
+}
+.room-container {
+  font-family: Arial, sans-serif;
+}
+
+.room-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.room-table th,
+.room-table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.room-table th {
+  background-color: #f2f2f2;
+}
+
+.room-table tbody tr:hover {
+  background-color: #f2f2f2;
+}
+
+.room-table td button {
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.room-table td button:hover {
+  background-color: #ddd;
+}
+
+.add-room {
+  margin-bottom: 20px;
+}
+
+.add-room input {
+  padding: 8px;
+  margin-right: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.add-room button {
+  padding: 8px 20px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-room button:hover {
+  background-color: #45a049;
+}
+
+.edit-room input {
+  padding: 8px;
+  margin-right: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.edit-room button {
+  padding: 8px 20px;
+  border: none;
+  background-color: #008CBA;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-room button:hover {
+  background-color: #005f78;
+}

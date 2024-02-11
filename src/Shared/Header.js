@@ -18,6 +18,7 @@ import Meals from "../Pages/Meals";
 import FeeStatement from "../Pages/FeeStatement";
 import MainInfo from "../Pages/MainInfo";
 import Instructions from "../Pages/InstructionsForApplying";
+import Tskeen from "../Pages/Tskeen";
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -121,6 +122,7 @@ const Header = () => {
   function Text() {
     return (
       <div className="two-column-wrapper">
+       
         <div className="col">
           <SIdeBar />
         </div>
@@ -237,6 +239,20 @@ const Header = () => {
       </div>
     );
   }
+
+
+  function Text999() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col">
+          <SIdeBar />
+        </div>
+        <div className="coll">
+          <Tskeen />
+        </div>
+      </div>
+    );
+  }
   
   function Content({ activeIndex, activeTab, show }) {
     const buttonContent = [
@@ -274,7 +290,7 @@ const Header = () => {
         "انواع السكن",
         "الوجبات" ,
         "الرسوم"  ,
-        "الغرف",
+        <Text999 />,
         "الفئات" ,
         "البلاد" ,
         "المستخدمين" ,

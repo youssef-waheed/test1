@@ -95,7 +95,8 @@ const AdminPanel = () => {
    
     console.log('Updated Instruction:', updatedInstruction);
     try {
-      await handleApiRequest(`http://localhost:5000/instructions/${editingInstruction._id}`, {
+      await handleApiRequest(`http://localhost:5000/instructions/${editingInstruction
+      ._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
