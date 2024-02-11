@@ -265,7 +265,7 @@ const Room = ({ floorId, onSelectRoom }) => {
 
   return (
     <div className="room-container">
-      <h2>Rooms</h2>
+      <h2>الغرف</h2>
       <table className="room-table">
         <thead>
           <tr>
@@ -298,31 +298,31 @@ const Room = ({ floorId, onSelectRoom }) => {
           type="text"
           value={newRoomNumber}
           onChange={e => setNewRoomNumber(e.target.value)}
-          placeholder="Room Number"
+          placeholder="رقم الغرفة"
         />
         <input
           type="text"
           value={newRoomType}
           onChange={e => setNewRoomType(e.target.value)}
-          placeholder="Room Type"
+          placeholder="نوع الغرفة (مميز و عادي)"
         />
         <input
           type="text"
           value={newType}
           onChange={e => setNewType(e.target.value)}
-          placeholder="Type"
+          placeholder="الاستخدام"
         />
         <input
           type="text"
           value={newRoomCapacity}
           onChange={e => setNewRoomCapacity(e.target.value)}
-          placeholder="Room Capacity"
+          placeholder="الاستيعاب"
         />
         <input
           type="text"
           value={newNumOfBeds}
           onChange={e => setNewNumOfBeds(e.target.value)}
-          placeholder="Number of Beds"
+          placeholder="عدد الاسرة"
         />
         <button onClick={addRoom}>Add Room</button>
       </div>
@@ -332,31 +332,31 @@ const Room = ({ floorId, onSelectRoom }) => {
             type="text"
             value={editRoomNumber}
             onChange={e => setEditRoomNumber(e.target.value)}
-            placeholder="Room Number"
+            placeholder="رقم الغرفة"
           />
           <input
             type="text"
             value={editRoomType}
             onChange={e => setEditRoomType(e.target.value)}
-            placeholder="Room Type"
+            placeholder="نوع الغرفة (عادي و مميز)"
           />
           <input
             type="text"
             value={editType}
             onChange={e => setEditType(e.target.value)}
-            placeholder="Type"
+            placeholder="الاستخدام"
           />
           <input
             type="text"
             value={editRoomCapacity}
             onChange={e => setEditRoomCapacity(e.target.value)}
-            placeholder="Room Capacity"
+            placeholder="الاستيعاب"
           />
           <input
             type="text"
             value={editNumOfBeds}
             onChange={e => setEditNumOfBeds(e.target.value)}
-            placeholder="Number of Beds"
+            placeholder="عدد الاسرة"
           />
           <button onClick={editRoom}>Save</button>
           <button onClick={() => setEditRoomId('')}>Cancel</button>

@@ -171,7 +171,7 @@ const Floor = ({ buildingId, onSelectFloor }) => {
 
   return (
     <div className="floor-container">
-      <h2>Floors</h2>
+      <h2>الطوابق</h2>
       <ul className="floor-list">
         {floors.map(floor => (
           <li key={floor._id} onClick={() => onSelectFloor(floor._id)}>
@@ -196,7 +196,7 @@ const Floor = ({ buildingId, onSelectFloor }) => {
           type="text"
           value={newFloorName}
           onChange={e => setNewFloorName(e.target.value)}
-          placeholder="Enter floor name"
+          placeholder="اسم او  رقم الطابق"
         />
         <button onClick={addFloor}>Add Floor</button>
       </div>

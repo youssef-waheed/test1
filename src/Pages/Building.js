@@ -73,7 +73,7 @@ const Building = ({ onSelectBuilding, selectedCity }) => {
   return (
     <div className="building-wrapper">
       <div className="building-container">
-        <h2>Male Buildings</h2>
+        <h2>مباني الذكور</h2>
         <ul className="building-list">
           {maleBuildings.map(building => (
             <li key={building._id}>
@@ -87,7 +87,7 @@ const Building = ({ onSelectBuilding, selectedCity }) => {
         </ul>
       </div>
       <div className="building-container">
-        <h2>Female Buildings</h2>
+        <h2>مباني الاناث</h2>
         <ul className="building-list">
           {femaleBuildings.map(building => (
             <li key={building._id}>
@@ -101,28 +101,28 @@ const Building = ({ onSelectBuilding, selectedCity }) => {
         </ul>
       </div>
       <div className="add-building">
-        <h2>Add New Building</h2>
+        <h2>اضافة مبني</h2>
         <input
           type="text"
           value={newBuildingName}
           onChange={e => setNewBuildingName(e.target.value)}
-          placeholder="Enter building name"
+          placeholder="اسم او رقم المبني"
         />
         <select value={newBuildingGender} onChange={e => setNewBuildingGender(e.target.value)}>
           <option value="">Select gender</option>
-          <option value="ذكر">Male</option>
-          <option value="انثي">Female</option>
+          <option value="ذكر">ذكر</option>
+          <option value="انثي">انثي</option>
         </select>
         <button onClick={addBuilding}>Add Building</button>
       </div>
       {editBuildingId && (
         <div className="edit-building">
-          <h2>Edit Building</h2>
+          <h2>تعديل علي المبني</h2>
           <input
             type="text"
             value={editBuildingName}
             onChange={e => setEditBuildingName(e.target.value)}
-            placeholder="Enter new name"
+            placeholder="الاسم"
           />
           <button onClick={editBuilding}>Save</button>
           <button onClick={() => setEditBuildingId('')}>Cancel</button>

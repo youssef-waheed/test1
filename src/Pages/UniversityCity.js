@@ -24,14 +24,14 @@ const City = ({ onSelectCity }) => {
   };
 
   const addCity = () => {
-    axios.post('http://localhost:5000/universityCity/', { Name: newCityName }) // Name property instead of name
+    axios.post('http://localhost:5000/universityCity/', { Name: newCityName }) 
       .then(response => {
         setNewCityName('');
         fetchCities();
       })
       .catch(error => {
         console.error("Error adding city:", error);
-        setError("Failed to add city. Please try again."); // Set error state
+        setError("Failed to add city. Please try again."); 
       });
   };
 
@@ -59,8 +59,8 @@ const City = ({ onSelectCity }) => {
 
   return (
     <div className="city-container">
-      <h2>Cities</h2>
-      {error && <div className="error-message">{error}</div>} {/* Display error message */}
+      <h2>المدن الجامعية</h2>
+      {error && <div className="error-message">{error}</div>} 
       <ul className="city-list">
         {cities.map(city => (
           <li key={city._id}>
@@ -94,7 +94,7 @@ const City = ({ onSelectCity }) => {
           type="text"
           value={newCityName}
           onChange={e => setNewCityName(e.target.value)}
-          placeholder="Enter city name"
+          placeholder="اسم المدينة"
         />
         <button onClick={addCity}>Add City</button>
       </div>
