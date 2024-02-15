@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 
 const Living = () => {
+  const [isDivVisible, setIsDivVisible] = useState(false);
+
+  const toggleDiv = () => {
+    setIsDivVisible(!isDivVisible);
+  };
+
   return (
     <div>
+      <button
+        onClick={toggleDiv}
+        className="button"
+        style={{ backgroundColor: "blue", color: "white" }}
+      >
+        إضافة
+      </button>
       <div className="StudentName">
         {" "}
         <p style={{ fontWeight: "bold" }}>الاسم: عمر أشرف إسماعيل</p>

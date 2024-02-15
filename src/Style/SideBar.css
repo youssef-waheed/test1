@@ -1,0 +1,5 @@
+.students-list-container {
+    max-height: 400px; /* Adjust the height according to your design */
+    overflow-y: auto;
+  }
+  

@@ -252,29 +252,7 @@ const ApplicationDeadline = () => {
       console.log(editRowData.toDate);
     }
   };
-  // const handleSaveEditNeFeMale = async () => {
-  //   try {
-  //     const response = await axios.put(
-  //       "http://localhost:5000/timingNew/updateNewFemales/" + idNewFemale,
-  //       {
-  //         to: toDate,
-  //         from: fromDate,
-  //       }
-  //     );
 
-  //     console.log("Update response:", response.data.data.date);
-  //     console.log("Saved changes:", fromDate, toDate);
-  //     // Reset local states
-  //     setFromDate("");
-  //     setToDate("");
-  //     setEditRow(null);
-  //   } catch (error) {
-  //     console.log("Error updating date:", error);
-  //     console.log(fromDate);
-  //     console.log(toDate);
-  //   }
-  //   // window.location.reload();
-  // };
   const handleSaveEditNeFeMale = async () => {
     try {
       const response = await axios.put(
@@ -358,7 +336,10 @@ const ApplicationDeadline = () => {
                       <button onClick={handleCancelEdit}>إلغاء</button>
                     </>
                   ) : (
-                    <button onClick={() => handleEditClick(index)}>
+                    <button
+                      style={{ color: "white", backgroundColor: "green" }}
+                      onClick={() => handleEditClick(index)}
+                    >
                       تعديل
                     </button>
                   )}
@@ -411,7 +392,10 @@ const ApplicationDeadline = () => {
                       <button onClick={handleCancelEdit}>إلغاء</button>
                     </>
                   ) : (
-                    <button onClick={() => handleEditClick(index)}>
+                    <button
+                      style={{ color: "white", backgroundColor: "green" }}
+                      onClick={() => handleEditClick(index)}
+                    >
                       تعديل
                     </button>
                   )}
@@ -464,7 +448,10 @@ const ApplicationDeadline = () => {
                       <button onClick={handleCancelEdit}>إلغاء</button>
                     </>
                   ) : (
-                    <button onClick={() => handleEditClick(index)}>
+                    <button
+                      style={{ color: "white", backgroundColor: "green" }}
+                      onClick={() => handleEditClick(index)}
+                    >
                       تعديل
                     </button>
                   )}
@@ -542,20 +529,6 @@ const ApplicationDeadline = () => {
           </tbody>
         </Table>
       </div>
-      {/* {showEdit && (
-        <div>
-          <textarea
-            value={fromDate + " - " + toDate}
-            onChange={(e) => {
-              const [from, to] = e.target.value.split(" - ");
-              setFromDate(from);
-              setToDate(to);
-            }}
-          />
-          <button onClick={handleSaveEdit}>حفظ</button>
-          <button onClick={handleCancelEdit}>إلغاء</button>
-        </div>
-      )} */}
     </div>
   );
 };

@@ -1,5 +1,19 @@
-.form{
-    display: flex;
-    align-content: space-between;
+/* Form.css */
 
+.sidebar-form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Four columns */
+  grid-gap: 30px; /* Increase space between checkboxes */
+  width: 100%; /* Ensure the form spans the entire width */
+}
+
+.checkbox {
+  width: 100%; /* Ensure checkboxes fill the width of the column */
+}
+
+.add-button {
+  /* Add your button styles here */
+  width: 100%;
+  padding: 10px 20px;
+  margin-top: 20px;
 }

@@ -1,71 +1,119 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../Shared/Header";
 import Checkbox from "../Shared/Checkbox";
 import Table from "react-bootstrap/Table";
-import { tab } from "@testing-library/user-event/dist/tab";
+import axios from "axios";
 
 const TypesOfLivings = () => {
   const [checkbox1Checked, setCheckbox1Checked] = useState(true);
   const [checkbox2Checked, setCheckbox2Checked] = useState(false);
-
-  const handleCheckbox1Change = () => {
-    setCheckbox1Checked(!checkbox1Checked);
-    setCheckbox2Checked(!checkbox2Checked);
-  };
-
-  const handleCheckbox2Change = () => {
-    setCheckbox2Checked(!checkbox2Checked);
-    setCheckbox1Checked(!checkbox1Checked);
-  };
   const [tabs, setTabs] = useState([]);
+  const [males, setMales] = useState([]);
+  const [females, setFemales] = useState([]);
+
+  useEffect(() => {
+    fetchTypeOfLiving();
+  }, []);
+
+  const fetchTypeOfLiving = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/typeOfSpecialHousing/getTypeOfSpecialHousing"
+      );
+      setTabs(response.data.data.housing);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchTypeOfLivingDetailsMale = async (idMale) => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/detailsAboutTypeOfSpecialHousing/getDetailsAboutTypeOfSpecialHousing/" +
+          idMale
+      );
+      return response.data.data.detailsAboutTypeOfSpecialHousing;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  };
+
+  const fetchTypeOfLivingDetailsFeMale = async (idFemale) => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/detailsAboutTypeOfSpecialHousing/getDetailsAboutTypeOfSpecialHousing/" +
+          idFemale
+      );
+      return response.data.data.detailsAboutTypeOfSpecialHousing;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  };
+
+  const handleCheckbox1Change = async () => {
+    setCheckbox1Checked(!checkbox1Checked);
+    setCheckbox2Checked(!checkbox2Checked);
+
+    if (!checkbox1Checked && tabs.length > 0) {
+      const data = await fetchTypeOfLivingDetailsMale(tabs[0]._id);
+      setMales(data);
+    } else {
+      setMales([]);
+    }
+  };
+
+  const handleCheckbox2Change = async () => {
+    setCheckbox2Checked(!checkbox2Checked);
+    setCheckbox1Checked(!checkbox1Checked);
+
+    if (!checkbox2Checked && tabs.length > 0) {
+      const data = await fetchTypeOfLivingDetailsFeMale(tabs[1]._id);
+      setFemales(data);
+    } else {
+      setFemales([]);
+    }
+  };
 
   return (
     <div className="main">
-      <div
-        className="input-group"
-        style={{ display: "flex", justifyContent: "space-between" }}
-      >
-        <Checkbox
-          label="سكن مميز الطلبة"
-          checked={checkbox1Checked}
-          onChange={handleCheckbox1Change}
-        />
-        <Checkbox
-          label="سكن مميز الطالبات"
-          checked={checkbox2Checked}
-          onChange={handleCheckbox2Change}
-        />
-      </div>
+      {tabs.length > 0 && (
+        <div
+          className="input-group"
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <Checkbox
+            label={tabs[0].typeOfHousing}
+            checked={checkbox1Checked}
+            onChange={handleCheckbox1Change}
+          />
+          <Checkbox
+            label={tabs[1].typeOfHousing}
+            checked={checkbox2Checked}
+            onChange={handleCheckbox2Change}
+          />
+        </div>
+      )}
+
       {checkbox2Checked && (
         <div className="input-group">
           <Table striped bordered hover size="sm">
             <thead>
-              {tabs.map((tab, index) => {
-                <tr key={index}>
-                  <th>اسم التميز</th>
-                  <th> {tab.from} </th>
-                </tr>;
-              })}
+              <tr>
+                <th>نوع المدينة</th>
+                <th>السعة</th>
+                <th>فعال</th>
+              </tr>
             </thead>
             <tbody>
-              {tabs.map((tab, index) => {
+              {females.map((tab, index) => (
                 <tr key={index}>
-                  <td>نوع المدينة</td>
-                  <td> {tab.from} </td>
-                </tr>;
-              })}
-              {tabs.map((tab, index) => {
-                <tr key={index}>
-                  <td>السعة</td>
-                  <td> {tab.form} </td>
-                </tr>;
-              })}
-              {tabs.map((tab, index) => {
-                <tr key={index}>
-                  <td>فعال</td>
-                  <td> {tab.form} </td>
-                </tr>;
-              })}
+                  <td>{tab.cityType}</td>
+                  <td>{tab.capacity}</td>
+                  <td>{tab.isActive ? "نعم" : "لا"}</td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         </div>
@@ -74,32 +122,20 @@ const TypesOfLivings = () => {
         <div className="input-group">
           <Table striped bordered hover size="sm">
             <thead>
-              {tabs.map((tab, index) => {
-                <tr key={index}>
-                  <th>اسم التميز</th>
-                  <th> {tab.from} </th>
-                </tr>;
-              })}
+              <tr>
+                <th>نوع المدينة</th>
+                <th>السعة</th>
+                <th>فعال</th>
+              </tr>
             </thead>
             <tbody>
-              {tabs.map((tab, index) => {
+              {males.map((tab, index) => (
                 <tr key={index}>
-                  <td>نوع المدينة</td>
-                  <td> {tab.from} </td>
-                </tr>;
-              })}
-              {tabs.map((tab, index) => {
-                <tr key={index}>
-                  <td>السعة</td>
-                  <td> {tab.form} </td>
-                </tr>;
-              })}
-              {tabs.map((tab, index) => {
-                <tr key={index}>
-                  <td>فعال</td>
-                  <td> {tab.form} </td>
-                </tr>;
-              })}
+                  <td>{tab.cityType}</td>
+                  <td>{tab.capacity}</td>
+                  <td>{tab.isActive ? "نعم" : "لا"}</td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         </div>
