@@ -22,6 +22,11 @@ import TypesOfLivings from "../Pages/TypesOfLivings";
 import Penalties from "../Pages/Penalties/Penalties";
 import axios from "axios";
 import Checkbox from "../Shared/Checkbox";
+
+import MainInfo from "../Pages/MainInfo";
+import Instructions from "../Pages/InstructionsForApplying";
+import Tskeen from "../Pages/Tskeen";
+
 import "../Style/Header.css";
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -96,7 +101,22 @@ const Header = () => {
       "تقارير",
       "احصائيات",
     ],
-    ["مواعيد التقديم", "تعليمات التقدم", "صور الجامعة", "أنواع السكن المميز"],
+
+    [
+      "مواعيد التقديم",
+      "تعليمات التقديم",
+      "صور الجامعة",
+      "انواع السكن",
+      "الوجبات",
+      "الرسوم",
+      "الغرف",
+      "الفئات",
+      "البلاد",
+      "المستخدمين",
+      "تطبيقات الطلاب",
+      "احصائيات عامة",
+      "تقارير",
+    ],
   ];
 
   const Tabs = [
@@ -315,7 +335,9 @@ const Header = () => {
         <div className="col">
           <SIdeBar />
         </div>
-        <div className="coll">Column 2 (75% width)</div>
+        <div className="coll">
+          <MainInfo />
+        </div>
       </div>
     );
   }
@@ -436,6 +458,32 @@ const Header = () => {
     );
   }
 
+  function Text99() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col">
+          <SIdeBar />
+        </div>
+        <div className="coll">
+          <Instructions />
+        </div>
+      </div>
+    );
+  }
+
+  function Text999() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col">
+          <SIdeBar />
+        </div>
+        <div className="coll">
+          <Tskeen />
+        </div>
+      </div>
+    );
+  }
+
   function Content({ activeIndex, activeTab, show }) {
     const buttonContent = [
       [
@@ -453,20 +501,35 @@ const Header = () => {
         "احصائيات",
       ],
       [
-        "بيانات اساسية",
-        "السكن",
-        "فصل الطالبات",
-        "الجزاءات",
-        "الغياب و التصاريح",
-        "الرسوم",
-        "بيان حالة",
-        "حجب وجبات",
-        "بيان الرسوم",
+        <Text />,
+        <Text2 />,
+        <Text3 />,
+        <Text4 />,
+        <Text5 />,
+        <Text6 />,
+        <Text7 />,
+        <Text8 />,
+        <Text9 />,
         "تطبيقات",
         "تقارير",
         "احصائيات",
       ],
-      [<Text10 />, "Button N", "<Button O>", <Text11 />],
+
+      [
+        <Text10 />,
+        <Text99 />,
+        "صور الجامعة",
+        <Text11 />,
+        "الوجبات",
+        "الرسوم",
+        <Text999 />,
+        "الفئات",
+        "البلاد",
+        "المستخدمين",
+        "تطبيقات الطلاب",
+        "احصائيات عامة",
+        "تقارير",
+      ],
     ];
     return show && <div>{buttonContent[activeTab][activeIndex]}</div>;
   }
