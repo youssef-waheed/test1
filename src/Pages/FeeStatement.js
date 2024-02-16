@@ -1,7 +1,26 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-
+var id = 1;
 const FeeStatement = () => {
+  const [tabs, setTabs] = useState([]);
+
+  useEffect(() => {
+    fetchFeeStatement(id);
+  }, []);
+
+  const fetchFeeStatement = async (id) => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/fees/feeStatement/" + id
+      );
+      // id = response.data.data[0];
+      // console.log(response);
+      console.log(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div>
       <div>
@@ -12,35 +31,49 @@ const FeeStatement = () => {
         </p>
       </div>
       <Table striped bordered hover>
-        <thead>
+        {/* <thead>
           <tr>
             <th> الاسم</th>
             <th> عمر أشرف إسماعيل محمد</th>
           </tr>
-        </thead>
+        </thead> */}
         <tbody>
-          <tr>
-            <td>الرقم القومي</td>
-            <td>302015230213151</td>
-          </tr>
-
-          <tr>
-            <td>الكلية والفرقة </td>
-            <td>جامعة حلوان - حاسبات - الفرقة الرابعة</td>
-          </tr>
-          <tr>
-            <td>رقم شئون الطلاب </td>
-            <td>011554222476</td>
-          </tr>
-
-          <tr>
-            <td>العنوان </td>
-            <td>شارع السودان - الجيزة</td>
-          </tr>
-          <tr>
-            <td>نوع السكن </td>
-            <td> سكن عادي </td>
-          </tr>
+          {tabs.map((tab, index) => (
+            <tr key={index}>
+              <td>الطالبات الجدد </td>
+              <td>{tab.from}</td>
+            </tr>
+          ))}
+          {tabs.map((tab, index) => (
+            <tr key={index}>
+              <td>الرقم القومي</td>
+              <td>{tab.from}</td>
+            </tr>
+          ))}
+          {tabs.map((tab, index) => (
+            <tr key={index}>
+              <td>الكلية والفرقة </td>
+              <td>{tab.from}</td>
+            </tr>
+          ))}
+          {tabs.map((tab, index) => (
+            <tr key={index}>
+              <td>رقم شئون الطلاب </td>
+              <td>{tab.from}</td>
+            </tr>
+          ))}
+          {tabs.map((tab, index) => (
+            <tr key={index}>
+              <td>نوع السكن </td>
+              <td>{tab.from}</td>
+            </tr>
+          ))}
+          {tabs.map((tab, index) => (
+            <tr key={index}>
+              <td>العنوان </td>
+              <td>{tab.from}</td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </div>

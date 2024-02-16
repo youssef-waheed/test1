@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import man from "../images/man.png";
 import woman from "../images/woman.png";
 import settings from "../images/settings.png";
@@ -10,19 +10,67 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Living from "../Pages/Living";
 import Students from "../Pages/Students";
-import Penalties from "../Pages/Penalties";
 import AbsenceandPermits from "../Pages/AbsenceandPermits";
 import Fees from "../Pages/Fees";
 import StatementCase from "../Pages/StatementCase";
 import Meals from "../Pages/Meals";
 import FeeStatement from "../Pages/FeeStatement";
+import ApplicationDeadline from "../Pages/SystemManagment/ApplicationDeadline";
+// import TypesOfLiving from "../Pages/SystemManagment/TypesOfLiving";
+// import { Checkbox } from "@mui/material";
+import TypesOfLivings from "../Pages/TypesOfLivings";
+import Penalties from "../Pages/Penalties/Penalties";
+import axios from "axios";
+import Checkbox from "../Shared/Checkbox";
+
 import MainInfo from "../Pages/MainInfo";
 import Instructions from "../Pages/InstructionsForApplying";
 import Tskeen from "../Pages/Tskeen";
+
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [show, setShow] = useState(false);
+  const [displayDiv, setDisplayDiv] = useState(false);
+  const [College, setCollege] = useState(""); // State for storing the selected college
+  const [ofYear, setOfYear] = useState(""); // State for storing the selected academic year
+  // var ofYear;
+  // var College;
+  var egyptions;
+  var expartriates;
+  var normalHousing;
+  var specialHousing;
+  var oldStudent;
+  var newStudent;
+  var appliers;
+  var acceptedApplications;
+  const colleges = [
+    "كلية الفنون الجميلة",
+    "كلية الهندسة (حلوان)",
+    "كلية الهندسة (المطرية)",
+    "كلية التجارة وإدارة الأعمال (حلوان)",
+    "كلية التجارة وإدارة الأعمال (الزمالك)",
+    "كلية الحاسبات والمعلومات",
+    "كلية السياحة والفنادق",
+    "كلية الفنون التطبيقية",
+    "كلية التكنولوجيا والتعليم",
+    "كلية الاقتصاد المنزلي",
+    "كلية التربية الفنية",
+    "كلية التربية الموسيقية",
+    "كلية التربية الرياضية (بنين) بالهرم",
+    "كلية التربية الرياضية (بنات) بالجزيرة",
+    "كلية الحقوق",
+    "كلية الآداب",
+    "كلية التربية",
+    "كلية الخدمة الاجتماعية",
+    "كلية الصيدلة",
+    "كلية العلوم",
+    "كلية التمريض",
+    "كلية الطب",
+    "المعهد القومي للملكية الفكرية",
+    "معهد التمريض",
+  ];
+
   const buttonSets = [
     [
       "بيانات اساسية",
@@ -52,6 +100,7 @@ const Header = () => {
       "تقارير",
       "احصائيات",
     ],
+
     ["مواعيد التقديم",
        "تعليمات التقديم",
         "صور الجامعة",
@@ -82,6 +131,104 @@ const Header = () => {
     setShow(false);
   }
   const activeButton = buttonSets[activeTab][activeIndex];
+  const [students, setStudents] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [checkboxes, setCheckboxes] = useState(() => {
+    const storedCheckboxes = JSON.parse(sessionStorage.getItem("checkboxes"));
+    return (
+      storedCheckboxes || [
+        { label: "مصرى", checked: false },
+        { label: "وافد", checked: false },
+        { label: "متقدمين", checked: false },
+        { label: "مقبولين", checked: false },
+        { label: "قدامى", checked: false },
+        { label: "جدد", checked: false },
+        { label: "سكن عادى", checked: false },
+        { label: "سكن مميز", checked: false },
+        { label: "إخلاء ", checked: false },
+      ]
+    );
+  });
+
+  useEffect(() => {
+    fetchStudents();
+  }, []);
+
+  const fetchStudents = async () => {
+    const queryString = `?egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&College=${College}&ofYear=${ofYear}`;
+
+    if (
+      egyptions ||
+      expartriates ||
+      normalHousing ||
+      specialHousing ||
+      oldStudent ||
+      newStudent ||
+      appliers ||
+      acceptedApplications ||
+      College ||
+      ofYear
+    ) {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/basicData/getBasicDataMales${queryString}`
+        );
+        console.log("QUERY STRING");
+        console.log(queryString);
+        console.log("QUERY STRING");
+        console.log(response);
+        setStudents(response.data.data.students);
+        setFilteredStudents(response.data.data.students);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/basicData/getBasicDataMales`
+        );
+        console.log("QUERY STRING");
+        console.log(queryString);
+        console.log("QUERY STRING");
+        console.log(response);
+        setStudents(response.data.data.students);
+        setFilteredStudents(response.data.data.students);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+  const handleCheckboxChange = (index) => {
+    const updatedCheckboxes = checkboxes.map((checkbox, idx) =>
+      idx === index ? { ...checkbox, checked: !checkbox.checked } : checkbox
+    );
+    setCheckboxes(updatedCheckboxes);
+
+    // Update the corresponding variables based on the selected checkboxes
+    const selectedLabels = updatedCheckboxes
+      .filter((checkbox) => checkbox.checked)
+      .map((checkbox) => checkbox.label);
+
+    egyptions = selectedLabels.includes("مصرى");
+    expartriates = selectedLabels.includes("وافد");
+    appliers = selectedLabels.includes("متقدمين");
+    acceptedApplications = selectedLabels.includes("مقبولين");
+    oldStudent = selectedLabels.includes("قدامى");
+    newStudent = selectedLabels.includes("جدد");
+    normalHousing = selectedLabels.includes("سكن عادى");
+    specialHousing = selectedLabels.includes("سكن مميز");
+
+    // Fetch students based on the selected checkboxes
+    fetchStudents();
+  };
+
+  function handleCollegeChange(event) {
+    setCollege(event.target.value); // Update College state with the selected value
+  }
+
+  function handleYearChange(event) {
+    setOfYear(event.target.value); // Update ofYear state with the selected value
+  }
 
   function SIdeBar() {
     return (
@@ -89,33 +236,59 @@ const Header = () => {
         <div className="bar">{activeButton}</div>
         <div className="select">
           <p className="academicyear">العام الاكديمي</p>
-          <Form.Select size="sm" className="selectmenu">
-            <option>2025 - 2026</option>
-            <option>2024 - 2025</option>
-            <option>2023 - 2024</option>
+          <Form.Select
+            size="sm"
+            className="selectmenu"
+            onChange={handleYearChange}
+          >
+            <option>2025-2026</option>
+            <option>2024-2025</option>
+            <option>2023-2024</option>
           </Form.Select>
         </div>
         <div className="select">
           <p>الكلية</p>
-          <Form.Select size="sm" className="selectmenu">
-            <option>حاسبات</option>
-            <option>هندسة</option>
-            <option>آداب</option>
+          <Form.Select
+            size="sm"
+            className="selectmenu"
+            onChange={handleCollegeChange}
+          >
+            {colleges.map((college, index) => (
+              <option key={index} value={college}>
+                {college}
+              </option>
+            ))}
           </Form.Select>
         </div>
         <div className="form">
-          <SideBarForm />
-        </div>
+          <div className="sidebar-form-container">
+            <div className="sidebar-form">
+              {checkboxes.map((checkbox, index) => (
+                <div key={index} className="checkbox-row">
+                  <Checkbox
+                    label={checkbox.label}
+                    checked={checkbox.checked}
+                    onChange={() => handleCheckboxChange(index)}
+                    className="checkbox"
+                  />
+                </div>
+              ))}
 
-        <Form className="d-flex">
-          <Form.Control
-            type="search"
-            placeholder="Search"
-            className="me-2"
-            aria-label="Search"
-          />
-          <Button variant="outline-success">Search</Button>
-        </Form>
+              <div style={{ width: "20px" }} className="search-bar">
+                <input type="text" placeholder="Search..." />
+              </div>
+            </div>
+            <div className="students-list-container">
+              <ul>
+                {filteredStudents.map((student, index) => (
+                  <li key={index}>
+                    <p> {student.studentName}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
       </Container>
     );
   }
@@ -226,6 +399,26 @@ const Header = () => {
       </div>
     );
   }
+  function Text10() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col"> مواعيد التقدم - جامعة حلوان</div>
+        <div className="coll">
+          <ApplicationDeadline />
+        </div>
+      </div>
+    );
+  }
+  function Text11() {
+    return (
+      <div className="two-column-wrapper">
+        {/* <div className="col"></div> */}
+        <div className="coll">
+          <TypesOfLivings />
+        </div>
+      </div>
+    );
+  }
 
   function Text99() {
     return (
@@ -284,10 +477,11 @@ const Header = () => {
         "تقارير",
         "احصائيات",
       ],
-      ["مواعيد التقديم",
+
+      [<Text10 />,
        <Text99 />,
         "صور الجامعة",
-        "انواع السكن",
+        <Text11 />,
         "الوجبات" ,
         "الرسوم"  ,
         <Text999 />,
