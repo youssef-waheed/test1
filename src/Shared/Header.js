@@ -27,6 +27,7 @@ import MainInfo from "../Pages/MainInfo";
 import Instructions from "../Pages/InstructionsForApplying";
 import Tskeen from "../Pages/Tskeen";
 
+import "../Style/Header.css";
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -101,19 +102,21 @@ const Header = () => {
       "احصائيات",
     ],
 
-    ["مواعيد التقديم",
-       "تعليمات التقديم",
-        "صور الجامعة",
-        "انواع السكن",
-        "الوجبات" ,
-        "الرسوم"  ,
-        "الغرف",
-        "الفئات" ,
-        "البلاد" ,
-        "المستخدمين" ,
-        "تطبيقات الطلاب" ,
-        "احصائيات عامة" 
-      , "تقارير"],
+    [
+      "مواعيد التقديم",
+      "تعليمات التقديم",
+      "صور الجامعة",
+      "انواع السكن",
+      "الوجبات",
+      "الرسوم",
+      "الغرف",
+      "الفئات",
+      "البلاد",
+      "المستخدمين",
+      "تطبيقات الطلاب",
+      "احصائيات عامة",
+      "تقارير",
+    ],
   ];
 
   const Tabs = [
@@ -131,6 +134,7 @@ const Header = () => {
     setShow(false);
   }
   const activeButton = buttonSets[activeTab][activeIndex];
+  const [searchQuery, setSearchQuery] = useState("");
   const [students, setStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [checkboxes, setCheckboxes] = useState(() => {
@@ -155,7 +159,7 @@ const Header = () => {
   }, []);
 
   const fetchStudents = async () => {
-    const queryString = `?egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&College=${College}&ofYear=${ofYear}`;
+    const queryString = `?egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&College=${College}&ofYear=${ofYear}&searchQuery=${searchQuery}`;
 
     if (
       egyptions ||
@@ -198,6 +202,21 @@ const Header = () => {
       }
     }
   };
+  const filterStudents = (query) => {
+    const filtered = students.filter(
+      (student) =>
+        student.studentName.toLowerCase().includes(query.toLowerCase()) ||
+        student._id.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredStudents(filtered);
+  };
+
+  const handleSearchChange = (e) => {
+    const { value } = e.target;
+    setSearchQuery(value); // Update the searchQuery state with the input value
+    filterStudents(value); // Filter students based on the input value
+  };
+
   const handleCheckboxChange = (index) => {
     const updatedCheckboxes = checkboxes.map((checkbox, idx) =>
       idx === index ? { ...checkbox, checked: !checkbox.checked } : checkbox
@@ -229,6 +248,11 @@ const Header = () => {
   function handleYearChange(event) {
     setOfYear(event.target.value); // Update ofYear state with the selected value
   }
+  const handleStudentClick = (student) => {
+    // Perform actions when a student is clicked
+    console.log("Clicked student:", student);
+    // You can navigate to another page or display more information about the clicked student
+  };
 
   function SIdeBar() {
     return (
@@ -275,14 +299,27 @@ const Header = () => {
               ))}
 
               <div style={{ width: "20px" }} className="search-bar">
-                <input type="text" placeholder="Search..." />
+                <input
+                  type="text"
+                  placeholder="Search students..."
+                  value={searchQuery}
+                  onChange={handleSearchChange} // Make sure this is correctly set
+                />
               </div>
             </div>
-            <div className="students-list-container">
+            <div
+              className="students-list-container"
+              style={{ maxHeight: "200px", overflowY: "auto" }}
+            >
               <ul>
-                {filteredStudents.map((student, index) => (
+                {filteredStudents.slice(0, 10).map((student, index) => (
                   <li key={index}>
-                    <p> {student.studentName}</p>
+                    <button
+                      className="button"
+                      onClick={() => handleStudentClick(student)}
+                    >
+                      {student.studentName}
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -295,11 +332,12 @@ const Header = () => {
   function Text() {
     return (
       <div className="two-column-wrapper">
-       
         <div className="col">
           <SIdeBar />
         </div>
-        <div className="coll"><MainInfo /></div>
+        <div className="coll">
+          <MainInfo />
+        </div>
       </div>
     );
   }
@@ -433,7 +471,6 @@ const Header = () => {
     );
   }
 
-
   function Text999() {
     return (
       <div className="two-column-wrapper">
@@ -446,7 +483,7 @@ const Header = () => {
       </div>
     );
   }
-  
+
   function Content({ activeIndex, activeTab, show }) {
     const buttonContent = [
       [
@@ -478,19 +515,21 @@ const Header = () => {
         "احصائيات",
       ],
 
-      [<Text10 />,
-       <Text99 />,
+      [
+        <Text10 />,
+        <Text99 />,
         "صور الجامعة",
         <Text11 />,
-        "الوجبات" ,
-        "الرسوم"  ,
+        "الوجبات",
+        "الرسوم",
         <Text999 />,
-        "الفئات" ,
-        "البلاد" ,
-        "المستخدمين" ,
-        "تطبيقات الطلاب" ,
-        "احصائيات عامة" 
-      , "تقارير"],
+        "الفئات",
+        "البلاد",
+        "المستخدمين",
+        "تطبيقات الطلاب",
+        "احصائيات عامة",
+        "تقارير",
+      ],
     ];
     return show && <div>{buttonContent[activeTab][activeIndex]}</div>;
   }

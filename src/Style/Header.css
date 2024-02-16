@@ -1,0 +1,9 @@
+.button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 5px;
+    color: #000; /* Adjust the color as needed */
+  }
+  
