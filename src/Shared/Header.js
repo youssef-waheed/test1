@@ -35,6 +35,8 @@ const Header = () => {
   const [displayDiv, setDisplayDiv] = useState(false);
   const [College, setCollege] = useState(""); // State for storing the selected college
   const [ofYear, setOfYear] = useState(""); // State for storing the selected academic year
+  const [selectedStudent, setSelectedStudent] = useState(null);
+
   // var ofYear;
   // var College;
   var egyptions;
@@ -259,8 +261,7 @@ const Header = () => {
     console.log('===================================='); // Update the ofYear state with the selected value
   }
   const handleStudentClick = (student) => {
-    console.log("Clicked student:", student);
-    // You can navigate to another page or display more information about the clicked student
+    setSelectedStudent(student._id); // Set the selected student's ID
   };
 
   function SIdeBar() {
