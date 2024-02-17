@@ -156,7 +156,7 @@ const Header = () => {
 
   useEffect(() => {
     fetchStudents();
-  }, []);
+  }, [College, ofYear]);
 
   const fetchStudents = async () => {
     const queryString = `?College=${College}&ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&searchQuery=${searchQuery}`;
@@ -244,7 +244,7 @@ const Header = () => {
 
   function handleCollegeChange(event) {
     const selectedCollege = event.target.value;
-    setCollege(selectedCollege); // Update the College state with the selected value
+    setCollege(selectedCollege, () => fetchStudents()); // Update the College state with the selected value
     // Trigger the fetchStudents function whenever the College state is updated
     // This will refetch students based on the selected college
     fetchStudents();
@@ -252,7 +252,11 @@ const Header = () => {
 
   function handleYearChange(event) {
     const selectedYear = event.target.value;
-    setOfYear(selectedYear); // Update the ofYear state with the selected value
+    setOfYear(selectedYear);
+    console.log('====================================');
+    console.log(selectedYear);
+    setOfYear(selectedYear, () => fetchStudents());
+    console.log('===================================='); // Update the ofYear state with the selected value
   }
   const handleStudentClick = (student) => {
     console.log("Clicked student:", student);
@@ -268,12 +272,14 @@ const Header = () => {
           <Form.Select
             size="sm"
             className="selectmenu"
-            onChange={handleYearChange} // Attach onChange event handler
+            onChange={handleYearChange}
+            value={ofYear} // Attach onChange event handler
           >
             <option>2025-2026</option>
             <option>2024-2025</option>
             <option>2023-2024</option>
           </Form.Select>
+          
         </div>
         <div className="select">
           <p>الكلية</p>
@@ -281,7 +287,9 @@ const Header = () => {
             size="sm"
             className="selectmenu"
             onChange={handleCollegeChange} // Attach onChange event handler
-            // value={College}
+
+            value={College}
+
           >
             {colleges.map((college, index) => (
               <option key={index} value={college}>
@@ -571,3 +579,4 @@ const Header = () => {
 };
 
 export default Header;
+//
