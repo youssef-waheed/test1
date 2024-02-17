@@ -6,4 +6,10 @@
     margin-bottom: 5px;
     color: #000; /* Adjust the color as needed */
   }
-  
+  .search-input {
+    border: 1px solid black; /* Define the border style */
+    padding: 8px; /* Add padding to the input field */
+    border-radius: 4px; /* Optional: Add rounded corners to the border */
+    width: 200px; /* Optional: Set the width of the input field */
+    margin-bottom: 20px;
+}

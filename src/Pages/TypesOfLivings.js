@@ -45,10 +45,38 @@ const TypesOfLivings = () => {
         "http://localhost:5000/detailsAboutTypeOfSpecialHousing/getDetailsAboutTypeOfSpecialHousing/" +
           idFemale
       );
+      console.log(response);
+
       return response.data.data.detailsAboutTypeOfSpecialHousing;
     } catch (error) {
       console.log(error);
       return [];
+    }
+  };
+  const deleteTypeOfLivingMale = async (idMale) => {
+    try {
+      const response = await axios.delete(
+        "http://localhost:5000/typeOfSpecialHousing/deleteTypeOfSpecialHousing/" +
+          idMale
+      );
+
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const deleteTypeOfLivingFeMale = async (idFemale) => {
+    try {
+      const response = await axios.delete(
+        "http://localhost:5000/typeOfSpecialHousing/deleteTypeOfSpecialHousing/" +
+          idFemale
+      );
+      console.log("IDFEMALEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+      console.log(idFemale);
+      console.log("IDMFEALEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -112,6 +140,21 @@ const TypesOfLivings = () => {
                   <td>{tab.cityType}</td>
                   <td>{tab.capacity}</td>
                   <td>{tab.isActive ? "نعم" : "لا"}</td>
+                  <th>
+                    {" "}
+                    <button
+                      style={{
+                        color: "white",
+                        backgroundColor: "red",
+                        fontWeight: "bold",
+                      }}
+                      onClick={(e) => {
+                        deleteTypeOfLivingFeMale(tab.id);
+                      }}
+                    >
+                      حذف
+                    </button>{" "}
+                  </th>
                 </tr>
               ))}
             </tbody>
@@ -134,6 +177,21 @@ const TypesOfLivings = () => {
                   <td>{tab.cityType}</td>
                   <td>{tab.capacity}</td>
                   <td>{tab.isActive ? "نعم" : "لا"}</td>
+                  <th>
+                    {" "}
+                    <button
+                      style={{
+                        color: "white",
+                        backgroundColor: "red",
+                        fontWeight: "bold",
+                      }}
+                      onClick={(e) => {
+                        deleteTypeOfLivingMale(tab.id);
+                      }}
+                    >
+                      حذف
+                    </button>{" "}
+                  </th>
                 </tr>
               ))}
             </tbody>
