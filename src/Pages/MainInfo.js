@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import "../Style/Penalties.css";
-
+// import "../Style/Penalties.css";
 
 const MainInfo = () => {
   const [isDivVisible, setIsDivVisible] = useState(false);
@@ -41,52 +40,50 @@ const MainInfo = () => {
         </button>
         {isDivVisible && (
           <div style={{ fontWeight: "bold" }}>
-             <form onSubmit={handleSubmit} style={formStyle}>
-      <label style={labelStyle}>
-        الرقم القومي :  
-        <input type="text" value={textInput} onChange={handleTextChange} style={inputStyle} />
-      </label>
+            <form onSubmit={handleSubmit} style={formStyle}>
+              <label style={labelStyle}>
+                الرقم القومي :
+                <input
+                  type="text"
+                  value={textInput}
+                  onChange={handleTextChange}
+                  style={inputStyle}
+                />
+              </label>
 
-      
+              <label style={labelStyle}>
+                Checkbox:
+                <input
+                  type="checkbox"
+                  checked={isChecked}
+                  onChange={handleCheckboxChange}
+                  style={checkboxStyle}
+                />
+              </label>
 
+              <label style={labelStyle}>
+                Dropdown:
+                <select
+                  value={selectedOption}
+                  onChange={handleDropdownChange}
+                  style={selectStyle}
+                >
+                  <option value="">Select an option</option>
+                  <option value="option1">Option 1</option>
+                  <option value="option2">Option 2</option>
+                  <option value="option3">Option 3</option>
+                </select>
+              </label>
 
-      <label style={labelStyle}>
-        Checkbox:
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={handleCheckboxChange}
-          style={checkboxStyle}
-        />
-      </label>
-
-      
-
-
-      <label style={labelStyle}>
-        Dropdown:
-        <select value={selectedOption} onChange={handleDropdownChange} style={selectStyle}>
-          <option value="">Select an option</option>
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
-        </select>
-      </label>
-
-      
-
-
-      <input type="submit" value="Submit" style={buttonStyle} />
-    </form>
+              <input type="submit" value="Submit" style={buttonStyle} />
+            </form>
           </div>
         )}
             
       </div>{" "}
-      
-     
     </div>
   );
-}
+};
 
 const formStyle = {
   display: "flex",
