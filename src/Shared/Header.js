@@ -159,9 +159,7 @@ const Header = () => {
   }, []);
 
   const fetchStudents = async () => {
-    const queryString = `?College=${encodeURIComponent(
-      College
-    )}&ofYear=${ofYear}&searchQuery=${searchQuery}`;
+    const queryString = `?College=${College}&ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&searchQuery=${searchQuery}`;
 
     if (
       egyptions ||
@@ -283,6 +281,7 @@ const Header = () => {
             size="sm"
             className="selectmenu"
             onChange={handleCollegeChange} // Attach onChange event handler
+            // value={College}
           >
             {colleges.map((college, index) => (
               <option key={index} value={college}>
