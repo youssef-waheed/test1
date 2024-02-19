@@ -287,9 +287,7 @@ const Header = () => {
             size="sm"
             className="selectmenu"
             onChange={handleCollegeChange} // Attach onChange event handler
-
             value={College}
-
           >
             {colleges.map((college, index) => (
               <option key={index} value={college}>
