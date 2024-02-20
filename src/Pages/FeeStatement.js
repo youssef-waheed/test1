@@ -2,25 +2,34 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 var id = 1;
-const FeeStatement = () => {
+const FeeStatement = ({ studentId }) => {
   const [tabs, setTabs] = useState([]);
+  const [feeStatement, setFeeStatement] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchFeeStatement(id);
-  }, []);
+    if (studentId) {
+      fetchFeeStatement(studentId);
+    }
+  }, [studentId]);
 
   const fetchFeeStatement = async (id) => {
+    setLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:5000/fees/feeStatement/" + id
+        `http://localhost:5000/fees/feeStatement/` + id
       );
-      // id = response.data.data[0];
-      // console.log(response);
-      console.log(id);
+      console.log(response);
+      setFeeStatement(response.data);
+      setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log("Error fetching fee statement:", error);
+      setLoading(false);
     }
   };
+  if (loading) {
+    return <p>Loading...</p>;
+  }
   return (
     <div>
       <div>
@@ -31,49 +40,14 @@ const FeeStatement = () => {
         </p>
       </div>
       <Table striped bordered hover>
-        {/* <thead>
-          <tr>
-            <th> الاسم</th>
-            <th> عمر أشرف إسماعيل محمد</th>
-          </tr>
-        </thead> */}
         <tbody>
-          {tabs.map((tab, index) => (
-            <tr key={index}>
-              <td>الطالبات الجدد </td>
-              <td>{tab.from}</td>
-            </tr>
-          ))}
-          {tabs.map((tab, index) => (
-            <tr key={index}>
-              <td>الرقم القومي</td>
-              <td>{tab.from}</td>
-            </tr>
-          ))}
-          {tabs.map((tab, index) => (
-            <tr key={index}>
-              <td>الكلية والفرقة </td>
-              <td>{tab.from}</td>
-            </tr>
-          ))}
-          {tabs.map((tab, index) => (
-            <tr key={index}>
-              <td>رقم شئون الطلاب </td>
-              <td>{tab.from}</td>
-            </tr>
-          ))}
-          {tabs.map((tab, index) => (
-            <tr key={index}>
-              <td>نوع السكن </td>
-              <td>{tab.from}</td>
-            </tr>
-          ))}
-          {tabs.map((tab, index) => (
-            <tr key={index}>
-              <td>العنوان </td>
-              <td>{tab.from}</td>
-            </tr>
-          ))}
+          {feeStatement &&
+            Object.entries(feeStatement).map(([key, value], index) => (
+              <tr key={index}>
+                <td>{key}</td>
+                <td>{value}</td>
+              </tr>
+            ))}
         </tbody>
       </Table>
     </div>

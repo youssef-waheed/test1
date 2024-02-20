@@ -35,6 +35,8 @@ const Header = () => {
   const [displayDiv, setDisplayDiv] = useState(false);
   const [College, setCollege] = useState(""); // State for storing the selected college
   const [ofYear, setOfYear] = useState(""); // State for storing the selected academic year
+  const [selectedStudent, setSelectedStudent] = useState(null);
+
   // var ofYear;
   // var College;
   var egyptions;
@@ -156,10 +158,10 @@ const Header = () => {
 
   useEffect(() => {
     fetchStudents();
-  }, []);
+  }, [College, ofYear]);
 
   const fetchStudents = async () => {
-    const queryString = `?egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&College=${College}&ofYear=${ofYear}&searchQuery=${searchQuery}`;
+    const queryString = `?College=${College}&ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&searchQuery=${searchQuery}`;
 
     if (
       egyptions ||
@@ -213,6 +215,7 @@ const Header = () => {
 
   const handleSearchChange = (e) => {
     const { value } = e.target;
+    console.log("Search Query:", value); // Log the current value of the search query
     setSearchQuery(value); // Update the searchQuery state with the input value
     filterStudents(value); // Filter students based on the input value
   };
@@ -242,16 +245,23 @@ const Header = () => {
   };
 
   function handleCollegeChange(event) {
-    setCollege(event.target.value); // Update College state with the selected value
+    const selectedCollege = event.target.value;
+    setCollege(selectedCollege, () => fetchStudents()); // Update the College state with the selected value
+    // Trigger the fetchStudents function whenever the College state is updated
+    // This will refetch students based on the selected college
+    fetchStudents();
   }
 
   function handleYearChange(event) {
-    setOfYear(event.target.value); // Update ofYear state with the selected value
+    const selectedYear = event.target.value;
+    setOfYear(selectedYear);
+    console.log('====================================');
+    console.log(selectedYear);
+    setOfYear(selectedYear, () => fetchStudents());
+    console.log('===================================='); // Update the ofYear state with the selected value
   }
   const handleStudentClick = (student) => {
-    // Perform actions when a student is clicked
-    console.log("Clicked student:", student);
-    // You can navigate to another page or display more information about the clicked student
+    setSelectedStudent(student._id); // Set the selected student's ID
   };
 
   function SIdeBar() {
@@ -264,18 +274,21 @@ const Header = () => {
             size="sm"
             className="selectmenu"
             onChange={handleYearChange}
+            value={ofYear} // Attach onChange event handler
           >
             <option>2025-2026</option>
             <option>2024-2025</option>
             <option>2023-2024</option>
           </Form.Select>
+          
         </div>
         <div className="select">
           <p>الكلية</p>
           <Form.Select
             size="sm"
             className="selectmenu"
-            onChange={handleCollegeChange}
+            onChange={handleCollegeChange} // Attach onChange event handler
+            value={College}
           >
             {colleges.map((college, index) => (
               <option key={index} value={college}>
@@ -303,7 +316,8 @@ const Header = () => {
                   type="text"
                   placeholder="Search students..."
                   value={searchQuery}
-                  onChange={handleSearchChange} // Make sure this is correctly set
+                  onChange={handleSearchChange}
+                  className="search-input"
                 />
               </div>
             </div>
@@ -564,3 +578,4 @@ const Header = () => {
 };
 
 export default Header;
+//
