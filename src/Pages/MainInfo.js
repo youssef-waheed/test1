@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import "../Style/Penalties.css";
-
 
 const MainInfo = () => {
   const [isDivVisible, setIsDivVisible] = useState(false);
