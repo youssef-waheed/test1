@@ -1,129 +1,173 @@
 import React, { useState } from "react";
-// import "../Style/Penalties.css";
+import "../Style/MainInfo.css";
+import Table from "react-bootstrap/Table";
+import Spinner from "react-bootstrap/Spinner";
 
-const MainInfo = () => {
-  const [isDivVisible, setIsDivVisible] = useState(false);
-
-  const toggleDiv = () => {
-    setIsDivVisible(!isDivVisible);
-  };
-  const [textInput, setTextInput] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
-
-  const handleTextChange = (e) => {
-    setTextInput(e.target.value);
-  };
-
-  const handleCheckboxChange = (e) => {
-    setIsChecked(e.target.checked);
-  };
-
-  const handleDropdownChange = (e) => {
-    setSelectedOption(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // manage el form
-  };
+const MainInfo = ({ studentData }) => {
+  if (!studentData) {
+    return (
+      <div className="table-container">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>{" "}
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <div>
-        <button
-          onClick={toggleDiv}
-          className="button"
-          style={{ backgroundColor: "blue", color: "white" }}
-        >
-          إضافة
-        </button>
-        {isDivVisible && (
-          <div style={{ fontWeight: "bold" }}>
-            <form onSubmit={handleSubmit} style={formStyle}>
-              <label style={labelStyle}>
-                الرقم القومي :
-                <input
-                  type="text"
-                  value={textInput}
-                  onChange={handleTextChange}
-                  style={inputStyle}
-                />
-              </label>
-
-              <label style={labelStyle}>
-                Checkbox:
-                <input
-                  type="checkbox"
-                  checked={isChecked}
-                  onChange={handleCheckboxChange}
-                  style={checkboxStyle}
-                />
-              </label>
-
-              <label style={labelStyle}>
-                Dropdown:
-                <select
-                  value={selectedOption}
-                  onChange={handleDropdownChange}
-                  style={selectStyle}
-                >
-                  <option value="">Select an option</option>
-                  <option value="option1">Option 1</option>
-                  <option value="option2">Option 2</option>
-                  <option value="option3">Option 3</option>
-                </select>
-              </label>
-
-              <input type="submit" value="Submit" style={buttonStyle} />
-            </form>
-          </div>
-        )}
-            
-      </div>{" "}
+    <div className="table-container">
+      <div className="table">
+        <Table striped bordered hover size="sm">
+          <thead>
+            <tr>
+              <th>تاريخ التقدم من الإنترنت</th>
+              <th>{studentData.updatedAt}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>الرقم القومى</th>
+              <td>{studentData.nationalID}</td>
+            </tr>
+            <tr>
+              <th>رقم الملف</th>
+              <td>{studentData.studentCode}</td>
+            </tr>
+            <tr>
+              <th>الاسم </th>
+              <td>{studentData.studentName}</td>
+            </tr>
+            <tr>
+              <th> البريد الالكترونى </th>
+              <td>{studentData.email}</td>
+            </tr>
+            <tr>
+              <th> التليفون </th>
+              <td>{studentData.landLinePhone}</td>
+            </tr>
+            <tr>
+              <th> اسم الأب </th>
+              <td>{studentData.fatherName}</td>
+            </tr>
+            <tr>
+              <th> وظيفة الأب </th>
+              <td>{studentData.fatherJop}</td>
+            </tr>
+            <tr>
+              <th> اسم ولى الأمر </th>
+              <td>{studentData.fatherName}</td>
+            </tr>
+            <tr>
+              <th> الرقم القومى لولى الأمر </th>
+              <td>{studentData.fatherNationalId}</td>
+            </tr>
+            <tr>
+              <th> محل الإقامة </th>
+              <td>{studentData.placeOfBirth}</td>
+            </tr>
+            <tr>
+              <th> العنوان بالتفصيل </th>
+              <td>{studentData.detailedAddress}</td>
+            </tr>
+            <tr>
+              <th> الكلية </th>
+              <td>{studentData.College}</td>
+            </tr>
+            <tr>
+              <th> التقدير </th>
+              <td>{studentData.gradeOfLastYear}</td>
+            </tr>
+            <tr>
+              <th> نسبة التقدير </th>
+              <td>{studentData.gradePercentage} %</td>
+            </tr>
+            <tr>
+              <th> السكن في الأعوام السابقة </th>
+              <td>{studentData.housingInLastYears}</td>
+            </tr>
+            <tr>
+              <th> نوع السكن </th>
+              <td>{studentData.HousingType}</td>
+            </tr>
+            <tr>
+              <th> الأسرة في الخارج </th>
+              <td>{studentData.expartriates}</td>
+            </tr>
+            <tr>
+              <th> حالة القبول </th>
+              {/* <td>{studentData.housingInLastYears}</td> */}
+            </tr>
+            <tr>
+              <th> سكن بدون تغذية </th>
+              <td>{studentData.HousingWithoutFood}</td>
+            </tr>
+            <tr>
+              <th> السكن فى </th>
+              {/* <td>{studentData.HousingWithoutFood}</td> */}
+            </tr>
+            <tr>
+              <th> ملاحظات</th>
+              {/* <td>{studentData.HousingWithoutFood}</td> */}
+            </tr>
+          </tbody>
+        </Table>
+      </div>
+      <div className="table" style={{ lineHeight: "3", marginBottom: "50px" }}>
+        <Table striped bordered hover size="sm">
+          <thead>
+            <tr>
+              <th style={{ color: "red", fontWeight: "bold" }}>
+                {" "}
+                بيانات الأعوام السابقة{" "}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>رقم شئون الطلاب (كود الطالب) </th>
+              <td>{studentData.studentCode}</td>
+            </tr>
+            <tr>
+              <th>الديانة </th>
+              <td>{studentData.religion}</td>
+            </tr>
+            <tr>
+              <th>الموبايل</th>
+              <td>{studentData.phoneNumber}</td>
+            </tr>
+            <tr>
+              <th>الرقم القومى للأب</th>
+              <td>{studentData.fatherNationalId}</td>
+            </tr>
+            <tr>
+              <th> صلة ولى الأمر</th>
+              <td>{studentData.fatherPhone}</td>
+            </tr>
+            <tr>
+              <th>الموبايل</th>
+              <td>{studentData.phoneNumber}</td>
+            </tr>
+            <tr>
+              <th>عدد جرعات اللقاح</th>
+              <td>{studentData.phoneNumber}</td>
+            </tr>
+            <tr>
+              <th>ذوي احتياجات خاصة</th>
+              <td>{studentData.withSpecialNeeds}</td>
+            </tr>
+            <tr>
+              <th>القاعدة المقبول بها</th>
+              <td>{studentData.phoneNumber}</td>
+            </tr>
+            <tr>
+              <th>معفى من المصروفات</th>
+              <td>{studentData.phoneNumber}</td>
+            </tr>
+          </tbody>
+        </Table>
+      </div>
     </div>
   );
 };
 
-const formStyle = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "right",
-  padding: "20px",
-  border: "1px solid #ddd",
-  borderRadius: "5px",
-  boxShadow: "0px 2px 5px rgba(0,0,0,0.1)",
-  backgroundColor: "#f9f9f9",
-};
-
-const labelStyle = {
-  marginBottom: "10px",
-};
-
-const inputStyle = {
-  padding: "8px",
-  border: "1px solid #ddd",
-  borderRadius: "5px",
-  width: "200px",
-};
-
-const checkboxStyle = {
-  margin: "5px",
-};
-
-const selectStyle = {
-  padding: "8px",
-  border: "1px solid #ddd",
-  borderRadius: "5px",
-  width: "200px",
-};
-
-const buttonStyle = {
-  padding: "10px",
-  backgroundColor: "#4CAF50",
-  color: "white",
-  border: "none",
-  borderRadius: "5px",
-  cursor: "pointer",
-};
 export default MainInfo;

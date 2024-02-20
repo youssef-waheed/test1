@@ -1,0 +1,15 @@
+.table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; /* Allow flex items to wrap */
+}
+
+.table {
+  margin: 10px;
+  flex: 1; /* Allow table to grow to fill available space */
+}
+
+.loading {
+  font-size: 20px;
+}
