@@ -124,12 +124,13 @@ const StatementCase = () => {
       <div className="table-responsive">
         <Table striped bordered hover size="sm" style={{ lineHeight: "13px" }}>
           <thead>
+            <tr></tr>
+          </thead>
+          <tbody>
             <tr>
               <th> الاسم</th>
               <th> عمر أشرف إسماعيل محمد</th>
             </tr>
-          </thead>
-          <tbody>
             <tr>
               <td>الرقم القومي</td>
               <td>302015230213151</td>
