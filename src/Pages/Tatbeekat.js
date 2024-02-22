@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import "./Tatbeekat.css";
 
 const Page1 = () => (
   <div>
@@ -33,9 +34,20 @@ const App = () => {
   const [currentPage, setCurrentPage] = useState(null);
 
   const buttons = [
-    { text: 'Page 1', page: <Page1 /> },
-    { text: 'Page 2', page: <Page2 /> },
-    { text: 'Page 3', page: <Page3 /> },
+    { text: 'مراجعة طلبات الانترنت', page: <Page1 /> },
+    { text: 'تنسيق', page: <Page2 /> },
+    { text: 'سحب الصور', page: <Page3 /> },
+    { text: 'تصريح جماعي', page: <Page3 /> },
+    { text: 'قبول حالات خاصة', page: <Page3 /> },
+    { text: 'حجز وجبات (اكسل)', page: <Page3 /> },
+    { text: 'رفع الصور', page: <Page3 /> },
+    { text: 'جزاء جماعي', page: <Page3 /> },
+    { text: 'طباعة البطاقات', page: <Page3 /> },
+    { text: 'تغيير نوع السكن', page: <Page3 /> },
+    { text: 'طباعة اخطار القبول', page: <Page3 /> },
+    { text: 'استلام الوجبات(اكسل)', page: <Page3 /> },
+    { text: 'حالات البحث الاجتماعي', page: <Page3 /> },
+    { text: 'اخلاء جماعي', page: <Page3 /> },
   ];
 
   const handleClick = (page) => {
@@ -45,7 +57,7 @@ const App = () => {
   return (
     <div>
       <ButtonDisplay buttons={buttons} handleClick={handleClick} />
-      {currentPage}
+    <div className='sisi'> {currentPage} </div>  
     </div>
   );
 };
