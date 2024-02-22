@@ -3,27 +3,24 @@ import React, { useState } from 'react';
 const Page1 = () => (
   <div>
     <h2>Page 1</h2>
-    <p>This is the content for Page 1</p>
   </div>
 );
 
 const Page2 = () => (
   <div>
     <h2>Page 2</h2>
-    <p>This is the content for Page 2</p>
   </div>
 );
 
 const Page3 = () => (
   <div>
     <h2>Page 3</h2>
-    <p>This is the content for Page 3</p>
   </div>
 );
 
 const ButtonDisplay = ({ buttons, handleClick }) => (
   <div>
-    <h2>Buttons</h2>
+    <h2>تطبيقات</h2>
     {buttons.map((button, index) => (
       <button key={index} onClick={() => handleClick(button.page)}>
         {button.text}
