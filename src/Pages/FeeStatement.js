@@ -45,7 +45,12 @@ const FeeStatement = ({ _id }) => {
     <div>
       <div>
         <p
-          style={{ fontWeight: "bold", textAlign: "center", color: "darkred" }}
+          style={{
+            fontWeight: "bold",
+            textAlign: "center",
+            color: "darkred",
+            fontSize: "22px",
+          }}
         >
           بيان رسوم
         </p>
