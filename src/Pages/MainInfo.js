@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import "../Style/MainInfo.css";
 import Table from "react-bootstrap/Table";
 import Spinner from "react-bootstrap/Spinner";
@@ -16,6 +17,7 @@ const MainInfo = ({ studentData }) => {
       </div>
     );
   }
+
 
   return (
     <div className="table-container">
