@@ -1,13 +1,57 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
+import axios from "axios";
 
-const Fees = () => {
+const Fees = ({ _id }) => {
   const [isDivVisible, setIsDivVisible] = useState(false);
+  const [feesData, setFeesData] = useState([]);
+  const [feeTypes, setFeeTypes] = useState([]);
 
   const toggleDiv = () => {
     setIsDivVisible(!isDivVisible);
+  };
+
+  useEffect(() => {
+    if (_id) {
+      fetchFee(_id);
+      fetchFeeTypes();
+      addFeeTypes();
+    }
+  }, [_id]);
+
+  const fetchFee = async (_id) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/fees/feeStatement/` + _id
+      );
+      console.log(fetchFee);
+      console.log(response);
+      setFeesData(response.data.data.feesData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchFeeTypes = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/fees/getFeeType`);
+      console.log(response);
+      setFeeTypes(response.data.data.fees);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const addFeeTypes = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/fees/addFeesForStudents`
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -24,13 +68,16 @@ const Fees = () => {
           <div style={{ fontWeight: "bold" }}>
             <p>الإسم: عمر أشرف إسماعيل</p>{" "}
             <div className="select1">
-              <p>نوع الدفع</p>
+              <p>النوع </p>
               <Form.Select size="sm" className="Type" m-5>
-                {" "}
-                الجزاءات
-                <option>شهري </option>
-                <option>سنوي </option>
+                {feeTypes.map((type, index) => (
+                  <option key={index}>{type.feeType}</option>
+                ))}
               </Form.Select>
+            </div>
+            <div className="select1">
+              <p>نوع الدفع</p>
+              <Form.Select size="sm" className="Type" m-5></Form.Select>
             </div>
             <div className="select1">
               <p>عن شهر </p>
@@ -76,7 +123,6 @@ const Fees = () => {
             </button>
           </div>
         )}
-            
       </div>{" "}
       <Table striped bordered hover size="sm">
         <thead>
@@ -87,11 +133,14 @@ const Fees = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
+          {feesData.map((fee, index) => (
+            <tr key={index}>
+              <td> {fee.payment} </td>
+              <td> {fee.paymentDate} </td>
+              <td> {fee.paymentValue} </td>
+            </tr>
+          ))}
+          <tr></tr>
         </tbody>
       </Table>
       <div className="warning">

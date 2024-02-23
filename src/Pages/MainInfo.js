@@ -3,8 +3,11 @@ import React, { useState } from "react";
 import "../Style/MainInfo.css";
 import Table from "react-bootstrap/Table";
 import Spinner from "react-bootstrap/Spinner";
+import Alert from "react-bootstrap/Alert";
 
 const MainInfo = ({ studentData }) => {
+  const [error, setError] = useState(false);
+
   if (!studentData) {
     return (
       <div className="table-container">
@@ -23,7 +26,8 @@ const MainInfo = ({ studentData }) => {
           <thead>
             <tr>
               <th>تاريخ التقدم من الإنترنت</th>
-              <th>{studentData.updatedAt}</th>
+              {/* {new Date(permissionItem.dateFrom).toLocaleDateString()} */}
+              <th>{new Date(studentData.updatedAt).toLocaleDateString()}</th>
             </tr>
           </thead>
           <tbody>
@@ -97,19 +101,11 @@ const MainInfo = ({ studentData }) => {
             </tr>
             <tr>
               <th> حالة القبول </th>
-              {/* <td>{studentData.housingInLastYears}</td> */}
+              <td>{studentData.waitingForClassification}</td>
             </tr>
             <tr>
               <th> سكن بدون تغذية </th>
               <td>{studentData.HousingWithoutFood}</td>
-            </tr>
-            <tr>
-              <th> السكن فى </th>
-              {/* <td>{studentData.HousingWithoutFood}</td> */}
-            </tr>
-            <tr>
-              <th> ملاحظات</th>
-              {/* <td>{studentData.HousingWithoutFood}</td> */}
             </tr>
           </tbody>
         </Table>
@@ -125,10 +121,10 @@ const MainInfo = ({ studentData }) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            {/* <tr>
               <th>رقم شئون الطلاب (كود الطالب) </th>
               <td>{studentData.studentCode}</td>
-            </tr>
+            </tr> */}
             <tr>
               <th>الديانة </th>
               <td>{studentData.religion}</td>
@@ -143,24 +139,24 @@ const MainInfo = ({ studentData }) => {
             </tr>
             <tr>
               <th> صلة ولى الأمر</th>
-              <td>{studentData.fatherPhone}</td>
+              <td>{studentData.guardianName}</td>
             </tr>
             <tr>
               <th>الموبايل</th>
               <td>{studentData.phoneNumber}</td>
             </tr>
-            <tr>
+            {/* <tr>
               <th>عدد جرعات اللقاح</th>
               <td>{studentData.phoneNumber}</td>
-            </tr>
+            </tr> */}
             <tr>
               <th>ذوي احتياجات خاصة</th>
               <td>{studentData.withSpecialNeeds}</td>
             </tr>
-            <tr>
+            {/* <tr>
               <th>القاعدة المقبول بها</th>
               <td>{studentData.phoneNumber}</td>
-            </tr>
+            </tr> */}
             <tr>
               <th>معفى من المصروفات</th>
               <td>{studentData.phoneNumber}</td>
@@ -168,6 +164,14 @@ const MainInfo = ({ studentData }) => {
           </tbody>
         </Table>
       </div>
+      {error && (
+        <div
+          className="warning"
+          style={{ marginTop: "20px", textAlign: "center" }}
+        >
+          <Alert variant="danger">خطا: لا يوجد بيانات لهذا الطالب/طالبة</Alert>
+        </div>
+      )}
     </div>
   );
 };
