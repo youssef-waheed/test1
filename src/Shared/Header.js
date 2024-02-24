@@ -36,14 +36,12 @@ const Header = () => {
   const [selectedStudentData, setSelectedStudentData] = useState(null); // State to hold selected student data
   const [selectedOption, setSelectedOption] = useState(null);
 
-
   const handleDropdownSelect = (option) => {
     setSelectedOption(option);
     // You can perform any other actions here based on the selected option
   };
   // var ofYear;
   // var College;
-
 
   var egyptions;
   var expartriates;
@@ -510,7 +508,7 @@ const Header = () => {
   function Text12() {
     return (
       <div className="two-column-wrapper">
-        <div >
+        <div>
           <Tatbeekat />
         </div>
       </div>
