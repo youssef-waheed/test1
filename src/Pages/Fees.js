@@ -7,22 +7,6 @@ import axios from "axios";
 const Fees = ({ _id }) => {
   const [isDivVisible, setIsDivVisible] = useState(false);
   const [feesData, setFeesData] = useState([]);
-  const [userData, setuserData] = useState([]);
-  const [feeTypes, setFeeTypes] = useState([]);
-  const[fee,setFee]= useState({
-    id:"",
-    kind:"",
-    paymentType:"",
-    ofMonth:"",
-    ofYear:"",
-    PaymentValueNumber:"",
-    paymentDate:"",
-    paymentValue:"",
-    payment:""
-
-
-  });
-  
   const [feeTypes, setFeeTypes] = useState([]);
 
   const toggleDiv = () => {
@@ -31,17 +15,6 @@ const Fees = ({ _id }) => {
 
   useEffect(() => {
     if (_id) {
-      fetchFeeStatment(_id);
-      fetchFeeTypes();
-      addFee();
-    }
-  }, [_id]);
-  console.log('====================================');
-  console.log(`id for student: ${_id}`);
-  console.log('====================================');
-
-  const fetchFeeStatment = async (_id) => {
-
       fetchFee(_id);
       fetchFeeTypes();
       addFeeTypes();
@@ -49,22 +22,13 @@ const Fees = ({ _id }) => {
   }, [_id]);
 
   const fetchFee = async (_id) => {
-
     try {
       const response = await axios.get(
         `http://localhost:5000/fees/feeStatement/` + _id
       );
-      console.log(response);
-      setFeesData(response.data.data.feesData);
-      setuserData(response.data.data.userData);
-      console.log('=================$$$$$$$$$$$===================');
-      console.log(userData);
-      console.log('=======================$$$$$$$$$=============');
-
       console.log(fetchFee);
       console.log(response);
       setFeesData(response.data.data.feesData);
-
     } catch (error) {
       console.log(error);
     }
@@ -79,45 +43,6 @@ const Fees = ({ _id }) => {
       console.log(error);
     }
   };
-
-
-  const addFee = async () => {
-    
-  
-    try {
-      const response = await axios.post(
-        `http://localhost:5000/fees/addFeesForStudents`,{
-          id:_id,
-          kind:fee.kind,
-          paymentType:fee.paymentType,
-          ofMonth:fee.ofMonth,
-          ofYear:fee.ofYear,
-          PaymentValueNumber:fee.PaymentValueNumber,
-          paymentDate:fee.paymentDate,
-          paymentValue:fee.paymentValue,
-          payment:fee.payment
-
-
-        }
-      ).then((response) => {
-        setFee({
-          ...fee,
-          id:"",
-          kind:"",
-          paymentType:"",
-          ofMonth:"",
-          ofYear:"",
-          PaymentValueNumber:"",
-          paymentDate:"",
-          paymentValue:"",
-          payment:""
-
-        })
-      })
-      console.log(response);
-    } 
-    catch (error) {
-
   const addFeeTypes = async () => {
     try {
       const response = await axios.post(
@@ -125,7 +50,6 @@ const Fees = ({ _id }) => {
       );
       console.log(response);
     } catch (error) {
-
       console.log(error);
     }
   };
@@ -142,27 +66,13 @@ const Fees = ({ _id }) => {
         </button>
         {isDivVisible && (
           <div style={{ fontWeight: "bold" }}>
-            <p>الإسم: {userData.studentName}</p>{" "}
+            <p>الإسم: عمر أشرف إسماعيل</p>{" "}
             <div className="select1">
               <p>النوع </p>
               <Form.Select size="sm" className="Type" m-5>
                 {feeTypes.map((type, index) => (
                   <option key={index}>{type.feeType}</option>
                 ))}
-              </Form.Select>
-            </div>
-            <div className="select1">
-              <p>النوع </p>
-              <Form.Select size="sm" className="Type" m-5>
-                {/* {" "} */}
-                <option>شهري</option>
-                <option>سنوي</option>
-                
-
-                {feeTypes.map((type, index) => (
-                  <option key={index}>{type.feeType}</option>
-                ))}
-
               </Form.Select>
             </div>
             <div className="select1">
@@ -208,7 +118,7 @@ const Fees = ({ _id }) => {
                 <option> يسدد الطالب </option>
               </Form.Select>
             </div>
-            <button style={{ backgroundColor: "green", color: "white" }} onClick={addFee}>
+            <button style={{ backgroundColor: "green", color: "white" }}>
               حفظ
             </button>
           </div>
@@ -225,7 +135,6 @@ const Fees = ({ _id }) => {
         <tbody>
           {feesData.map((fee, index) => (
             <tr key={index}>
-              <td> {fee.kind} </td>
               <td> {fee.payment} </td>
               <td> {fee.paymentDate} </td>
               <td> {fee.paymentValue} </td>
