@@ -23,6 +23,7 @@ const Fees = ({ _id }) => {
 
   });
   
+  const [feeTypes, setFeeTypes] = useState([]);
 
   const toggleDiv = () => {
     setIsDivVisible(!isDivVisible);
@@ -40,6 +41,15 @@ const Fees = ({ _id }) => {
   console.log('====================================');
 
   const fetchFeeStatment = async (_id) => {
+
+      fetchFee(_id);
+      fetchFeeTypes();
+      addFeeTypes();
+    }
+  }, [_id]);
+
+  const fetchFee = async (_id) => {
+
     try {
       const response = await axios.get(
         `http://localhost:5000/fees/feeStatement/` + _id
@@ -50,6 +60,11 @@ const Fees = ({ _id }) => {
       console.log('=================$$$$$$$$$$$===================');
       console.log(userData);
       console.log('=======================$$$$$$$$$=============');
+
+      console.log(fetchFee);
+      console.log(response);
+      setFeesData(response.data.data.feesData);
+
     } catch (error) {
       console.log(error);
     }
@@ -64,6 +79,7 @@ const Fees = ({ _id }) => {
       console.log(error);
     }
   };
+
 
   const addFee = async () => {
     
@@ -101,6 +117,15 @@ const Fees = ({ _id }) => {
       console.log(response);
     } 
     catch (error) {
+
+  const addFeeTypes = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/fees/addFeesForStudents`
+      );
+      console.log(response);
+    } catch (error) {
+
       console.log(error);
     }
   };
@@ -127,13 +152,22 @@ const Fees = ({ _id }) => {
               </Form.Select>
             </div>
             <div className="select1">
-              <p>نوع الدفع</p>
+              <p>النوع </p>
               <Form.Select size="sm" className="Type" m-5>
                 {/* {" "} */}
                 <option>شهري</option>
                 <option>سنوي</option>
                 
+
+                {feeTypes.map((type, index) => (
+                  <option key={index}>{type.feeType}</option>
+                ))}
+
               </Form.Select>
+            </div>
+            <div className="select1">
+              <p>نوع الدفع</p>
+              <Form.Select size="sm" className="Type" m-5></Form.Select>
             </div>
             <div className="select1">
               <p>عن شهر </p>
@@ -192,6 +226,7 @@ const Fees = ({ _id }) => {
           {feesData.map((fee, index) => (
             <tr key={index}>
               <td> {fee.kind} </td>
+              <td> {fee.payment} </td>
               <td> {fee.paymentDate} </td>
               <td> {fee.paymentValue} </td>
             </tr>

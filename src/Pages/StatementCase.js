@@ -1,158 +1,199 @@
-// import React from "react";
-// import Table from "react-bootstrap/Table";
-// import Alert from "react-bootstrap/Alert";
-
-// const StatementCase = () => {
-//   return (
-//     <div>
-//       <div>
-//         <p
-//           style={{ fontWeight: "bold", textAlign: "center", color: "darkred" }}
-//         >
-//           بيان حالة
-//         </p>
-//         <p style={{ fontWeight: "bold" }}>البيانات الاساسية</p>
-//       </div>
-//       <Table striped bordered hover size="sm" style={{ lineHeight: "13px" }}>
-//         <thead>
-//           <tr>
-//             <th> الاسم</th>
-//             <th> عمر أشرف إسماعيل محمد</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           <tr>
-//             <td>الرقم القومي</td>
-//             <td>302015230213151</td>
-//           </tr>
-//           <tr>
-//             <td>النوع </td>
-//             <td>ذكر</td>
-//           </tr>
-//           <tr>
-//             <td> تاريخ الميلاد</td>
-//             <td>14/1/2002</td>
-//           </tr>
-//           <tr>
-//             <td>الديانة </td>
-//             <td>مسلم</td>
-//           </tr>
-//           <tr>
-//             <td>البريد الالكتروني </td>
-//             <td>omarash2020@gmail.com</td>
-//           </tr>
-//           <tr>
-//             <td>الكلية والفرقة </td>
-//             <td>جامعة حلوان - حاسبات - الفرقة الرابعة</td>
-//           </tr>
-//           <tr>
-//             <td>رقم شئون الطلاب </td>
-//             <td>011554222476</td>
-//           </tr>
-//           <tr>
-//             <td>التقدير </td>
-//             <td>جيد</td>
-//           </tr>
-//           <tr>
-//             <td>العنوان </td>
-//             <td>شارع السودان - الجيزة</td>
-//           </tr>
-//           <tr>
-//             <td>الفئة </td>
-//             <td></td>
-//           </tr>
-//           <tr>
-//             <td>رقم الملف </td>
-//             <td></td>
-//           </tr>
-//           <tr>
-//             <td>البعد عن الجامعة </td>
-//             <td>100 كم</td>
-//           </tr>
-//           <tr>
-//             <td>حالة القبول </td>
-//             <td>مقبول تنسيق</td>
-//           </tr>
-//           <tr>
-//             <td>النوع </td>
-//             <td>ذكر</td>
-//           </tr>
-//           <tr>
-//             <td>بيانات ولي الأمر </td>
-//             <td>
-//               الاسم: أشرف إسماعيل - رقم البطاقة: 3020102154156465132 - الصفة: أب
-//               - تليفون: 0100545484
-//             </td>
-//           </tr>
-//         </tbody>
-//       </Table>
-//       <div className="warning">
-//         <>
-//           {["danger"].map((variant) => (
-//             <Alert
-//               key={variant}
-//               variant={variant}
-//               style={{ textAlign: "center" }}
-//             >
-//               This is a {variant} alert—check it out!
-//             </Alert>
-//           ))}
-//         </>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default StatementCase;
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
+import axios from "axios";
+import Spinner from "react-bootstrap/Spinner";
+import "../Style/StatementCase.css";
+const StatementCase = ({ _id }) => {
+  const [loading, setLoading] = useState(false);
+  const [statementSituation, setStatementSituation] = useState([]);
+  const [permission, setPermission] = useState([]);
+  const [building, setBuilding] = useState([]);
+  const [error, setError] = useState(false);
 
-const StatementCase = () => {
-  const [tabs, setTabs] = useState([]);
+  useEffect(() => {
+    if (_id) {
+      fetchStatementCase(_id);
+    }
+  }, [_id]);
+
+  const fetchStatementCase = async (_id) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/StatementOfTheSituation/` + _id
+      );
+
+      console.log(response);
+      setStatementSituation([response.data.data.student]); // Ensure statementSituation is an array
+      setPermission(response.data.data.permissionsWithDuration);
+      setBuilding(response.data.data.building);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <Spinner animation="border" role="status" style={{ textAlign: "center" }}>
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
+  }
 
   return (
     <div className="container-fluid">
       <div>
         <p
-          style={{ fontWeight: "bold", textAlign: "center", color: "darkred" }}
+          style={{
+            fontWeight: "bold",
+            textAlign: "center",
+            color: "darkred",
+            fontSize: "22px",
+          }}
         >
           بيان حالة
         </p>
-        <p style={{ fontWeight: "bold" }}>البيانات الاساسية</p>
+        <p style={{ fontWeight: "bold", fontSize: "18px" }}>
+          البيانات الأساسية
+        </p>
       </div>
       <div className="table-responsive">
         <Table striped bordered hover size="sm" style={{ lineHeight: "13px" }}>
           <thead>
             <tr>
-              <th> الاسم</th>
-              <th> عمر أشرف إسماعيل محمد</th>
+              <th>الاسم</th>
+              <th>الرقم القومى</th>
+              <th>النوع</th>
+              <th>تاريخ الميلاد</th>
+              <th>الديانة</th>
+              <th>البريد الالكترونى</th>
+              <th>الكلية </th>
+              <th> الفرقة</th>
+              <th> رقم شئون الطلاب</th>
+              <th> التقدير</th>
+              <th> العنوان</th>
+              <th> رقم الملف</th>
+              <th> اسم ولى الأمر </th>
+              <th>الرقم القومى لولى الأمر</th>
+
+              {/* Add more table headers as needed */}
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>الرقم القومي</td>
-              <td>302015230213151</td>
-            </tr>
-            <tr>
-              <td>النوع </td>
-              <td>ذكر</td>
-            </tr>
-            {/* Add more table rows as needed */}
+            {statementSituation.map((student, index) => (
+              <tr key={index}>
+                <td>{student.studentName}</td>
+                <td>{student.nationalID}</td>
+                <td>{student.gender}</td>
+                <td>{student.birthDate}</td>
+                <td>{student.religion}</td>
+                <td>{student.email}</td>
+                <td>{student.College}</td>
+                <td>{student.year}</td>
+                <td>{student.studentCode}</td>
+                <td>{student.gradeOfLastYear}</td>
+                <td>{student.detailedAddress}</td>
+                <td>{student.studentCode}</td>
+                <td>{student.fatherName}</td>
+                <td>{student.fatherNationalId}</td>
+                {/* Add more table data cells as needed */}
+              </tr>
+            ))}
           </tbody>
         </Table>
       </div>
-      <div className="warning">
-        {["danger"].map((variant) => (
-          <Alert
-            key={variant}
-            variant={variant}
-            style={{ textAlign: "center" }}
-          >
-            This is a {variant} alert—check it out!
-          </Alert>
-        ))}
+      <p
+        style={{
+          fontWeight: "bold",
+          textAlign: "center",
+          color: "darkred",
+          fontSize: "22px",
+          marginTop: "20px",
+        }}
+      >
+        بيانات الغياب والتصاريح
+      </p>
+      <div className="table-responsive">
+        <Table striped bordered hover size="lg" style={{ lineHeight: "13px" }}>
+          <thead>
+            <tr>
+              <th>النوع</th>
+              <th>من تاريخ</th>
+              <th>حتى تاريخ</th>
+              <th>حساب المدة </th>
+              <th> المدة </th>
+              <th> المدة بدون جمعة </th>
+            </tr>
+          </thead>
+          <tbody>
+            {permission.map((permissionItem, index) => (
+              <tr key={index}>
+                <td> {permissionItem.TypeOfAbsence} </td>
+                <td>
+                  {" "}
+                  {new Date(permissionItem.dateFrom).toLocaleDateString()}{" "}
+                </td>
+                <td>
+                  {" "}
+                  {new Date(permissionItem.dateFrom).toLocaleDateString()}{" "}
+                </td>
+                <td> {permissionItem.date} </td>
+                <td> {permissionItem.originalDurationInDays} </td>
+                <td> {permissionItem.durationWithoutFriday} </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </div>
+      <p
+        style={{
+          fontWeight: "bold",
+          textAlign: "center",
+          color: "darkred",
+          fontSize: "22px",
+          marginTop: "20px",
+        }}
+      >
+        بيانات السكن
+      </p>
+      <div className="table-responsive">
+        <Table striped bordered hover size="lg" style={{ lineHeight: "13px" }}>
+          <thead>
+            <tr>
+              <th>المكان</th>
+              <th>من تاريخ السكن</th>
+              <th>تاريخ الإخلاء </th>
+            </tr>
+          </thead>
+          <tbody>
+            {building.map((buildingItem, index) => (
+              <tr key={index}>
+                <td> {buildingItem.Name} </td>
+                {statementSituation.map((student, index) => (
+                  <tr key={index}>
+                    <td>
+                      {" "}
+                      {new Date(student.housingDate).toLocaleDateString()}{" "}
+                    </td>
+                  </tr>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+
+      {error && (
+        <div
+          className="warning"
+          style={{ marginTop: "20px", textAlign: "center" }}
+        >
+          <Alert variant="danger">خطا: لا يوجد بيانات لهذا الطالب/طالبة</Alert>
+        </div>
+      )}
     </div>
   );
 };

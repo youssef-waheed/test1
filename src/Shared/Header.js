@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { Dropdown, DropdownButton } from "react-bootstrap";
+
 import man from "../images/man.png";
 import woman from "../images/woman.png";
 import settings from "../images/settings.png";
 import "./Header.css";
 import Container from "react-bootstrap/Container";
-import SideBarForm from "./SideBarForm";
 import "../Style/Bar.css";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import Living from "../Pages/Living";
 import Students from "../Pages/Students";
 import AbsenceandPermits from "../Pages/AbsenceandPermits";
@@ -16,17 +16,14 @@ import StatementCase from "../Pages/StatementCase";
 import Meals from "../Pages/Meals";
 import FeeStatement from "../Pages/FeeStatement";
 import ApplicationDeadline from "../Pages/SystemManagment/ApplicationDeadline";
-// import TypesOfLiving from "../Pages/SystemManagment/TypesOfLiving";
-// import { Checkbox } from "@mui/material";
 import TypesOfLivings from "../Pages/TypesOfLivings";
 import Penalties from "../Pages/Penalties/Penalties";
 import axios from "axios";
 import Checkbox from "../Shared/Checkbox";
-
 import MainInfo from "../Pages/MainInfo";
 import Instructions from "../Pages/InstructionsForApplying";
 import Tskeen from "../Pages/Tskeen";
-
+import Tatbeekat from "../Pages/Tatbeekat";
 import "../Style/Header.css";
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -35,8 +32,19 @@ const Header = () => {
   const [displayDiv, setDisplayDiv] = useState(false);
   const [College, setCollege] = useState(""); // State for storing the selected college
   const [ofYear, setOfYear] = useState(""); // State for storing the selected academic year
+  const [studentId, setStudentId] = useState(null);
+  const [selectedStudentData, setSelectedStudentData] = useState(null); // State to hold selected student data
+  const [selectedOption, setSelectedOption] = useState(null);
+
+
+  const handleDropdownSelect = (option) => {
+    setSelectedOption(option);
+    // You can perform any other actions here based on the selected option
+  };
   // var ofYear;
   // var College;
+
+
   var egyptions;
   var expartriates;
   var normalHousing;
@@ -253,14 +261,15 @@ const Header = () => {
   function handleYearChange(event) {
     const selectedYear = event.target.value;
     setOfYear(selectedYear);
-    console.log('====================================');
+    console.log("====================================");
     console.log(selectedYear);
     setOfYear(selectedYear, () => fetchStudents());
-    console.log('===================================='); // Update the ofYear state with the selected value
+    console.log("===================================="); // Update the ofYear state with the selected value
   }
   const handleStudentClick = (student) => {
     console.log("Clicked student:", student);
-    // You can navigate to another page or display more information about the clicked student
+    setStudentId(student._id); // Set the _id of the clicked student
+    setSelectedStudentData(student); // Set the selected student data
   };
 
   function SIdeBar() {
@@ -279,7 +288,6 @@ const Header = () => {
             <option>2024-2025</option>
             <option>2023-2024</option>
           </Form.Select>
-          
         </div>
         <div className="select">
           <p>الكلية</p>
@@ -349,7 +357,9 @@ const Header = () => {
           <SIdeBar />
         </div>
         <div className="coll">
-          <MainInfo />
+          {selectedStudentData && (
+            <MainInfo studentData={selectedStudentData} />
+          )}
         </div>
       </div>
     );
@@ -409,7 +419,7 @@ const Header = () => {
           <SIdeBar />
         </div>
         <div className="coll">
-          <Fees />{" "}
+          <Fees _id={studentId} />{" "}
         </div>
       </div>
     );
@@ -421,7 +431,7 @@ const Header = () => {
           <SIdeBar />
         </div>
         <div className="coll">
-          <StatementCase />
+          <StatementCase _id={studentId} />
         </div>
       </div>
     );
@@ -445,7 +455,7 @@ const Header = () => {
           <SIdeBar />
         </div>
         <div className="coll">
-          <FeeStatement />
+          <FeeStatement _id={studentId} />
         </div>
       </div>
     );
@@ -497,6 +507,16 @@ const Header = () => {
     );
   }
 
+  function Text12() {
+    return (
+      <div className="two-column-wrapper">
+        <div >
+          <Tatbeekat />
+        </div>
+      </div>
+    );
+  }
+
   function Content({ activeIndex, activeTab, show }) {
     const buttonContent = [
       [
@@ -509,7 +529,7 @@ const Header = () => {
         <Text7 />,
         <Text8 />,
         <Text9 />,
-        "تطبيقات",
+        <Text12 />,
         "تقارير",
         "احصائيات",
       ],
@@ -523,7 +543,7 @@ const Header = () => {
         <Text7 />,
         <Text8 />,
         <Text9 />,
-        "تطبيقات",
+        <Text12 />,
         "تقارير",
         "احصائيات",
       ],
@@ -569,6 +589,7 @@ const Header = () => {
             activeIndex={activeIndex}
             activeTab={activeTab}
             show={show}
+            selectedStudentData={selectedStudentData} // Pass selected student data to Content component
           />
         </div>
       </div>

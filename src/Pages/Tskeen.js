@@ -44,11 +44,11 @@
 
 // export default Tskeen;
 
-import React, { useState } from 'react';
-import City from './UniversityCity';
-import Building from './Building';
-import Floor from './Floor';
-import Room from './Room';
+import React, { useState } from "react";
+import City from "./UniversityCity";
+import Building from "./Building";
+import Floor from "./Floor";
+import Room from "./Room";
 
 const Tskeen = () => {
   const [selectedCity, setSelectedCity] = useState(null);
