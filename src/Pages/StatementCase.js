@@ -16,6 +16,9 @@ const StatementCase = ({ _id }) => {
       fetchStatementCase(_id);
     }
   }, [_id]);
+  console.log('===============dddddddddddddd=====================');
+  console.log(_id);
+  console.log('===========dddddddddd=========================');
 
   const fetchStatementCase = async (_id) => {
     setLoading(true);

@@ -16,6 +16,9 @@ const FeeStatement = ({ _id }) => {
       fetchFeeStatement(_id);
     }
   }, [_id]);
+  console.log('=============################=======================');
+  console.log(_id);
+  console.log('================############====================');
 
   const fetchFeeStatement = async (_id) => {
     setLoading(true);
