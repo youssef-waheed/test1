@@ -13,3 +13,8 @@
     width: 200px; /* Optional: Set the width of the input field */
     margin-bottom: 20px;
 }
+@media (max-width: 768px) {
+  .coll {
+    width: 100%;
+  }
+}

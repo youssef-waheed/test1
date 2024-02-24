@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Dropdown, DropdownButton } from "react-bootstrap";
+
 import man from "../images/man.png";
 import woman from "../images/woman.png";
 import settings from "../images/settings.png";
@@ -32,6 +34,16 @@ const Header = () => {
   const [ofYear, setOfYear] = useState(""); // State for storing the selected academic year
   const [studentId, setStudentId] = useState(null);
   const [selectedStudentData, setSelectedStudentData] = useState(null); // State to hold selected student data
+  const [selectedOption, setSelectedOption] = useState(null);
+
+
+  const handleDropdownSelect = (option) => {
+    setSelectedOption(option);
+    // You can perform any other actions here based on the selected option
+  };
+  // var ofYear;
+  // var College;
+
 
   var egyptions;
   var expartriates;
@@ -407,7 +419,7 @@ const Header = () => {
           <SIdeBar />
         </div>
         <div className="coll">
-          <Fees />{" "}
+          <Fees _id={studentId} />{" "}
         </div>
       </div>
     );
@@ -419,7 +431,7 @@ const Header = () => {
           <SIdeBar />
         </div>
         <div className="coll">
-          <StatementCase />
+          <StatementCase _id={studentId} />
         </div>
       </div>
     );
