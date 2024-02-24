@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import "./Tatbeekat.css";
+import Review from "./ReviewOnlineRequests";
 
 const Page1 = () => (
   <div>
-    <h2>Page 1</h2>
+    <h2> مراجعة طلبات الانترنت</h2>
+    <Review />
   </div>
 );
 
