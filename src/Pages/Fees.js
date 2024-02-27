@@ -33,32 +33,22 @@ const Fees = ({ _id }) => {
       // addFee();
     }
   }, [_id]);
-  console.log("====================================");
-  console.log(`id for student: ${_id}`);
-  console.log("====================================");
 
   const fetchFeeStatment = async (_id) => {
     try {
       const response = await axios.get(
         ` http://localhost:5000/fees/feeStatement/${_id}`
       );
-      console.log(response);
       setFeesData(response.data.data.feesData);
       setuserData(response.data.data.userData);
-      console.log("=================$$$$$$$$$$$===================");
-      console.log(userData);
-      console.log("=======================$$$$$$$$$=============");
     } catch (error) {
       console.log(error);
     }
   };
-  console.log("===USERDATA=================================");
-  console.log(userData);
-  console.log("====================================");
+
   const fetchFeeTypes = async () => {
     try {
       const response = await axios.get(`http://localhost:5000/fees/getFeeType`);
-      console.log(response);
       setFeeTypes(response.data.data.fees);
     } catch (error) {
       console.log(error);
@@ -93,22 +83,10 @@ const Fees = ({ _id }) => {
             payment: "",
           });
         });
-      console.log("FEFFEFEFEFEFEFEFFEF");
-      console.log(fee);
-      console.log("FEFFEFEFEFEFEFEFFEF");
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
-  // function typeChange(event) {
-  //   const selectedType = event.target.value;
-  //   setFee(selectedType);
-  //   console.log("====================================");
-  //   console.log(selectedType);
-  //   setFee(selectedType, () => fetchStudents());
-  //   console.log("===================================="); // Update the ofYear state with the selected value
-  // }
 
   return (
     <div>
@@ -129,6 +107,7 @@ const Fees = ({ _id }) => {
               <Form.Select
                 size="sm"
                 className="Type"
+                value={fee.kind}
                 m-5
                 onChange={(e) => {
                   setFee({ ...fee, kind: e.target.value });
@@ -145,6 +124,7 @@ const Fees = ({ _id }) => {
               <Form.Select
                 size="sm"
                 className="Type"
+                value={fee.paymentType}
                 m-5
                 onChange={(e) => {
                   setFee({ ...fee, paymentType: e.target.value });
@@ -160,6 +140,7 @@ const Fees = ({ _id }) => {
               <Form.Select
                 size="sm"
                 className="Type"
+                value={fee.ofMonth}
                 onChange={(e) => {
                   setFee({ ...fee, ofMonth: e.target.value });
                 }}
@@ -173,6 +154,7 @@ const Fees = ({ _id }) => {
               <Form.Select
                 size="sm"
                 className="Type"
+                value={fee.ofYear}
                 onChange={(e) => {
                   setFee({ ...fee, ofYear: e.target.value });
                 }}
@@ -219,6 +201,7 @@ const Fees = ({ _id }) => {
               <Form.Select
                 size="sm"
                 className="Type"
+                value={fee.payment}
                 m-5
                 onChange={(e) => {
                   setFee({ ...fee, payment: e.target.value });
