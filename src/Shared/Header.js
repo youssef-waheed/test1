@@ -369,7 +369,7 @@ const Header = () => {
           <SIdeBar />
         </div>
         <div className="coll">
-          <Living />
+          <Living studentData={selectedStudentData} />
         </div>
       </div>
     );
@@ -564,6 +564,7 @@ const Header = () => {
     ];
     return show && <div>{buttonContent[activeTab][activeIndex]}</div>;
   }
+
   return (
     <div>
       <nav>

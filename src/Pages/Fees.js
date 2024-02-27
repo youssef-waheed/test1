@@ -1,4 +1,4 @@
-//fees الرسوم
+// Living
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
@@ -113,6 +113,7 @@ const Fees = ({ _id }) => {
                   setFee({ ...fee, kind: e.target.value });
                 }}
               >
+                <option>اختر النوع...</option>
                 {feeTypes.map((type, index) => (
                   <option key={index}>{type.feeType}</option>
                 ))}
@@ -146,10 +147,19 @@ const Fees = ({ _id }) => {
                 }}
               >
                 {" "}
-                <option>أكتوبر </option>
+                <option>اختر الشهر... </option>
                 <option>يناير </option>
-                <option>فبراير </option>
+                <option> فبراير</option>
+                <option> مارس</option>
+                <option> ابريل</option>
+                <option> مايو</option>
+                <option> يونيو</option>
+                <option> يوليو</option>
+                <option> أغسطس</option>
+                <option> سبتمبر</option>
+                <option> أكتوبر</option>
                 <option>نوفمبر </option>
+                <option>ديسمبر </option>
               </Form.Select>
               <Form.Select
                 size="sm"
@@ -207,6 +217,7 @@ const Fees = ({ _id }) => {
                   setFee({ ...fee, payment: e.target.value });
                 }}
               >
+                <option>اختر نوع السداد </option>
                 <option>يسدده الطالب</option>
                 <option>تسدده الطالبة</option>
               </Form.Select>
