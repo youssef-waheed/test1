@@ -24,7 +24,9 @@ import MainInfo from "../Pages/MainInfo";
 import Instructions from "../Pages/InstructionsForApplying";
 import Tskeen from "../Pages/Tskeen";
 import Tatbeekat from "../Pages/Tatbeekat";
+import TatbeekatFemale from "../FemaleTatbekatTakareerE7saa/TatbeekatFemale";
 import "../Style/Header.css";
+
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -517,6 +519,17 @@ const Header = () => {
     );
   }
 
+
+  function Text13() {
+    return (
+      <div className="two-column-wrapper">
+        <div >
+          <TatbeekatFemale />
+        </div>
+      </div>
+    );
+  }
+
   function Content({ activeIndex, activeTab, show }) {
     const buttonContent = [
       [
@@ -543,7 +556,7 @@ const Header = () => {
         <Text7 />,
         <Text8 />,
         <Text9 />,
-        "تطبيقات",
+        <Text13 />,
         "تقارير",
         "احصائيات",
       ],
