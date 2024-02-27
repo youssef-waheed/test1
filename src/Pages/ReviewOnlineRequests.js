@@ -7,6 +7,16 @@ const YourComponent = () => {
   const [applications, setApplications] = useState([]);
   const [filter, setFilter] = useState('');
   const [selectedApplication, setSelectedApplication] = useState(null);
+  const [filters, setFilters] = useState({
+    egyptian: true,
+    expatriate: false,
+    oldStudent: false,
+    newStudent: false,
+    normalHousing: false,
+    specialHousing: false,
+    rejectedApplications: false,
+    pendingApplications: true,
+  });
 
   useEffect(() => {
     fetchData();
@@ -15,7 +25,7 @@ const YourComponent = () => {
   const fetchData = async () => {
     try {
       const response = await axios.post('http://localhost:5000/applications/reviewOnlineRequestsMales');
-      setApplications(response.data.data.users.filter(application => application.statusOfOnlineRequests === 'pending'));
+      setApplications(response.data.data.users);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -52,39 +62,54 @@ const YourComponent = () => {
   };
 
   const filteredApplications = applications.filter(application =>
-    application.studentName.includes(filter) || application.nationalID.includes(filter)
+    (application.studentName.includes(filter) || application.nationalID.includes(filter)) &&
+    (filters.egyptian ? application.egyptions : true) &&
+    (filters.expatriate ? application.expartriates : true) &&
+    (filters.oldStudent ? application.oldStudent : true) &&
+    (filters.newStudent ? application.newStudent : true) &&
+    (filters.normalHousing ? application.HousingType === 'عادي': true) &&
+    (filters.specialHousing ? application.HousingType === 'مميز' : true) &&
+    (filters.pendingApplications ? application.statusOfOnlineRequests === 'pending' : true) &&
+    (filters.rejectedApplications ? application.statusOfOnlineRequests === 'rejected' : true)
   );
 
   const showDetails = (application) => {
     setSelectedApplication(application);
   };
 
+  const handleCheckboxChange = (filterName) => {
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [filterName]: !prevFilters[filterName]
+    }));
+  };
+
   return (
     <div className="two-column-wrapper">
       <div className='col'>
         <label>
-          <input type="checkbox" value="مصري" /> مصري
+          <input type="checkbox" checked={filters.egyptian} onChange={() => handleCheckboxChange('egyptian')} /> مصري
         </label>
         <label>
-          <input type="checkbox" value="وافد" /> وافد
+          <input type="checkbox" checked={filters.expatriate} onChange={() => handleCheckboxChange('expatriate')} /> وافد
         </label>
         <label>
-          <input type="checkbox" value="قدامي" /> قدامي
+          <input type="checkbox" checked={filters.oldStudent} onChange={() => handleCheckboxChange('oldStudent')} /> قديم
         </label>
         <label>
-          <input type="checkbox" value="جدد" /> جدد
+          <input type="checkbox" checked={filters.newStudent} onChange={() => handleCheckboxChange('newStudent')} /> جديد
         </label>
         <label>
-          <input type="checkbox" value="سكن عادي" /> سكن عادي
+          <input type="checkbox" checked={filters.normalHousing} onChange={() => handleCheckboxChange('normalHousing')} /> سكن عادي
         </label>
         <label>
-          <input type="checkbox" value="سكن مميز" /> سكن مميز
+          <input type="checkbox" checked={filters.specialHousing} onChange={() => handleCheckboxChange('specialHousing')} /> سكن مميز
         </label>
         <label>
-          <input type="checkbox" value="الطلبات الجديدة" /> الطلبات الجديدة
+          <input type="checkbox" checked={filters.pendingApplications} onChange={() => handleCheckboxChange('pendingApplications')} /> الطلبات الجديدة
         </label>
         <label>
-          <input type="checkbox" value="الطلبات المرفوضة" /> الطلبات المرفوضة
+          <input type="checkbox" checked={filters.rejectedApplications} onChange={() => handleCheckboxChange('rejectedApplications')} /> الطلبات المرفوضة
         </label>
         <input
           type="text"
@@ -95,18 +120,26 @@ const YourComponent = () => {
         
         <h1>اسماء الطلاب :-</h1>
         <div className='names'>
-        <ul>
-          {filteredApplications.map(application => (
-            <li key={application._id} onClick={() => showDetails(application)}>
-              {application.studentName}
-            </li>
-          ))}
-        </ul>
+          <ul>
+            {filteredApplications.map(application => (
+              <li key={application._id} onClick={() => showDetails(application)}>
+                {application.studentName}
+              </li>
+            ))}
+          </ul>
         </div>
-        
       </div>
       <div className='coll'>
-        <h1>Applications</h1>
+       {selectedApplication && <UserDetails user={selectedApplication} />}
+      </div>
+      
+    </div>
+  );
+};
+
+export default YourComponent;
+
+ {/* <h1>Applications</h1>
         <ul>
           {filteredApplications.map(application => (
             <li key={application._id} onClick={() => showDetails(application)}>
@@ -115,11 +148,4 @@ const YourComponent = () => {
               <button onClick={() => rejectApplication(application._id)}>Reject</button>
             </li>
           ))}
-        </ul>
-      </div>
-      {selectedApplication && <UserDetails user={selectedApplication} />}
-    </div>
-  );
-};
-
-export default YourComponent;
+        </ul> */}
