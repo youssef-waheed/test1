@@ -114,6 +114,17 @@ const Living = ({ studentData }) => {
           </button>
         </div>
       )}
+      <div className="info">
+        <p
+          style={{
+            fontSize: "20px",
+            textAlign: "center",
+            fontWeight: "bold",
+          }}
+        >
+          بيانات الطالب
+        </p>
+      </div>
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
