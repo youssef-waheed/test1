@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Tatbeekat.css";
 import Review from "./ReviewOnlineRequests";
+import AcceptSpecialCases from "./AcceptSpecialCases";
 
 const Page1 = () => (
   <div>
@@ -18,6 +19,11 @@ const Page2 = () => (
 const Page3 = () => (
   <div>
     <h2>Page 3</h2>
+  </div>
+);
+const Page5 = () => (
+  <div>
+    <AcceptSpecialCases />
   </div>
 );
 
@@ -40,7 +46,7 @@ const App = () => {
     { text: "تنسيق", page: <Page2 /> },
     { text: "سحب الصور", page: <Page3 /> },
     { text: "تصريح جماعي", page: <Page3 /> },
-    { text: "قبول حالات خاصة", page: <Page3 /> },
+    { text: "قبول حالات خاصة", page: <Page5 /> },
     { text: "حجز وجبات (اكسل)", page: <Page3 /> },
     { text: "رفع الصور", page: <Page3 /> },
     { text: "جزاء جماعي", page: <Page3 /> },
