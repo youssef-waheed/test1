@@ -130,22 +130,19 @@ const YourComponent = () => {
         </div>
       </div>
       <div className='coll'>
-       {selectedApplication && <UserDetails user={selectedApplication} />}
+  {selectedApplication && (
+    <>
+      <UserDetails user={selectedApplication} />
+      <div>
+        <button onClick={() => acceptApplication(selectedApplication._id)}>Approve</button>
+        <button onClick={() => rejectApplication(selectedApplication._id)}>Reject</button>
       </div>
-      
+    </>
+  )}
+</div>
+
     </div>
   );
 };
 
 export default YourComponent;
-
- {/* <h1>Applications</h1>
-        <ul>
-          {filteredApplications.map(application => (
-            <li key={application._id} onClick={() => showDetails(application)}>
-              {application.studentName} - {application.statusOfOnlineRequests}
-              <button onClick={() => acceptApplication(application._id)}>Accept</button>
-              <button onClick={() => rejectApplication(application._id)}>Reject</button>
-            </li>
-          ))}
-        </ul> */}

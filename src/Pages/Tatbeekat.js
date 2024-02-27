@@ -27,6 +27,11 @@ const Page5 = () => (
   </div>
 );
 
+const Page5 = () => {
+  <div>
+    <AcceptSpecialCases />
+  </div>;
+};
 const ButtonDisplay = ({ buttons, handleClick }) => (
   <div>
     <h2>تطبيقات</h2>

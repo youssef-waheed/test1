@@ -1,25 +1,26 @@
 import React from 'react';
+import "./ReviewOnlineRequest.css";
 
 const UserDetails = ({ user }) => {
   return (
     <div className="user-details">
       <h2>User Details</h2>
       <ul>
-        <li><strong>Name:</strong> {user.studentName}</li>
-        <li><strong>National ID:</strong> {user.nationalID}</li>
-        <li><strong>Student Code:</strong> {user.studentCode}</li>
-        <li><strong>Birth Date:</strong> {user.birthDate}</li>
-        <li><strong>Place of Birth:</strong> {user.placeOfBirth}</li>
-        <li><strong>Gender:</strong> {user.gender}</li>
-        <li><strong>Religion:</strong> {user.religion}</li>
-        <li><strong>Residence:</strong> {user.residence}</li>
-        <li><strong>Detailed Address:</strong> {user.detailedAddress}</li>
+        <li><strong>الاسم:</strong> {user.studentName}</li>
+        <li><strong>الرقم القومي:</strong> {user.nationalID}</li>
+        <li><strong>رقم الطالب:</strong> {user.studentCode}</li>
+        <li><strong>تاريخ الميلاد:</strong> {user.birthDate}</li>
+        <li><strong>مكان الميلاد:</strong> {user.placeOfBirth}</li>
+        <li><strong>الجنس:</strong> {user.gender}</li>
+        <li><strong>الديانة:</strong> {user.religion}</li>
+        <li><strong>الاقامة:</strong> {user.residence}</li>
+        <li><strong>العنوان بالتفصيل:</strong> {user.detailedAddress}</li>
         <li><strong>Email:</strong> {user.email}</li>
-        <li><strong>Landline Phone:</strong> {user.landLinePhone}</li>
-        <li><strong>Phone Number:</strong> {user.phoneNumber}</li>
-        <li><strong>Father's Name:</strong> {user.fatherName}</li>
-        <li><strong>Father's National ID:</strong> {user.fatherNationalId}</li>
-        <li><strong>Father's Job:</strong> {user.fatherJop}</li>
+        <li><strong>الرقم الارضي:</strong> {user.landLinePhone}</li>
+        <li><strong>رقم الهاتف:</strong> {user.phoneNumber}</li>
+        <li><strong>اسم الاب:</strong> {user.fatherName}</li>
+        <li><strong>رقم القومي للاب:</strong> {user.fatherNationalId}</li>
+        <li><strong>وظيفة الاب:</strong> {user.fatherJop}</li>
       </ul>
     </div>
   );
