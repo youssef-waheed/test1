@@ -1,0 +1,31 @@
+.toggle-button {
+    background-color: #f9f9f9;
+    border: none;
+    color: #000000;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 1s ease;
+  }
+  
+  .toggle-button.active {
+    background-color: #000000;
+    color: #ffffff;
+  }
+
+  h1 {
+    background: linear-gradient(45deg, rgb(76, 158, 109),#000000 );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    margin: 40px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  
+  
+  
+  

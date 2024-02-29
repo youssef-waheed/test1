@@ -1,0 +1,63 @@
+/* usernav.css
+
+.custom-navbar {
+    background-color: rgb(209, 216, 223);
+  }
+  
+  .custom-logo {
+    color: white;
+    font-size: 24px;
+  }
+  
+  .custom-toggle {
+    border-color: white;
+  }
+  
+  .custom-link {
+    color: white;
+    font-size: 16px;
+    margin-left: 10px;
+    text-decoration: none;
+  }
+  
+  .custom-link:hover {
+    color: rgb(136, 36, 36);
+    
+  }
+  
+  .custom-logo-img {
+    max-width: 100px;
+    height: auto;
+  }
+   */
+
+   .custom-navbar {
+    background-color: #343a40; /* Dark background color */
+  }
+  
+  .custom-logo {
+    font-size: 24px;
+    color: #fff; /* White logo color */
+    margin-right: 15px; /* Add margin for better alignment */
+  }
+  
+  .custom-toggle {
+    border-color: #fff; /* White border color */
+  }
+  
+  .custom-link {
+    color: #fff; /* White link color */
+    font-size: 16px;
+    text-decoration: none;
+    margin: 0 10px; /* Add margin for better spacing */
+  }
+  
+  .custom-link:hover {
+    color: #ccc; /* Light gray on hover */
+  }
+  
+  .custom-logo-img {
+    max-width: 100px;
+    height: auto;
+  }
+  
