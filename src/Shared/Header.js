@@ -25,6 +25,7 @@ import Instructions from "../Pages/InstructionsForApplying";
 import Tskeen from "../Pages/Tskeen";
 import Tatbeekat from "../Pages/Tatbeekat";
 import TatbeekatFemale from "../FemaleTatbekatTakareerE7saa/TatbeekatFemale";
+import Test from "../Pages/SakanTest";
 import "../Style/Header.css";
 
 const Header = () => {
@@ -527,6 +528,18 @@ const Header = () => {
       </div>
     );
   }
+  function Text9999() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col">
+          <SIdeBar />
+        </div>
+        <div className="coll">
+          <Test />
+        </div>
+      </div>
+    );
+  }
 
   function Content({ activeIndex, activeTab, show }) {
     const buttonContent = [
@@ -568,7 +581,7 @@ const Header = () => {
         "الرسوم",
         <Text999 />,
         "الفئات",
-        "البلاد",
+        <Text9999 />,
         "المستخدمين",
         "تطبيقات الطلاب",
         "احصائيات عامة",
