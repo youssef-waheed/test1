@@ -68,7 +68,7 @@ const MultilevelDropdown = () => {
   const filterRoomsByFloor = (floorId) => {
     axios.get('http://localhost:5000/rooms')
       .then(response => {
-        const filteredRooms = response.data.data.room.filter(room => room.FloorId === floorId);
+        const filteredRooms = response.data.data.room.filter(room => room.FloorId._id === floorId);
         setRooms(filteredRooms);
       })
       .catch(error => {
