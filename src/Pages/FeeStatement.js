@@ -26,7 +26,7 @@ const FeeStatement = ({ _id }) => {
       const response = await axios.get(
         `http://localhost:5000/fees/feeStatement/` + _id
       );
-      console.log(response);
+      // console.log(response);
       console.log(response.data.data.feesData);
       setUserData(response.data.data.userData);
       setFeesData(response.data.data.feesData);
