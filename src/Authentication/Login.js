@@ -3,6 +3,7 @@ import { TextField, Button } from "@material-ui/core";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
+import { setAuthUser } from "../helper/storage";
 
 const App = () => {
   const [nationalId, setNationalId] = useState("");
@@ -23,6 +24,8 @@ const App = () => {
         console.log("Login successful!");
         console.log("Token:", response.data.token);
         setError(""); // Clear any previous error
+        setAuthUser(response.data.data);
+        // setAuthUser(response.data.log);
         navigate('/Admin');
       } else {
         throw new Error("Login failed"); 

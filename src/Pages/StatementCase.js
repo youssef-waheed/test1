@@ -4,11 +4,15 @@ import Alert from "react-bootstrap/Alert";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import "../Style/StatementCase.css";
+import { getAuthUser } from "../helper/storage";
+const auth= getAuthUser();
+var userData
 const StatementCase = ({ _id }) => {
   const [loading, setLoading] = useState(false);
   const [statementSituation, setStatementSituation] = useState([]);
   const [permission, setPermission] = useState([]);
   const [building, setBuilding] = useState([]);
+  // const [userData, setUserData] = useState([]);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -16,10 +20,41 @@ const StatementCase = ({ _id }) => {
       fetchStatementCase(_id);
     }
   }, [_id]);
-  console.log('===============dddddddddddddd=====================');
-  console.log(_id);
-  console.log('===========dddddddddd=========================');
+  // console.log('===============dddddddddddddd=====================');
+  // console.log(_id);
+  // console.log('===========dddddddddd=========================');
 
+  const incremented = async()=>{
+    try {
+     const inc= await axios.put(`http://localhost:5000/logs/increment/${auth.log.adminID}`, {
+        type:"get"
+      });
+    
+    
+    } catch (error) {
+      console.log(error);
+      
+    }
+  
+  }
+  
+  const createLogs= async()=>{
+    try {
+      const logs= await axios.post('http://localhost:5000/logs/createLogs', {
+        adminID:auth.log.adminID,
+        adminUserName:auth.log.adminUserName,
+        action:"عرض بيان الحالة",
+        objectName:`للطالب ${userData.studentName},برقم الطالب ${userData.nationalID}`
+      })
+    
+    } catch (error) {
+      console.log(error);
+      
+    }
+   
+  
+  }
+  
   const fetchStatementCase = async (_id) => {
     setLoading(true);
     try {
@@ -27,11 +62,22 @@ const StatementCase = ({ _id }) => {
         `http://localhost:5000/StatementOfTheSituation/` + _id
       );
 
+      console.log("REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEES");
       console.log(response);
+      console.log("REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEES");
+
       setStatementSituation([response.data.data.student]); // Ensure statementSituation is an array
+      // setUserData(response.data.data.student)
+      userData = response.data.data.student
+      console.log('====================================');
+      console.log(userData);
+      console.log('====================================');
+      
       setPermission(response.data.data.permissionsWithDuration);
       setBuilding(response.data.data.building);
       setLoading(false);
+      incremented();
+      createLogs();
     } catch (error) {
       console.log(error);
       setLoading(false);
