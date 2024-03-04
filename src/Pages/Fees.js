@@ -1,9 +1,10 @@
-// Living
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
+import { getAuthUser } from "../helper/storage";
+const auth= getAuthUser();
 
 const Fees = ({ _id }) => {
   const [isDivVisible, setIsDivVisible] = useState(false);
@@ -30,7 +31,6 @@ const Fees = ({ _id }) => {
     if (_id) {
       fetchFeeStatment(_id);
       fetchFeeTypes();
-      // addFee();
     }
   }, [_id]);
 
@@ -55,7 +55,41 @@ const Fees = ({ _id }) => {
     }
   };
 
-  const addFee = async () => {
+
+
+const incremented = async()=>{
+  try {
+   const inc= await axios.put(`http://localhost:5000/logs/increment/${auth.log.adminID}`, {
+      type:"add"
+    });
+  
+  
+  } catch (error) {
+    console.log(error);
+    
+  }
+
+}
+
+const createLogs= async()=>{
+  try {
+    const logs= await axios.post('http://localhost:5000/logs/createLogs', {
+      adminID:auth.log.adminID,
+      adminUserName:auth.log.adminUserName,
+      action:"اضافة رسوم",
+      objectName:`للطالب ${userData.studentName},برقم الطالب ${userData.nationalID}`
+    })
+  
+  } catch (error) {
+    console.log(error);
+    
+  }
+ 
+
+}
+
+  const addFee = async (e) => {
+    e.preventDefault();
     try {
       const response = await axios
         .post(` http://localhost:5000/fees/addFeesForStudents`, {
@@ -69,20 +103,20 @@ const Fees = ({ _id }) => {
           paymentValue: fee.paymentValue,
           payment: fee.payment,
         })
-        .then((response) => {
-          setFee({
-            ...fee,
-            id: "",
-            kind: "",
-            paymentType: "",
-            ofMonth: "",
-            ofYear: "",
-            PaymentValueNumber: "",
-            paymentDate: "",
-            paymentValue: "",
-            payment: "",
-          });
+        setFee({
+          id: "",
+          kind: "",
+          paymentType: "",
+          ofMonth: "",
+          ofYear: "",
+          PaymentValueNumber: "",
+          paymentDate: "",
+          paymentValue: "",
+          payment: "",
         });
+        createLogs()
+        incremented() 
+        fetchFeeStatment(_id); 
     } catch (error) {
       console.log(error);
     }

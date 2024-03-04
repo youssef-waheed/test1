@@ -3,8 +3,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Spinner from "react-bootstrap/Spinner";
-
-var _id;
+import { getAuthUser } from "../helper/storage";
+const auth= getAuthUser();
 const FeeStatement = ({ _id }) => {
   const [tabs, setTabs] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -12,14 +12,32 @@ const FeeStatement = ({ _id }) => {
   const [feesData, setFeesData] = useState([]);
 
   useEffect(() => {
+    console.log('====================================');
+    console.log("useEffect triggered with _id:", _id);
+    console.log('====================================');
     if (_id) {
       fetchFeeStatement(_id);
     }
   }, [_id]);
-  console.log("=============################=======================");
-  console.log(_id);
-  console.log("================############====================");
-
+const incremented = async()=>{
+    try {
+     const inc= await axios.put(`http://localhost:5000/logs/increment/${auth.log.adminID}`, {
+        type:"get"
+      });
+    } catch (error) {
+      console.log(error);}}
+  
+  const createLogs= async()=>{
+    try {
+      
+      const logs= await axios.post('http://localhost:5000/logs/createLogs', {
+        adminID:auth.log.adminID,
+        adminUserName:auth.log.adminUserName,
+        action:"عرض بيان الرسوم",
+        objectName:`للطالب ${userData.studentName},برقم الطالب ${userData.nationalID}`
+      })}catch (error) {
+      console.log(error);}}
+  
   const fetchFeeStatement = async (_id) => {
     setLoading(true);
     try {
@@ -28,9 +46,13 @@ const FeeStatement = ({ _id }) => {
       );
       // console.log(response);
       console.log(response.data.data.feesData);
-      setUserData(response.data.data.userData);
+      setUserData(response.data.data.userData);    
+     
       setFeesData(response.data.data.feesData);
       setLoading(false);
+      createLogs();
+      incremented();
+ 
     } catch (error) {
       console.log("Error fetching fee statement:", error.message);
       setLoading(false);
