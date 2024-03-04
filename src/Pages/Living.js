@@ -1,5 +1,4 @@
-//
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
@@ -10,11 +9,33 @@ const Living = ({ studentData }) => {
   const [isDivVisible, setIsDivVisible] = useState(false);
   const [updatedData, setUpdatedData] = useState(studentData || {});
   const [isUpdating, setIsUpdating] = useState(false);
+  const [selectedBuilding, setSelectedBuilding] = useState("");
+  const [selectedFloor, setSelectedFloor] = useState("");
+  const [selectedRoom, setSelectedRoom] = useState("");
+  const [buildings, setBuildings] = useState([]);
+  const [floors, setFloors] = useState([]);
+  const [rooms, setRooms] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/housing/");
+        const { buildings, floors, rooms } = response.data;
+        setBuildings(buildings);
+        setFloors(floors);
+        setRooms(rooms);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const toggleDiv = () => {
     setIsDivVisible(!isDivVisible);
-    setUpdatedData(studentData); // Set initial data to be updated
-    setIsUpdating(true); // Enable updating mode
+    setUpdatedData(studentData);
+    setIsUpdating(true);
   };
 
   const handleChange = (e) => {
@@ -42,16 +63,6 @@ const Living = ({ studentData }) => {
     setIsUpdating(false);
     setUpdatedData({});
   };
-
-  if (!studentData) {
-    return (
-      <div className="table-container">
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>{" "}
-      </div>
-    );
-  }
 
   return (
     <div>
@@ -114,6 +125,17 @@ const Living = ({ studentData }) => {
           </button>
         </div>
       )}
+      <div className="info">
+        <p
+          style={{
+            fontSize: "20px",
+            textAlign: "center",
+            fontWeight: "bold",
+          }}
+        >
+          بيانات الطالب
+        </p>
+      </div>
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
@@ -143,6 +165,45 @@ const Living = ({ studentData }) => {
           ))}
         </>
       </div>
+      {isDivVisible && (
+        <div>
+          <select
+            value={selectedBuilding}
+            onChange={(e) => setSelectedBuilding(e.target.value)}
+          >
+            <option value="">Select Building</option>
+            {buildings.map((building) => (
+              <option key={building.buildingId} value={building.buildingId}>
+                {building.buildingName}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={selectedFloor}
+            onChange={(e) => setSelectedFloor(e.target.value)}
+          >
+            <option value="">Select Floor</option>
+            {floors.map((floor) => (
+              <option key={floor.floorId} value={floor.floorId}>
+                {floor.floorNumber}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={selectedRoom}
+            onChange={(e) => setSelectedRoom(e.target.value)}
+          >
+            <option value="">Select Room</option>
+            {rooms.map((room) => (
+              <option key={room.roomId} value={room.roomId}>
+                {room.roomNumber}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
     </div>
   );
 };

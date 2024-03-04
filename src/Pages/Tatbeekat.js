@@ -21,12 +21,12 @@ const Page3 = () => (
     <h2>Page 3</h2>
   </div>
 );
-
-const Page5 = () => {
+const Page5 = () => (
   <div>
     <AcceptSpecialCases />
-  </div>;
-};
+  </div>
+);
+
 const ButtonDisplay = ({ buttons, handleClick }) => (
   <div>
     <h2>تطبيقات</h2>
