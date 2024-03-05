@@ -27,6 +27,8 @@ import Tatbeekat from "../Pages/Tatbeekat";
 import TatbeekatFemale from "../FemaleTatbekatTakareerE7saa/TatbeekatFemale";
 import Test from "../Pages/SakanTest";
 import "../Style/Header.css";
+import AdminFees from "../Pages/SystemManagment/AdminFees";
+import AdminFeeTypes from "../Pages/SystemManagment/AdminFeeTypes";
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -536,6 +538,13 @@ const Header = () => {
       </div>
     );
   }
+  function Text14() {
+    return (
+      <div>
+        <AdminFees _id={studentId} />
+      </div>
+    );
+  }
 
   function Content({ activeIndex, activeTab, show }) {
     const buttonContent = [
@@ -574,7 +583,7 @@ const Header = () => {
         "صور الجامعة",
         <Text11 />,
         "الوجبات",
-        "الرسوم",
+        <Text14 />,
         <Text999 />,
         "الفئات",
         <Text9999 />,
