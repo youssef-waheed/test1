@@ -5,6 +5,8 @@ import Form from "react-bootstrap/Form";
 import "./Penalties.css";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
+import { getAuthUser } from "../../helper/storage";
+const auth = getAuthUser();
 
 const Penalties = ({ studentData, _id }) => {
   const [isDivVisible, setIsDivVisible] = useState(false);
@@ -19,6 +21,20 @@ const Penalties = ({ studentData, _id }) => {
   const toggleDiv = () => {
     setIsDivVisible(!isDivVisible);
   };
+  useEffect(() => {
+    if (_id) {
+      fetchPenalty();
+    }
+  }, [_id]);
+
+  const fetchPenalty = async (_id) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/penalty/${_id}`);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (!studentData) {
     return (
@@ -29,6 +45,31 @@ const Penalties = ({ studentData, _id }) => {
       </div>
     );
   }
+  const incremented = async () => {
+    try {
+      const inc = await axios.put(
+        `http://localhost:5000/logs/increment/${auth.log.adminID}`,
+        {
+          type: "add",
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createLogs = async () => {
+    try {
+      const logs = await axios.post("http://localhost:5000/logs/createLogs", {
+        adminID: auth.log.adminID,
+        adminUserName: auth.log.adminUserName,
+        action: "اضافة جزاء",
+        objectName: `للطالب ${studentData.studentName},برقم الطالب ${studentData.nationalID}`,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const addPenaltyForMale = async () => {
     try {
       console.log("Sending data:", {
@@ -54,6 +95,8 @@ const Penalties = ({ studentData, _id }) => {
         PenaltyDate: "",
         cancellationDate: "",
       });
+      createLogs();
+      incremented();
       setSelectedPenalty([]);
     } catch (error) {
       console.log("Error:", error);
