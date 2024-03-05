@@ -218,17 +218,23 @@ const StatementCase = ({ _id }) => {
             </tr>
           </thead>
           <tbody>
-            {building.map((buildingItem, index) => (
+            {statementSituation.map((student, index) => (
               <tr key={index}>
-                <td> {buildingItem.Name} </td>
+                <td> {student.buildingName} </td>
                 {statementSituation.map((student, index) => (
                   <tr key={index}>
                     <td>
                       {" "}
                       {new Date(student.housingDate).toLocaleDateString()}{" "}
                     </td>
+
+                    
                   </tr>
                 ))}
+                <td>
+                      {" "}
+                      {new Date(student.evacuationDate).toLocaleDateString()}{" "}
+                    </td>
               </tr>
             ))}
           </tbody>

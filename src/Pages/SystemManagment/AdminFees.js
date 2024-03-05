@@ -55,7 +55,9 @@ const AdminFees = ({ _id }) => {
     try {
       const response = await axios.get("http://localhost:5000/fees/getFeeType");
       setFeeTypes(response.data.data.fees);
-      // console.log(response);
+      console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+      console.log(response);
+      console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
     } catch (error) {
       console.log(error);
     }
