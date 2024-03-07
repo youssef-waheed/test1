@@ -532,7 +532,7 @@ const Header = () => {
     return (
       <div className="two-column-wrapper">
         <div className="col">
-          <SIdeBar />
+          <p>سبحان الله</p>
         </div>
         <div className="coll">
           <Test />
