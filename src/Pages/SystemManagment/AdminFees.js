@@ -60,7 +60,7 @@ const AdminFees = ({ _id }) => {
       console.log(error);
     }
   };
-  const fetchFeeOptions = async () => {
+  const fetchFeeOptions = async (_id) => {
     try {
       const response = await axios.get(
         "http://localhost:5000/fees/getFeeOptions"
