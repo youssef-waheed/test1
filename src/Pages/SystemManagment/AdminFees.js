@@ -43,15 +43,27 @@ const AdminFees = ({ _id }) => {
   const [showAddForm, setShowAddForm] = useState(false); // State to control visibility of the add form
   const [showFeeOptions, setShowFeeOptions] = useState(false);
   const [feeOptions, setFeeOptions] = useState([]);
+  const [selectedFeeOption, setSelectedFeeOption] = useState(null);
+
   const [editModeFeeOptions, setEditModeFeeOptions] = useState(false);
   const [editedFeeOptions, setEditedFeeOptions] = useState([]);
-
+  const [addingFeeOption, setAddingFeeOption] = useState({
+    feeTypeId: "",
+    startingDay: "",
+    delayWithFoodTillDay: "",
+    delayWithoutFoodTillDay: "",
+    rehousingWithFineTillDay: "",
+    maximumFeedingAllowanceRefund: "",
+    createdOrEditedBy: "",
+  });
   useEffect(() => {
     fetchFeeTypes();
-    fetchFeeOptions();
-  }, [_id]); // Add _id as a dependency
+    if (_id) {
+      fetchFeeOptions(_id);
+    }
+  }, [_id]);
 
-  const fetchFeeTypes = async () => {
+  const fetchFeeTypes = async (_id) => {
     try {
       const response = await axios.get("http://localhost:5000/fees/getFeeType");
       setFeeTypes(response.data.data.fees);
@@ -63,8 +75,9 @@ const AdminFees = ({ _id }) => {
   const fetchFeeOptions = async (_id) => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/fees/getFeeOptions"
+        `http://localhost:5000/fees/getFeeOptions/${_id}`
       );
+      console.log(_id);
       console.log(response);
       setFeeOptions(response.data.data.feesOptions);
     } catch (error) {
@@ -91,6 +104,9 @@ const AdminFees = ({ _id }) => {
     setEditedType(feeType.feeType);
     setEditedActive(feeType.active);
     setEditMode(false); // Ensure edit mode is off when showing details
+
+    // Fetch fee options for the selected fee type
+    fetchFeeOptions(feeType._id);
   };
 
   const handleEdit = () => {
@@ -195,18 +211,54 @@ const AdminFees = ({ _id }) => {
   const handleEditFeeOptions = () => {
     setEditModeFeeOptions(true);
   };
-  const handleSaveFeeOptions = async () => {
+
+  const handleSaveFeeOptions = async (_id) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/fees/updateFeeOptions/${_id}`,
+        `http://localhost:5000/fees/updateFeeOptions/${selectedFeeOption._id}`,
         editedFeeOptions
       );
       console.log("Fee options updated successfully:", response.data);
-      // Exit edit mode
+      // Update fee options in the frontend after successful update
+      fetchFeeOptions(); // Make sure this function fetches the updated fee options
+      setSelectedFeeOption(editedFeeOptions);
       setEditModeFeeOptions(false);
     } catch (error) {
       console.error("Error updating fee options:", error);
-      // Add additional error handling logic here, if needed
+    }
+  };
+  // Inside your component
+  const handleAddFeeOption = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/fees/addFeeOptions`,
+        {
+          feeTypeId: _id,
+          startingDay: addingFeeOption.startingDay,
+          delayWithFoodTillDay: addingFeeOption.delayWithFoodTillDay,
+          delayWithoutFoodTillDay: addingFeeOption.delayWithoutFoodTillDay,
+          rehousingWithFineTillDay: addingFeeOption.rehousingWithFineTillDay,
+          maximumFeedingAllowanceRefund:
+            addingFeeOption.maximumFeedingAllowanceRefund,
+          createdOrEditedBy: addingFeeOption.createdOrEditedBy,
+        }
+      );
+      console.log(response);
+      // Reset the form fields after successful submission
+      setAddingFeeOption({
+        feeTypeId: "",
+        startingDay: "",
+        delayWithFoodTillDay: "",
+        delayWithoutFoodTillDay: "",
+        rehousingWithFineTillDay: "",
+        maximumFeedingAllowanceRefund: "",
+        createdOrEditedBy: "",
+      });
+      // Optionally, you can fetch the updated fee options here
+      fetchFeeOptions(_id);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -266,7 +318,6 @@ const AdminFees = ({ _id }) => {
                 }
               />
             </label>
-            {/* Add other input fields for other fee type details */}
             <button type="submit">Add Fee Type</button>
           </form>
         )}
@@ -438,6 +489,15 @@ const AdminFees = ({ _id }) => {
                         }}
                       />
                       <textarea
+                        value={fee.rehousingWithFineTillDay}
+                        onChange={(e) => {
+                          const updatedFeeOptions = [...editedFeeOptions];
+                          updatedFeeOptions[index].rehousingWithFineTillDay =
+                            e.target.value;
+                          setEditedFeeOptions(updatedFeeOptions);
+                        }}
+                      />
+                      <textarea
                         value={fee.createdOrEditedBy}
                         onChange={(e) => {
                           const updatedFeeOptions = [...editedFeeOptions];
@@ -508,6 +568,12 @@ const AdminFees = ({ _id }) => {
                             />
                           </td>
                           <td>
+                            <textarea
+                              value={fee.rehousingWithFineTillDay}
+                              readOnly
+                            />
+                          </td>
+                          <td>
                             <textarea value={fee.createdOrEditedBy} readOnly />
                           </td>
                         </tr>
@@ -521,6 +587,48 @@ const AdminFees = ({ _id }) => {
                     >
                       تعديل
                     </button>
+                  </div>
+                  <div className="coll">
+                    <button
+                      style={{
+                        backgroundColor: "blue",
+                        color: "white",
+                        fontWeight: "bold",
+                        marginRight: "10px",
+                      }}
+                      onClick={handleAddButtonClick}
+                    >
+                      Add Fee Option
+                    </button>
+                    {/* Render the add form if showAddForm is true */}
+                    {showAddForm && (
+                      <form onSubmit={handleAddFeeOption}>
+                        {/* Your form fields for adding fee options */}
+                        {/* Example: */}
+                        <label>
+                          Starting Day:
+                          <input
+                            type="text"
+                            value={addingFeeOption.startingDay}
+                            onChange={(e) =>
+                              setAddingFeeOption({
+                                ...addingFeeOption,
+                                startingDay: e.target.value,
+                              })
+                            }
+                          />
+                        </label>
+                        {/* Add other input fields for other fee option properties */}
+
+                        <button
+                          type="submit"
+                          onClick={handleAddFeeOption}
+                          style={{ color: "white", backgroundColor: "blue" }}
+                        >
+                          حفظ
+                        </button>
+                      </form>
+                    )}
                   </div>
                 </>
               )}
