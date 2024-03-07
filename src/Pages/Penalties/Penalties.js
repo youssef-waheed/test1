@@ -12,6 +12,8 @@ const Penalties = ({ studentData, _id }) => {
   const [isDivVisible, setIsDivVisible] = useState(false);
   const [selectedPenalty, setSelectedPenalty] = useState([]);
   const penaltyKinds = ["جزاء اداري", "جزاء سلوكي"];
+  const [penalties, setPenalties] = useState([]);
+
   const [penalty, setPenalty] = useState({
     reason: "",
     penaltyKind: "",
@@ -27,10 +29,15 @@ const Penalties = ({ studentData, _id }) => {
     }
   }, [_id]);
 
-  const fetchPenalty = async (_id) => {
+  const fetchPenalty = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/penalty/${_id}`);
+      if (!_id) {
+        console.error("Error: _id is undefined");
+        return;
+      }
+      const response = await axios.get(`http://localhost:5000/penalty/` + _id);
       console.log(response);
+      setPenalties(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -189,11 +196,13 @@ const Penalties = ({ studentData, _id }) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{studentData.penaltyKind}</td>
-            <td></td>
-            <td>{studentData.PenaltyDate}</td>
-          </tr>
+          {penalties.map((pen, index) => (
+            <tr key={index}>
+              <td>{pen.penaltyKind}</td>
+              <td>{pen.reason}</td>
+              <td>{new Date(pen.PenaltyDate).toLocaleDateString()}</td>
+            </tr>
+          ))}
         </tbody>
       </Table>
       <div className="warning">
