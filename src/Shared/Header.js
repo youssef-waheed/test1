@@ -27,6 +27,8 @@ import Tatbeekat from "../Pages/Tatbeekat";
 import TatbeekatFemale from "../FemaleTatbekatTakareerE7saa/TatbeekatFemale";
 import Test from "../Pages/SakanTest";
 import "../Style/Header.css";
+import AdminFees from "../Pages/SystemManagment/AdminFees";
+import AdminFeeTypes from "../Pages/SystemManagment/AdminFeeTypes";
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -253,9 +255,7 @@ const Header = () => {
 
   function handleCollegeChange(event) {
     const selectedCollege = event.target.value;
-    setCollege(selectedCollege, () => fetchStudents()); // Update the College state with the selected value
-    // Trigger the fetchStudents function whenever the College state is updated
-    // This will refetch students based on the selected college
+    setCollege(selectedCollege, () => fetchStudents());
     fetchStudents();
   }
 
@@ -276,7 +276,6 @@ const Header = () => {
   function SIdeBar() {
     return (
       <Container className="container">
-        <div className="bar">{activeButton}</div>
         <div className="select">
           <p className="academicyear">العام الاكديمي</p>
           <Form.Select
@@ -396,7 +395,7 @@ const Header = () => {
           <SIdeBar />
         </div>
         <div className="coll">
-          <Penalties />
+          <Penalties _id={studentId} studentData={selectedStudentData} />
         </div>
       </div>
     );
@@ -518,11 +517,10 @@ const Header = () => {
     );
   }
 
-
   function Text13() {
     return (
       <div className="two-column-wrapper">
-        <div >
+        <div>
           <TatbeekatFemale />
         </div>
       </div>
@@ -537,6 +535,13 @@ const Header = () => {
         <div className="coll">
           <Test />
         </div>
+      </div>
+    );
+  }
+  function Text14() {
+    return (
+      <div>
+        <AdminFees _id={studentId} />
       </div>
     );
   }
@@ -578,7 +583,7 @@ const Header = () => {
         "صور الجامعة",
         <Text11 />,
         "الوجبات",
-        "الرسوم",
+        <Text14 />,
         <Text999 />,
         "الفئات",
         <Text9999 />,
