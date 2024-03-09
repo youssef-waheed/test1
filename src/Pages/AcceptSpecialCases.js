@@ -103,7 +103,7 @@ const AcceptSpecialCases = () => {
             <div>
               <button
                 style={{ backgroundColor: "green", fontWeight: "bold" }}
-                onClick={() => AcceptSpecialCases(selectedCase._id)}
+                onClick={AcceptSpecialCases}
               >
                 Approve
               </button>

@@ -29,6 +29,7 @@ import Test from "../Pages/SakanTest";
 import "../Style/Header.css";
 import AdminFees from "../Pages/SystemManagment/AdminFees";
 import AdminFeeTypes from "../Pages/SystemManagment/AdminFeeTypes";
+import Statistics from "../Pages/Statistics";
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -526,6 +527,16 @@ const Header = () => {
       </div>
     );
   }
+  function Stat() {
+    return (
+      <div className="two-column-wrapper">
+        <div>
+          <Statistics />
+        </div>
+      </div>
+    );
+  }
+
   function Text9999() {
     return (
       <div className="two-column-wrapper">
@@ -560,7 +571,7 @@ const Header = () => {
         <Text9 />,
         <Text12 />,
         "تقارير",
-        "احصائيات",
+        <Stat />,
       ],
       [
         <Text />,
