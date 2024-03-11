@@ -54,6 +54,25 @@ const AcceptSpecialCases = () => {
     );
   });
 
+  const acceptApplication = async (studentID) => {
+    try {
+      await axios.put(
+        `http://localhost:5000/applications/acceptRejectedStudents/${studentID}`
+      );
+      setSpecialCases(
+        specialCases.map((specialCases) => {
+          if (specialCases._id === studentID) {
+            return { ...specialCases, statusOfOnlineRequests: "accepted" };
+          }
+          return specialCases;
+        })
+      );
+      fetchAcceptSpecialCases();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="two-column-wrapper">
       <div className="col">
@@ -103,7 +122,7 @@ const AcceptSpecialCases = () => {
             <div>
               <button
                 style={{ backgroundColor: "green", fontWeight: "bold" }}
-                onClick={() => AcceptSpecialCases(selectedCase._id)}
+                onClick={() => acceptApplication(selectedCase._id)}
               >
                 Approve
               </button>
