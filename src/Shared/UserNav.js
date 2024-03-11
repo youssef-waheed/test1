@@ -3,19 +3,14 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, useLocation } from "react-router-dom";
-import "./UserNav.css";
+import "../Shared/UserNav.css";
 import Logo from "./HL.jpeg";
 
 const UserNav = () => {
-  const location = useLocation();
-  const showHeader =
-    location.pathname === "/InquiryAboutAdmission" ||
-    location.pathname === "/AppDate" ||
-    location.pathname === "/AppForm";
+
 
   return (
     <div>
-      {showHeader && (
         <Navbar expand="lg" className="custom-navbar">
           <Container>
             <Navbar.Brand as={Link} to="/" className="custom-logo">
@@ -40,7 +35,6 @@ const UserNav = () => {
             </Navbar.Collapse>
           </Container>
         </Navbar>
-      )}
     </div>
   );
 };

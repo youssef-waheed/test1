@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';import "../Style/AppDate.css";
+import React, { useEffect, useState } from 'react';
+import "../Style/AppDate.css";
 import Table from "react-bootstrap/Table";
-
 import axios from 'axios';
 
 const ApplicationDates = () => {

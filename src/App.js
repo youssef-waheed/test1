@@ -2,7 +2,7 @@
 
 import "./App.css";
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useLocation, Route, Routes } from "react-router-dom";
 import Header from "./Shared/UserNav";
 import InquiryAboutAdmission from "./Pages/InquiryAboutAdmission";
 import ApplicationDates from "./Pages/ApplicationDates";
@@ -11,9 +11,17 @@ import Login from "./Authentication/Login";
 import Admin from "./Shared/Header";
 
 function App() {
+
+  const location = useLocation();
+
+  // Check if the current location is the login route ("/login")
+  const showHeader = location.pathname === "/InquiryAboutAdmission" ||
+  location.pathname === "/AppDate" ||
+  location.pathname === "/AppForm";
+
   return (
       <div className="App">
-        <Header />
+      {showHeader && <Header />}
         <Routes>
           <Route path="/" element={<Login />} />
           <Route
