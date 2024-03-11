@@ -1,7 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-
+import { getAuthUser } from "../../helper/storage";
+import Form from "react-bootstrap/Form";
+var id;
+const auth = getAuthUser();
 const AdminFees = ({ _id }) => {
   const [feeTypes, setFeeTypes] = useState([]);
   const [selectedFee, setSelectedFee] = useState(null);
@@ -39,19 +42,36 @@ const AdminFees = ({ _id }) => {
     housingInPreviousYears: "",
     theAmount: "",
     active: "",
+    createdBy: "",
   });
   const [showAddForm, setShowAddForm] = useState(false); // State to control visibility of the add form
+  const [showAddOptionForm, setShowAddOptionForm] = useState(false); // State to control visibility of the add form
   const [showFeeOptions, setShowFeeOptions] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
   const [feeOptions, setFeeOptions] = useState([]);
+  const [selectedFeeOption, setSelectedFeeOption] = useState(null);
+
   const [editModeFeeOptions, setEditModeFeeOptions] = useState(false);
   const [editedFeeOptions, setEditedFeeOptions] = useState([]);
+  const [showAddFeeOptionForm, setShowAddFeeOptionForm] = useState(false);
 
+  const [addingFeeOption, setAddingFeeOption] = useState({
+    feeTypeId: "",
+    startingDay: "",
+    delayWithFoodTillDay: "",
+    delayWithoutFoodTillDay: "",
+    rehousingWithFineTillDay: "",
+    maximumFeedingAllowanceRefund: "",
+    createdOrEditedBy: "",
+  });
   useEffect(() => {
     fetchFeeTypes();
-    fetchFeeOptions();
-  }, [_id]); // Add _id as a dependency
+    if (_id) {
+      fetchFeeOptions(_id);
+    }
+  }, [_id]);
 
-  const fetchFeeTypes = async () => {
+  const fetchFeeTypes = async (_id) => {
     try {
       const response = await axios.get("http://localhost:5000/fees/getFeeType");
       setFeeTypes(response.data.data.fees);
@@ -63,15 +83,117 @@ const AdminFees = ({ _id }) => {
   const fetchFeeOptions = async (_id) => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/fees/getFeeOptions"
+        `http://localhost:5000/fees/getFeeOptions/${_id}`
       );
+      console.log(_id);
       console.log(response);
       setFeeOptions(response.data.data.feesOptions);
     } catch (error) {
       console.log(error);
     }
   };
+  const addFeeTypeAdmin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        ` http://localhost:5000/fees/addFeeType`,
+        {
+          feeType: addFeeType.feeType,
+          necessaryForFeeding:
+            addFeeType.necessaryForFeeding === "نعم" ? true : false,
+          paymentType: addFeeType.paymentType,
+          natonality: addFeeType.natonality,
+          out_inSideUniversity: addFeeType.out_inSideUniversity,
+          collageDepartment: addFeeType.collageDepartment,
+          GPA: addFeeType.GPA,
+          HighSchoolDivision: addFeeType.HighSchoolDivision,
+          applyingToWhome: addFeeType.applyingToWhome,
+          admissionsType: addFeeType.admissionsType,
+          housingType: addFeeType.housingType,
+          housingWithFood: addFeeType.housingWithFood,
+          housingInPreviousYears: addFeeType.housingInPreviousYears,
+          theAmount: addFeeType.theAmount,
+          active: addFeeType.active === "نعم" ? true : false,
+          createdBy: auth.log.adminUserName,
+        }
+      );
+      setAddFeeType({
+        feeType: "",
+        necessaryForFeeding: "",
+        paymentType: "",
+        natonality: "",
+        out_inSideUniversity: "",
+        collageDepartment: "",
+        GPA: "",
+        HighSchoolDivision: "",
+        applyingToWhome: "",
+        admissionsType: "",
+        housingType: "",
+        housingWithFood: "",
+        housingInPreviousYears: "",
+        theAmount: "",
+        active: "",
+        createdBy: "",
+      });
+      fetchFeeTypes();
+      // fetchFeeStatment(_id);
+    } catch (error) {
+      console.log("NJBANSKJDNA");
+      console.log(addFeeType);
+      console.log("NJBANSKJDNA");
+      console.log(error);
+    }
+  };
+  const deleteFeeType = async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/fees/deleteFeeType/${selectedFee._id}`
+      );
+      id = selectedFee._id;
+      console.log(response);
+    } catch (error) {
+      console.log("DEKDEKDELE");
+      console.log(_id);
+      console.log("DEKDEKDELE");
+      console.log(error);
+    }
+  };
 
+  const addFeeOptionAdmin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        ` http://localhost:5000/fees/addFeeOptions`,
+        {
+          feeTypeId: selectedFee._id,
+          startingDay: addingFeeOption.startingDay,
+          delayWithFoodTillDay: addingFeeOption.delayWithFoodTillDay,
+          delayWithoutFoodTillDay: addingFeeOption.delayWithoutFoodTillDay,
+          rehousingWithFineTillDay: addingFeeOption.rehousingWithFineTillDay,
+          maximumFeedingAllowanceRefund:
+            addingFeeOption.maximumFeedingAllowanceRefund,
+          createdOrEditedBy: auth.log.adminUserName,
+        }
+      );
+      setAddFeeType({
+        feeTypeId: "",
+        startingDay: "",
+        delayWithFoodTillDay: "",
+        delayWithoutFoodTillDay: "",
+        rehousingWithFineTillDay: "",
+        maximumFeedingAllowanceRefund: "",
+        createdOrEditedBy: "",
+      });
+      // fetchFeeTypes();
+      // fetchFeeStatment(_id);
+      fetchFeeOptions(id);
+    } catch (error) {
+      console.log("NJBANSKJDNA");
+      console.log(addFeeType);
+      console.log("NJBANSKJDNA");
+      console.log(error);
+    }
+  };
   const showDetails = (feeType) => {
     setSelectedFee(feeType);
     setEditedFeeType(feeType.feeType);
@@ -91,6 +213,9 @@ const AdminFees = ({ _id }) => {
     setEditedType(feeType.feeType);
     setEditedActive(feeType.active);
     setEditMode(false); // Ensure edit mode is off when showing details
+
+    // Fetch fee options for the selected fee type
+    fetchFeeOptions(feeType._id);
   };
 
   const handleEdit = () => {
@@ -152,68 +277,20 @@ const AdminFees = ({ _id }) => {
       console.log(error);
     }
   };
+
   const handleAddButtonClick = () => {
     setShowAddForm(true); // Show the add form when the button is clicked
+  };
+  const handleAddButtonOption = () => {
+    setShowAddOptionForm(true); // Show the add form when the button is clicked
   };
   const handleSettingsClick = () => {
     // Toggle the visibility of FeeOptions data
     setShowFeeOptions(!showFeeOptions);
   };
-
-  const handleAddFormSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/fees/addFeeType",
-        addFeeType
-      );
-      console.log("Fee type added successfully:", response.data);
-      fetchFeeTypes();
-      // Reset the add form and hide it
-      setAddFeeType({
-        feeType: "",
-        necessaryForFeeding: "",
-        paymentType: "",
-        natonality: "",
-        out_inSideUniversity: "",
-        collageDepartment: "",
-        GPA: "",
-        HighSchoolDivision: "",
-        applyingToWhome: "",
-        admissionsType: "",
-        housingType: "",
-        housingWithFood: "",
-        housingInPreviousYears: "",
-        theAmount: "",
-        active: "",
-      });
-      setShowAddForm(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleEditFeeOptions = () => {
-    setEditModeFeeOptions(true);
-  };
-  const handleSaveFeeOptions = async () => {
-    try {
-      const response = await axios.put(
-        `http://localhost:5000/fees/updateFeeOptions/${_id}`,
-        editedFeeOptions
-      );
-      console.log("Fee options updated successfully:", response.data);
-      // Exit edit mode
-      setEditModeFeeOptions(false);
-    } catch (error) {
-      console.error("Error updating fee options:", error);
-      // Add additional error handling logic here, if needed
-    }
-  };
-
-  const handleCancelEditFeeOptions = () => {
-    // Reset edited fee options to their original values
-    setEditedFeeOptions([...feeOptions]);
-    setEditModeFeeOptions(false);
+  const handleSettingsClickOption = () => {
+    // Toggle the visibility of FeeOptions data
+    setShowOptions(!showOptions);
   };
 
   return (
@@ -250,24 +327,169 @@ const AdminFees = ({ _id }) => {
         </ul>
       </div>
       <div className="coll">
-        {/* Show FeeOptions only if showFeeOptions is true */}
-
         {showAddForm && (
-          <form onSubmit={handleAddFormSubmit}>
+          <form>
             {/* Your form fields for adding a fee type */}
             {/* Example: */}
-            <label>
-              Fee Type:
-              <input
-                type="text"
-                value={addFeeType.feeType}
-                onChange={(e) =>
-                  setAddFeeType({ ...addFeeType, feeType: e.target.value })
-                }
-              />
-            </label>
-            {/* Add other input fields for other fee type details */}
-            <button type="submit">Add Fee Type</button>
+            <Form.Label htmlFor="inputPassword5">نوع رسوم </Form.Label>
+            <Form.Control
+              type="text"
+              className="Type"
+              onChange={(e) => {
+                setAddFeeType({ ...addFeeType, feeType: e.target.value });
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5">إجباري للتغذية </Form.Label>
+            <Form.Control
+              type="text"
+              className="Type"
+              onChange={(e) => {
+                setAddFeeType({
+                  ...addFeeType,
+                  necessaryForFeeding: e.target.value,
+                });
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5"> نوع الدفع:</Form.Label>
+            <Form.Control
+              type="text"
+              className="Type"
+              onChange={(e) => {
+                setAddFeeType({ ...addFeeType, paymentType: e.target.value });
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5">الجنسية </Form.Label>
+            <Form.Control
+              type="text"
+              className="Type"
+              onChange={(e) => {
+                setAddFeeType({ ...addFeeType, natonality: e.target.value });
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5">داخل/خارج الجامعة </Form.Label>
+            <Form.Control
+              type="text"
+              className="Type"
+              onChange={(e) => {
+                setAddFeeType({
+                  ...addFeeType,
+                  out_inSideUniversity: e.target.value,
+                });
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5">اقسام الكلية </Form.Label>
+            <Form.Control
+              type="text"
+              className="Type"
+              onChange={(e) => {
+                setAddFeeType({
+                  ...addFeeType,
+                  collageDepartment: e.target.value,
+                });
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5"> التقدير للقدامى </Form.Label>
+            <Form.Control
+              type="text"
+              className="Type"
+              onChange={(e) => {
+                setAddFeeType({ ...addFeeType, GPA: e.target.value });
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5">
+              شعبة الثانوية عامة الجدد{" "}
+            </Form.Label>
+            <Form.Control
+              type="text"
+              className="Type"
+              onChange={(e) => {
+                setAddFeeType({
+                  ...addFeeType,
+                  HighSchoolDivision: e.target.value,
+                });
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5">التقديم </Form.Label>
+            <Form.Control
+              type="text"
+              className="Type"
+              onChange={(e) => {
+                setAddFeeType({
+                  ...addFeeType,
+                  applyingToWhome: e.target.value,
+                });
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5">نوع القبول </Form.Label>
+            <Form.Control
+              type="text"
+              className="Type"
+              onChange={(e) => {
+                setAddFeeType({
+                  ...addFeeType,
+                  admissionsType: e.target.value,
+                });
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5">نوع السكن </Form.Label>
+            <Form.Control
+              type="text"
+              className="Type"
+              onChange={(e) => {
+                setAddFeeType({ ...addFeeType, housingType: e.target.value });
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5">سكن بتغذية </Form.Label>
+            <Form.Control
+              type="text"
+              className="Type"
+              onChange={(e) => {
+                setAddFeeType({
+                  ...addFeeType,
+                  housingWithFood: e.target.value,
+                });
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5">
+              السكن فى الأعوام السابقة{" "}
+            </Form.Label>
+            <Form.Control
+              type="text"
+              className="Type"
+              onChange={(e) => {
+                setAddFeeType({
+                  ...addFeeType,
+                  housingInPreviousYears: e.target.value,
+                });
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5">المبلغ </Form.Label>
+            <Form.Control
+              type="text"
+              className="Type"
+              onChange={(e) => {
+                setAddFeeType({ ...addFeeType, theAmount: e.target.value });
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5">فعال </Form.Label>
+            <Form.Control
+              type="text"
+              className="Type"
+              onChange={(e) => {
+                setAddFeeType({ ...addFeeType, active: e.target.value });
+              }}
+            />
+            <button
+              style={{
+                margin: "20px",
+                backgroundColor: "green",
+                color: "white",
+                fontWeight: "bold",
+              }}
+              onClick={addFeeTypeAdmin}
+            >
+              إضافة نوع رسوم
+            </button>
           </form>
         )}
         {editMode ? (
@@ -364,9 +586,15 @@ const AdminFees = ({ _id }) => {
             <p>
               إجباري للتغذية : {selectedFee?.necessaryForFeeding ? "نعم" : "لا"}
             </p>
-            <p>نوع الدفع: {selectedFee?.paymentType}</p>
+            <p>
+              نوع الدفع:
+              {selectedFee?.paymentType}
+            </p>
             <p>الجنسية: {selectedFee?.natonality}</p>
-            <p>داخل/خارج الجامعة: {selectedFee?.out_inSideUniversity}</p>
+            <p>
+              داخل/خارج الجامعة:
+              {selectedFee?.out_inSideUniversity}
+            </p>
             <p>اقسام الكلية : {selectedFee?.collageDepartment}</p>
             <p>التقدير للقدامى : {selectedFee?.GPA}</p>
             <p>شعبة الثانوية عامة الجدد: {selectedFee?.HighSchoolDivision}</p>
@@ -390,6 +618,17 @@ const AdminFees = ({ _id }) => {
               onClick={handleEdit}
             >
               تعديل
+            </button>
+            <button
+              style={{
+                marginRight: "20px",
+                color: "white",
+                fontWeight: "bold",
+                backgroundColor: "red",
+              }}
+              onClick={deleteFeeType}
+            >
+              حذف
             </button>
           </>
         )}
@@ -438,6 +677,15 @@ const AdminFees = ({ _id }) => {
                         }}
                       />
                       <textarea
+                        value={fee.rehousingWithFineTillDay}
+                        onChange={(e) => {
+                          const updatedFeeOptions = [...editedFeeOptions];
+                          updatedFeeOptions[index].rehousingWithFineTillDay =
+                            e.target.value;
+                          setEditedFeeOptions(updatedFeeOptions);
+                        }}
+                      />
+                      <textarea
                         value={fee.createdOrEditedBy}
                         onChange={(e) => {
                           const updatedFeeOptions = [...editedFeeOptions];
@@ -455,7 +703,6 @@ const AdminFees = ({ _id }) => {
                       fontWeight: "bold",
                       marginRight: "10px",
                     }}
-                    onClick={handleSaveFeeOptions}
                   >
                     حفظ
                   </button>
@@ -465,7 +712,6 @@ const AdminFees = ({ _id }) => {
                       color: "white",
                       fontWeight: "bold",
                     }}
-                    onClick={handleCancelEditFeeOptions}
                   >
                     إلغاء
                   </button>
@@ -508,6 +754,12 @@ const AdminFees = ({ _id }) => {
                             />
                           </td>
                           <td>
+                            <textarea
+                              value={fee.rehousingWithFineTillDay}
+                              readOnly
+                            />
+                          </td>
+                          <td>
                             <textarea value={fee.createdOrEditedBy} readOnly />
                           </td>
                         </tr>
@@ -515,15 +767,104 @@ const AdminFees = ({ _id }) => {
                     </tbody>
                   </Table>
                   <div className="t3deel">
-                    <button
-                      style={{ backgroundColor: "blue", color: "white" }}
-                      onClick={handleEditFeeOptions}
-                    >
+                    <button style={{ backgroundColor: "blue", color: "white" }}>
                       تعديل
                     </button>
                   </div>
+                  <div className="coll">
+                    {/* <button
+                      style={{
+                        backgroundColor: "blue",
+                        color: "white",
+                        fontWeight: "bold",
+                        marginRight: "10px",
+                      }}
+                      onClick={handleAddButtonOption}
+                    >
+                      Add Fee Option
+                    </button> */}
+                    {/* Render the add fee option form if showAddFeeOptionForm is true */}
+                    <form>
+                      <Form.Label htmlFor="inputPassword5">
+                        بداية يوم الدفع{" "}
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="Type"
+                        onChange={(e) => {
+                          setAddingFeeOption({
+                            ...addingFeeOption,
+                            startingDay: e.target.value,
+                          });
+                        }}
+                      />
+                      <Form.Label htmlFor="inputPassword5">
+                        التأخير مع التغذية حتى اليوم{" "}
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="Type"
+                        onChange={(e) => {
+                          setAddingFeeOption({
+                            ...addingFeeOption,
+                            delayWithFoodTillDay: e.target.value,
+                          });
+                        }}
+                      />
+                      <Form.Label htmlFor="inputPassword5">
+                        لتأخير بدون التغذية حتى اليوم
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="Type"
+                        onChange={(e) => {
+                          setAddingFeeOption({
+                            ...addingFeeOption,
+                            delayWithoutFoodTillDay: e.target.value,
+                          });
+                        }}
+                      />
+                      <Form.Label htmlFor="inputPassword5">
+                        إعادة التسكين مع غرامة حتى يوم
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="Type"
+                        onChange={(e) => {
+                          setAddingFeeOption({
+                            ...addingFeeOption,
+                            rehousingWithFineTillDay: e.target.value,
+                          });
+                        }}
+                      />
+                      <Form.Label htmlFor="inputPassword5">
+                        الحد الأقصى لاسترداد بدل التغذية{" "}
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="Type"
+                        onChange={(e) => {
+                          setAddingFeeOption({
+                            ...addingFeeOption,
+                            maximumFeedingAllowanceRefund: e.target.value,
+                          });
+                        }}
+                      />
+                    </form>
+                  </div>
                 </>
               )}
+              <button
+                style={{
+                  margin: "20px",
+                  backgroundColor: "green",
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+                onClick={addFeeOptionAdmin}
+              >
+                إضافة نوع رسوم
+              </button>{" "}
             </div>
           )}
         </div>
