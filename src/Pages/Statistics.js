@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import "./Tatbeekat.css";
+import NumOfStudents from "./NumOfStudents";
+import NumOfResident from "./NumOfResident";
 // import Review from "./ReviewOnlineRequests";
 // import AcceptSpecialCases from "./AcceptSpecialCases";
 
 const Page2 = () => (
   <div>
-    <h2>Page 2</h2>
+    <NumOfResident />
   </div>
 );
 
@@ -14,7 +16,11 @@ const Page3 = () => (
     <h2>Page 3</h2>
   </div>
 );
-const Page5 = () => <div>{/* <AcceptSpecialCases /> */}</div>;
+const Page5 = () => (
+  <div>
+    <NumOfStudents />
+  </div>
+);
 
 const ButtonDisplay = ({ buttons, handleClick }) => (
   <div>
@@ -34,9 +40,21 @@ const Statistics = () => {
     { text: "اعداد المتقدمين  " },
     { text: "اعداد المقيمين", page: <Page2 /> },
     { text: "احصائيات البطاقات المطبوعة ", page: <Page3 /> },
-    { text: "اعداد جميع الطلاب ", page: <Page3 /> },
-    { text: "تجهيز الوجبات  ", page: <Page5 /> },
+    { text: "اعداد جميع الطلاب ", page: <Page5 /> },
+    { text: "تجهيز الوجبات  ", page: <Page3 /> },
     { text: "احصائية استلام الوجبات ", page: <Page3 /> },
+    { text: "   " },
+    { text: "   " },
+    { text: "   " },
+    { text: "   " },
+    { text: "   " },
+    { text: "   " },
+    { text: "   " },
+    { text: "   " },
+    { text: "   " },
+    { text: "   " },
+    { text: "   " },
+    { text: "   " },
   ];
 
   const handleClick = (page) => {
