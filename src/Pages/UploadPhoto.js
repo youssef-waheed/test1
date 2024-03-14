@@ -1,34 +1,50 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import "./Upload.css"; 
 
 const UploadPhoto = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    const files = event.target.files;
+    const filesArray = Array.from(files).slice(0, 1000); // Limit to 1000 files
+    setSelectedFiles(filesArray);
   };
 
-  const handleUpload = () => {
-    // Implement your upload logic here
-    if (selectedFile) {
-      console.log("Uploading file:", selectedFile.name);
-      // Reset selected file state after upload
-      setSelectedFile(null);
-    } else {
-      console.log("No file selected for upload.");
+  const handleUpload = async () => {
+    try {
+      const formData = new FormData();
+      selectedFiles.forEach((file) => {
+        formData.append('avatar', file); 
+      });
+
+      const response = await axios.put('http://localhost:5000/applications/uploadStudentPhoto', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      console.log('Upload response:', response.data);
+
+      // Reset selected files state after successful upload
+      setSelectedFiles([]);
+    } catch (error) {
+      console.error('Error uploading files:', error);
     }
   };
 
   return (
     <div className="two-column-wrapper">
       <div className="col">
-        <input type="file" onChange={handleFileChange} />
+        <input type="file" onChange={handleFileChange} multiple />
         <button onClick={handleUpload}>Upload</button>
-        {selectedFile && (
-          <div className="preview">
-            <img src={URL.createObjectURL(selectedFile)} alt="Uploaded" className="uploaded-image" />
-          </div>
-        )}
+        <div className="preview-container">
+          {selectedFiles.map((file, index) => (
+            <div key={index} className="preview">
+              <img src={URL.createObjectURL(file)} alt={`Uploaded ${index}`} className="uploaded-image" />
+            </div>
+          ))}
+        </div>
       </div>
       <div className="coll">
         <ul>
