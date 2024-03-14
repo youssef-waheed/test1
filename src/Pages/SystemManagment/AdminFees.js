@@ -4,6 +4,7 @@ import Table from "react-bootstrap/Table";
 import { getAuthUser } from "../../helper/storage";
 import Form from "react-bootstrap/Form";
 var id;
+var idd;
 const auth = getAuthUser();
 const AdminFees = ({ _id }) => {
   const [feeTypes, setFeeTypes] = useState([]);
@@ -47,14 +48,17 @@ const AdminFees = ({ _id }) => {
   const [showAddForm, setShowAddForm] = useState(false); // State to control visibility of the add form
   const [showAddOptionForm, setShowAddOptionForm] = useState(false); // State to control visibility of the add form
   const [showFeeOptions, setShowFeeOptions] = useState(false);
+
   const [showOptions, setShowOptions] = useState(false);
   const [feeOptions, setFeeOptions] = useState([]);
   const [selectedFeeOption, setSelectedFeeOption] = useState(null);
-
   const [editModeFeeOptions, setEditModeFeeOptions] = useState(false);
-  const [editedFeeOptions, setEditedFeeOptions] = useState([]);
+  const [editedFeeOptions, setEditedFeeOptions] = useState([]); // Initialize with your fee options or an empty array
+  // const [editModeFeeOptions, setEditModeFeeOptions] = useState(false);
+  // const [editedFeeOptions, setEditedFeeOptions] = useState([]);
   const [showAddFeeOptionForm, setShowAddFeeOptionForm] = useState(false);
-
+  const [showFeeOptionLabels, setShowFeeOptionLabels] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [addingFeeOption, setAddingFeeOption] = useState({
     feeTypeId: "",
     startingDay: "",
@@ -215,7 +219,18 @@ const AdminFees = ({ _id }) => {
     setEditMode(false); // Ensure edit mode is off when showing details
 
     // Fetch fee options for the selected fee type
-    fetchFeeOptions(feeType._id);
+    fetchFeeOptions(feeType._id)
+      .then((options) => {
+        if (options && options.length > 0) {
+          setSelectedFeeOption(options[0]); // Assuming you're selecting the first option
+        } else {
+          setSelectedFeeOption(null); // Set to null if no options are available
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching fee options:", error);
+        setSelectedFeeOption(null); // Set to null on error
+      });
   };
 
   const handleEdit = () => {
@@ -277,12 +292,50 @@ const AdminFees = ({ _id }) => {
       console.log(error);
     }
   };
+  const handleSaveFeeOptions = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/fees/updateFeeOptions/${selectedFeeOption._id}`,
+        {
+          feeTypeId: selectedFeeOption.feeTypeId,
+          startingDay: editedFeeOptions.startingDay,
+          delayWithFoodTillDay: editedFeeOptions.delayWithFoodTillDay,
+          delayWithoutFoodTillDay: editedFeeOptions.delayWithoutFoodTillDay,
+          rehousingWithFineTillDay: editedFeeOptions.rehousingWithFineTillDay,
+          maximumFeedingAllowanceRefund:
+            editedFeeOptions.maximumFeedingAllowanceRefund,
+          createdOrEditedBy: editedFeeOptions.createdOrEditedBy,
+        }
+      );
+      idd = selectedFeeOption._id;
+      console.log("Fee options updated successfully:", response.data);
+
+      // Exit edit mode after saving
+      setEditModeFeeOptions(false);
+    } catch (error) {
+      console.log("kasmdklasmdklasd");
+      console.log(idd);
+      console.log("kasmdklasmdklasd");
+      console.error("Error updating fee options:", error);
+    }
+  };
+
+  const handleCancelEditFeeOptions = () => {
+    // Reset edited fee options to their original values
+    setEditedFeeOptions([...feeOptions]);
+    setEditModeFeeOptions(false);
+  };
 
   const handleAddButtonClick = () => {
     setShowAddForm(true); // Show the add form when the button is clicked
   };
   const handleAddButtonOption = () => {
-    setShowAddOptionForm(true); // Show the add form when the button is clicked
+    setShowAddFeeOptionForm(!showAddFeeOptionForm); // Toggle the visibility of the form
+    setShowFeeOptionLabels(true); // Show the labels when the form is displayed
+  };
+
+  const handleSelectFeeOption = (feeOption) => {
+    setSelectedFeeOption(feeOption);
   };
   const handleSettingsClick = () => {
     // Toggle the visibility of FeeOptions data
@@ -292,7 +345,25 @@ const AdminFees = ({ _id }) => {
     // Toggle the visibility of FeeOptions data
     setShowOptions(!showOptions);
   };
+  const handleEditButtonClick = (feeOption) => {
+    setSelectedFeeOption(feeOption);
+    setIsEditing(true);
+  };
+  const toggleEditMode = () => {
+    setEditModeFeeOptions(!editModeFeeOptions);
+  };
+  // Function to handle the update of fee options
+  const handleUpdateFeeOption = (updatedFeeOption) => {
+    // Implement the logic to update the fee options in your state or backend
+    console.log("Updated Fee Option:", updatedFeeOption);
 
+    // Reset state after updating
+    setSelectedFeeOption(null);
+    setIsEditing(false);
+  };
+  const handleEditFeeOptions = () => {
+    setEditModeFeeOptions(true);
+  };
   return (
     <div className="two-column-wrapper">
       <div className="col">
@@ -703,6 +774,7 @@ const AdminFees = ({ _id }) => {
                       fontWeight: "bold",
                       marginRight: "10px",
                     }}
+                    onClick={handleSaveFeeOptions}
                   >
                     حفظ
                   </button>
@@ -712,6 +784,7 @@ const AdminFees = ({ _id }) => {
                       color: "white",
                       fontWeight: "bold",
                     }}
+                    onClick={handleCancelEditFeeOptions}
                   >
                     إلغاء
                   </button>
@@ -767,12 +840,15 @@ const AdminFees = ({ _id }) => {
                     </tbody>
                   </Table>
                   <div className="t3deel">
-                    <button style={{ backgroundColor: "blue", color: "white" }}>
+                    <button
+                      style={{ backgroundColor: "blue", color: "white" }}
+                      onClick={handleEditFeeOptions}
+                    >
                       تعديل
                     </button>
                   </div>
                   <div className="coll">
-                    {/* <button
+                    <button
                       style={{
                         backgroundColor: "blue",
                         color: "white",
@@ -782,75 +858,82 @@ const AdminFees = ({ _id }) => {
                       onClick={handleAddButtonOption}
                     >
                       Add Fee Option
-                    </button> */}
+                    </button>
+
                     {/* Render the add fee option form if showAddFeeOptionForm is true */}
-                    <form>
-                      <Form.Label htmlFor="inputPassword5">
-                        بداية يوم الدفع{" "}
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        className="Type"
-                        onChange={(e) => {
-                          setAddingFeeOption({
-                            ...addingFeeOption,
-                            startingDay: e.target.value,
-                          });
-                        }}
-                      />
-                      <Form.Label htmlFor="inputPassword5">
-                        التأخير مع التغذية حتى اليوم{" "}
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        className="Type"
-                        onChange={(e) => {
-                          setAddingFeeOption({
-                            ...addingFeeOption,
-                            delayWithFoodTillDay: e.target.value,
-                          });
-                        }}
-                      />
-                      <Form.Label htmlFor="inputPassword5">
-                        لتأخير بدون التغذية حتى اليوم
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        className="Type"
-                        onChange={(e) => {
-                          setAddingFeeOption({
-                            ...addingFeeOption,
-                            delayWithoutFoodTillDay: e.target.value,
-                          });
-                        }}
-                      />
-                      <Form.Label htmlFor="inputPassword5">
-                        إعادة التسكين مع غرامة حتى يوم
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        className="Type"
-                        onChange={(e) => {
-                          setAddingFeeOption({
-                            ...addingFeeOption,
-                            rehousingWithFineTillDay: e.target.value,
-                          });
-                        }}
-                      />
-                      <Form.Label htmlFor="inputPassword5">
-                        الحد الأقصى لاسترداد بدل التغذية{" "}
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        className="Type"
-                        onChange={(e) => {
-                          setAddingFeeOption({
-                            ...addingFeeOption,
-                            maximumFeedingAllowanceRefund: e.target.value,
-                          });
-                        }}
-                      />
-                    </form>
+                    {showAddFeeOptionForm && (
+                      <form>
+                        {showFeeOptionLabels && (
+                          <>
+                            <Form.Label htmlFor="inputPassword5">
+                              بداية يوم الدفع
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              className="Type"
+                              onChange={(e) => {
+                                setAddingFeeOption({
+                                  ...addingFeeOption,
+                                  startingDay: e.target.value,
+                                });
+                              }}
+                            />
+                            <Form.Label htmlFor="inputPassword5">
+                              التأخير مع التغذية حتى اليوم
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              className="Type"
+                              onChange={(e) => {
+                                setAddingFeeOption({
+                                  ...addingFeeOption,
+                                  delayWithFoodTillDay: e.target.value,
+                                });
+                              }}
+                            />
+                            <Form.Label htmlFor="inputPassword5">
+                              لتأخير بدون التغذية حتى اليوم
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              className="Type"
+                              onChange={(e) => {
+                                setAddingFeeOption({
+                                  ...addingFeeOption,
+                                  delayWithoutFoodTillDay: e.target.value,
+                                });
+                              }}
+                            />
+                            <Form.Label htmlFor="inputPassword5">
+                              إعادة التسكين مع غرامة حتى يوم
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              className="Type"
+                              onChange={(e) => {
+                                setAddingFeeOption({
+                                  ...addingFeeOption,
+                                  rehousingWithFineTillDay: e.target.value,
+                                });
+                              }}
+                            />
+                            <Form.Label htmlFor="inputPassword5">
+                              الحد الأقصى لاسترداد بدل التغذية{" "}
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              className="Type"
+                              onChange={(e) => {
+                                setAddingFeeOption({
+                                  ...addingFeeOption,
+                                  maximumFeedingAllowanceRefund: e.target.value,
+                                });
+                              }}
+                            />
+                          </>
+                        )}
+                      </form>
+                    )}
                   </div>
                 </>
               )}
