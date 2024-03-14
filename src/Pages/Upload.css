@@ -1,0 +1,12 @@
+
+    input[type="file"] {
+    margin-bottom: 10px;
+  }
+  
+  
+  .uploaded-image {
+    width: 76px;
+    height: 88px;
+    object-fit: cover;
+  }
+  

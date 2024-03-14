@@ -1,0 +1,28 @@
+.checkbox-group {
+  margin: 20px;
+}
+
+.checkbox-group label {
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.checkbox-group input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.check{
+  align-self: flex-start;
+  text-align: right;
+  margin-top: 15px;
+  margin-right: 60px;
+}  
+  .checkbox-group .parent-checkbox {
+    margin-bottom: 15px;
+  }
+  
+  .checkbox-group .child-checkbox {
+    margin-left: 20px;
+  }
+  

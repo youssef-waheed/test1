@@ -1,3 +1,32 @@
+.custom-navbar {
+  background-color: rgb(209, 216, 223);
+}
+
+.custom-logo {
+  color: white;
+  font-size: 24px;
+}
+
+.custom-toggle {
+  border-color: white;
+}
+
+.custom-link {
+  color: white;
+  font-size: 16px;
+  margin-left: 10px;
+  text-decoration: none;
+}
+
+.custom-link:hover {
+  color: rgb(136, 36, 36);
+  
+}
+
+.custom-logo-img {
+  max-width: 100px;
+  height: auto;
+}
 .App {
   text-align: center;
 }
@@ -70,32 +99,3 @@
   }
 }
 
-.custom-navbar {
-  background-color: rgb(209, 216, 223);
-}
-
-.custom-logo {
-  color: white;
-  font-size: 24px;
-}
-
-.custom-toggle {
-  border-color: white;
-}
-
-.custom-link {
-  color: white;
-  font-size: 16px;
-  margin-left: 10px;
-  text-decoration: none;
-}
-
-.custom-link:hover {
-  color: rgb(136, 36, 36);
-  
-}
-
-.custom-logo-img {
-  max-width: 100px;
-  height: auto;
-}
