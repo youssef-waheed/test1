@@ -1,0 +1,25 @@
+.card-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .card {
+    width: 150px; /* Adjust the width as needed */
+    margin-bottom: 10px;
+  }
+  
+  .card-image {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .card-details {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  button {
+    margin-top: 10px;
+  }
