@@ -4,9 +4,9 @@ import "./App.css";
 import React from "react";
 import { useLocation, Route, Routes } from "react-router-dom";
 import Header from "./Shared/UserNav";
-import InquiryAboutAdmission from "./Pages/InquiryAboutAdmission";
-import ApplicationDates from "./Pages/ApplicationDates";
-import ApplicationForm from "./Pages/ApplicationForm";
+import InquiryAboutAdmission from "../src/Pages/InquiryAboutAdmission";
+import ApplicationDates from "../src/Pages/ApplicationDates";
+import ApplicationForm from "../src/Pages/ApplicationForm";
 import Login from "./Authentication/Login";
 import Admin from "./Shared/Header";
 

@@ -2,18 +2,24 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import arabicFont from '../../src/Katibeh-Regular.ttf';
+import fontkit from 'fontkit';
 import frontCardImage from "./1.png"; 
 import backCardImage from "./2.png"; 
 import './PrintCard.css'; 
+
 
 const PrintCard = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
     fetchData();
+    loadFonts();
   }, []);
 
   const fetchData = async () => {
@@ -24,6 +30,15 @@ const PrintCard = () => {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+  };
+
+  const loadFonts = () => {
+    const font = new FontFace('arabic-normal', `url(${arabicFont})`);
+    font.load().then(() => {
+      setFontLoaded(true);
+    }).catch((error) => {
+      console.error('Error loading font:', error);
+    });
   };
 
   const filterData = (dataToFilter) => {
@@ -45,7 +60,7 @@ const PrintCard = () => {
   };
 
   const handleDownloadPDF = () => {
-    if (selectedStudent) {
+    if (selectedStudent && fontLoaded) {
       const frontCardElement = document.getElementById('front-card-template');
       const backCardElement = document.getElementById('back-card-template');
 
@@ -56,41 +71,54 @@ const PrintCard = () => {
           const backImgData = backCanvas.toDataURL('image/png');
 
           // Add front and back images to PDF
-          pdf.addImage(frontImgData, 'PNG', 10, 10, 100, 64); 
-          pdf.addImage(backImgData, 'PNG', 120, 10, 100, 64); 
+          pdf.addImage(frontImgData, 'PNG', 10, 10, 100, 64);
+          pdf.addImage(backImgData, 'PNG', 120, 10, 100, 64);
 
           // Add student data to PDF
           const { studentName, year, studentCode, buildingName, floorName, roomName, image } = selectedStudent;
-          const studentDetails = `
-            الاسم      : ${studentName}
-            السنة      : ${year}
-            كود الطالب : ${studentCode}
-            المبني     : ${buildingName}
-            الطابق     : ${floorName}
-            الغرفة     : ${roomName}
-          `;
+          const studentDetails = [
+            { label: 'الاسم', value: studentName },
+            { label: 'السنة', value: year },
+            { label: 'كود الطالب', value: studentCode },
+            { label: 'المبنى', value: buildingName },
+            { label: 'الطابق', value: floorName },
+            { label: 'الغرفة', value: roomName },
+          ];
 
-          pdf.text(20, 100, studentDetails); // Adjust position (x, y) as needed
+          // Convert base64 image to image data
+          const imgData = image.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
 
           // Add student image to PDF
-          const studentImg = new Image();
-          studentImg.src = image; // Assuming the image path is provided in the student data
-          studentImg.onload = function () {
-            const canvas = document.createElement('canvas');
-            canvas.width = studentImg.width;
-            canvas.height = studentImg.height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(studentImg, 0, 0);
-            const imgData = canvas.toDataURL('image/png');
-            pdf.addImage(imgData, 'PNG', 20, 120, 50, 50); // Adjust image position and size
+          try {
+            if (imgData) {
+              pdf.addImage(imgData, 'PNG', 20, 120, 50, 50); // Adjust image position and size
+            } else {
+              throw new Error('Image data is empty or invalid.');
+            }
+          } catch (error) {
+            console.error('Error adding image to PDF:', error);
+          }
 
-            // Save the PDF file
-            pdf.save('student_card.pdf');
-          };
+          // Set font and encoding for Arabic text
+          pdf.setFont('arabic-normal');
+          pdf.setFontSize(12);
+
+          // Add student details table to PDF using autotable plugin
+          pdf.autoTable({
+            startY: 200,
+            body: studentDetails.map(({ label, value }) => [label, value]),
+            headStyles: { fillColor: [176, 196, 222] }, // Light blue header color
+          });
+
+          // Save the PDF file
+          pdf.save('student_card.pdf');
         });
       });
+    } else {
+      console.error('Font not loaded or no student selected.');
     }
   };
+ 
 
   return (
     <div className="two-column-wrapper">

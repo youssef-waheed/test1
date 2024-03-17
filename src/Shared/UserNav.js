@@ -10,14 +10,16 @@ const UserNav = () => {
 
 
   return (
-    <div>
+   
         <Navbar expand="lg" className="custom-navbar">
           <Container>
-            <Navbar.Brand as={Link} to="/" className="custom-logo">
-              <img src={Logo} alt="Logo" className="custom-logo-img" />
-            </Navbar.Brand>
+           
             <Navbar.Toggle aria-controls="basic-navbar-nav" className="custom-toggle" />
             <Navbar.Collapse id="basic-navbar-nav">
+               <Navbar.Brand as={Link} to="/" className="custom-logo">
+              <img src={Logo} alt="Logo" className="custom-logo-img" />
+              
+            </Navbar.Brand>
               <Nav className="ml-auto">
                 <Nav.Link as={Link} to="/AppDate" className="custom-link">
                   مواعيد التقدم للمدن الجامعية
@@ -35,7 +37,7 @@ const UserNav = () => {
             </Navbar.Collapse>
           </Container>
         </Navbar>
-    </div>
+    
   );
 };
 
