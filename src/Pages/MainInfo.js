@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import "../Style/MainInfo.css";
 import Table from "react-bootstrap/Table";
 import Spinner from "react-bootstrap/Spinner";
@@ -17,20 +16,40 @@ const MainInfo = ({ studentData }) => {
       </div>
     );
   }
-
+  console.log("IMAGEEEEEEEEEEEEEEEEEEEEEEEEEEEEe");
+  console.log(studentData.image);
+  console.log("IMAGEEEEEEEEEEEEEEEEEEEEEEEEEEEEe");
 
   return (
     <div className="table-container">
       <div className="table">
+        {/* {movies.results.map((movie) => (
+              <div className="col-3 card-movie-container" key={movie.id}>
+                <MoviesCard
+                  name={movie.name}
+                  description={movie.description}
+                  image={movie.image_url}
+                  id={movie.id}
+                />
+              </div>
+            ))} */}
+
+        {studentData.image && (
+          <img
+            src="../../../"
+            alt="Student Image"
+            style={{ width: "100px", height: "auto" }}
+          />
+        )}
         <Table striped bordered hover size="sm">
           <thead>
             <tr>
               <th>تاريخ التقدم من الإنترنت</th>
-              {/* {new Date(permissionItem.dateFrom).toLocaleDateString()} */}
               <th>{new Date(studentData.updatedAt).toLocaleDateString()}</th>
             </tr>
           </thead>
           <tbody>
+            <tr></tr>
             <tr>
               <th>الرقم القومى</th>
               <td>{studentData.nationalID}</td>
@@ -107,24 +126,6 @@ const MainInfo = ({ studentData }) => {
               <th> سكن بدون تغذية </th>
               <td>{studentData.HousingWithoutFood}</td>
             </tr>
-          </tbody>
-        </Table>
-      </div>
-      <div className="table" style={{ lineHeight: "3", marginBottom: "50px" }}>
-        <Table striped bordered hover size="sm">
-          <thead>
-            <tr>
-              <th style={{ color: "red", fontWeight: "bold" }}>
-                {" "}
-                بيانات الأعوام السابقة{" "}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* <tr>
-              <th>رقم شئون الطلاب (كود الطالب) </th>
-              <td>{studentData.studentCode}</td>
-            </tr> */}
             <tr>
               <th>الديانة </th>
               <td>{studentData.religion}</td>
@@ -164,7 +165,8 @@ const MainInfo = ({ studentData }) => {
           </tbody>
         </Table>
       </div>
-      {error && (
+
+      {/* {error && (
         <div
           className="warning"
           style={{ marginTop: "20px", textAlign: "center" }}
@@ -172,6 +174,14 @@ const MainInfo = ({ studentData }) => {
           <Alert variant="danger">خطا: لا يوجد بيانات لهذا الطالب/طالبة</Alert>
         </div>
       )}
+      {error && (
+        <div
+          className="warning"
+          style={{ marginTop: "20px", textAlign: "center" }}
+        >
+          <Alert variant="danger">Error: Failed to upload student photo</Alert>
+        </div>
+      )} */}
     </div>
   );
 };

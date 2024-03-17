@@ -5,13 +5,10 @@ import Form from "react-bootstrap/Form";
 import { Checkbox } from "@material-ui/core";
 
 const NumOfStudents = () => {
-  const [applications, setApplications] = useState([]);
-  const [filter, setFilter] = useState("");
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState("pendingApplications");
   const [ofYear, setOfYear] = useState("");
   const [students, setStudents] = useState("");
-  const [filteredStudents, setFilteredStudents] = useState([]);
 
   const [checkboxes, setCheckboxes] = useState(() => {
     const storedCheckboxes = JSON.parse(sessionStorage.getItem("checkboxes"));
@@ -56,7 +53,6 @@ const NumOfStudents = () => {
         const response = await axios.get(
           `http://localhost:5000/statistics/getNumberOfAllStudents${queryString}`
         );
-        console.log(response);
         setStudents(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -66,20 +62,12 @@ const NumOfStudents = () => {
         const response = await axios.get(
           `http://localhost:5000/statistics/getNumberOfAllStudents`
         );
-        console.log(response);
       } catch (error) {
         console.log(error);
       }
     }
   };
-  const filterStudents = (query) => {
-    const filtered = students.filter(
-      (student) =>
-        student.studentName.toLowerCase().includes(query.toLowerCase()) ||
-        student._id.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredStudents(filtered);
-  };
+
   const handleRadioButtonChange = (index) => {
     const updatedCheckboxes = checkboxes.map((checkbox, idx) =>
       idx === index
@@ -125,6 +113,8 @@ const NumOfStudents = () => {
             onChange={handleYearChange}
             value={ofYear} // Attach onChange event handler
           >
+            <option>اختر العام الاكديمي</option>
+
             <option>2025-2026</option>
             <option>2024-2025</option>
             <option>2023-2024</option>
