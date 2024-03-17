@@ -30,6 +30,7 @@ import "../Style/Header.css";
 import AdminFees from "../Pages/SystemManagment/AdminFees";
 import AdminFeeTypes from "../Pages/SystemManagment/AdminFeeTypes";
 import Statistics from "../Pages/Statistics";
+import Reports from "../Pages/Reports";
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -408,7 +409,10 @@ const Header = () => {
           <SIdeBar />
         </div>
         <div className="coll">
-          <AbsenceandPermits />
+          <AbsenceandPermits
+            _id={studentId}
+            studentData={selectedStudentData}
+          />
         </div>
       </div>
     );
@@ -536,7 +540,13 @@ const Header = () => {
       </div>
     );
   }
-
+  function Report() {
+    return (
+      <div>
+        <Reports />
+      </div>
+    );
+  }
   function Text9999() {
     return (
       <div className="two-column-wrapper">
@@ -570,7 +580,7 @@ const Header = () => {
         <Text8 />,
         <Text9 />,
         <Text12 />,
-        "تقارير",
+        <Report />,
         <Stat />,
       ],
       [

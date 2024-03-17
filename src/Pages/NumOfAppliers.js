@@ -2,11 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
-
-const NumOfResident = () => {
-  const [selectedFilter, setSelectedFilter] = useState("pendingApplications");
+const NumOfAppliers = () => {
   const [ofYear, setOfYear] = useState("");
   const [students, setStudents] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("pendingApplications");
 
   const [checkboxes, setCheckboxes] = useState(() => {
     const storedCheckboxes = JSON.parse(sessionStorage.getItem("checkboxes"));
@@ -16,29 +15,44 @@ const NumOfResident = () => {
         { label: "وافد", checked: false },
         { label: "متقدمين", checked: false },
         { label: "مقبولين", checked: false },
+        { label: "مرفوضين", checked: false },
         { label: "قدامى", checked: false },
         { label: "جدد", checked: false },
         { label: "سكن عادى", checked: false },
         { label: "سكن مميز", checked: false },
-        { label: "ذوى احتياجات خاصة", checked: false },
-        { label: "إخلاء  ", checked: false },
+        { label: "مسلم", checked: false },
+        { label: "مسيحى", checked: false },
+        // { label: "نسبة التقدير", checked: false },
+        // { label: "التقدير", checked: false },
+        { label: "ساكنى العام السابق", checked: false },
+        { label: "فى انتظار التنسيق", checked: false },
       ]
     );
   });
+
   var egyptions;
   var expartriates;
   var normalHousing;
   var specialHousing;
   var oldStudent;
   var newStudent;
-  var isEvacuated;
+  var pending;
+  var rejected;
+  var waitingForClassification;
+  var accepted;
+  var muslim;
+  var christian;
+
+  var residentsOfTheYreviousYear;
 
   useEffect(() => {
-    fetchNumOfResident();
+    fetchNumOfAppliers();
   }, [ofYear, selectedFilter]);
 
-  const fetchNumOfResident = async () => {
-    const queryString = `?ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&isEvacuated=${isEvacuated}`;
+  const fetchNumOfAppliers = async () => {
+    const queryString = `?ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&pending=${pending}&rejected=${rejected}&waitingForClassification=${waitingForClassification}&accepted=${accepted}&muslim=${muslim}&christian=${christian}&residentsOfTheYreviousYear=${residentsOfTheYreviousYear}
+
+    `;
     if (
       egyptions ||
       expartriates ||
@@ -46,37 +60,41 @@ const NumOfResident = () => {
       specialHousing ||
       oldStudent ||
       newStudent ||
-      isEvacuated ||
+      pending ||
+      rejected ||
+      waitingForClassification ||
+      accepted ||
+      muslim ||
+      christian ||
+      residentsOfTheYreviousYear ||
       ofYear
     ) {
       try {
         const response = await axios.get(
-          `http://localhost:5000/statistics/getNumberOfResidents${queryString}`
+          `http://localhost:5000/statistics/getNumberOfAppliers${queryString}`
         );
-
         const collegeCounts = response.data.data.collegeCounts;
-
-        // Update the students state with the received data
+        console.log(response);
         setStudents(collegeCounts);
+
+        console.log(queryString);
       } catch (error) {
         console.log(error);
       }
     } else {
       try {
         const response = await axios.get(
-          `http://localhost:5000/statistics/getNumberOfResidents`
+          `http://localhost:5000/statistics/getNumberOfAppliers`
         );
-
         const collegeCounts = response.data.data.collegeCounts;
 
-        // Update the students state with the received data
+        console.log(response);
         setStudents(collegeCounts);
       } catch (error) {
         console.log(error);
       }
     }
   };
-
   const handleRadioButtonChange = (index) => {
     const updatedCheckboxes = checkboxes.map((checkbox, idx) =>
       idx === index
@@ -89,23 +107,30 @@ const NumOfResident = () => {
 
     egyptions = selectedLabel === "مصرى";
     expartriates = selectedLabel === "وافد";
-
     oldStudent = selectedLabel === "قدامى";
     newStudent = selectedLabel === "جدد";
     normalHousing = selectedLabel === "سكن عادى";
     specialHousing = selectedLabel === "سكن مميز";
-    isEvacuated = selectedLabel === "إخلاء";
+    pending = selectedLabel === "متقدمين";
+    rejected = selectedLabel === "مرفوضين";
+    waitingForClassification = selectedLabel === "فى انتظار التنسيق";
+    accepted = selectedLabel === "مقبولين";
+    muslim = selectedLabel === "مسلم";
+    christian = selectedLabel === "مسيحى";
+    residentsOfTheYreviousYear = selectedLabel === "ساكنى العام السابق";
 
-    fetchNumOfResident();
+    fetchNumOfAppliers();
   };
   function handleYearChange(event) {
     const selectedYear = event.target.value;
     setOfYear(selectedYear);
 
-    setOfYear(selectedYear, () => fetchNumOfResident());
+    setOfYear(selectedYear, () => fetchNumOfAppliers());
   }
+
   return (
     <div>
+      {" "}
       <div className="two-column-wrapper">
         <div className="col">
           <div className="select">
@@ -142,14 +167,20 @@ const NumOfResident = () => {
             <thead>
               <tr>
                 <th>الكلية</th>
-                <th>أعداد الساكنين</th>
+                <th>المرفوضين </th>
+                <th>المقبولين </th>
+                <th>فى انتظار تنسيق </th>
+                <th> تنسيقه تم </th>
               </tr>
             </thead>
             <tbody>
               {Object.keys(students).map((collegeName, index) => (
                 <tr key={index}>
                   <td>{collegeName}</td>
-                  <td>{students[collegeName].isHoused}</td>
+                  <td>{students[collegeName].rejected}</td>
+                  <td>{students[collegeName].pending}</td>
+                  <td>{students[collegeName].waitingForClassification}</td>
+                  <td>{students[collegeName].isClassified}</td>
                 </tr>
               ))}
             </tbody>
@@ -160,4 +191,4 @@ const NumOfResident = () => {
   );
 };
 
-export default NumOfResident;
+export default NumOfAppliers;

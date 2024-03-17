@@ -1,22 +1,171 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
+import Form from "react-bootstrap/Form";
+import axios from "axios";
 
-const AbsenceandPermits = () => {
+const AbsenceandPermits = ({ _id, studentData }) => {
+  const [isDivVisible, setIsDivVisible] = useState(false);
+  const [absenceType, setAbsenceType] = useState([]);
+  const [absent, setAbsent] = useState({
+    blockMealsFrom: "",
+    blockMealsTo: "",
+    notes: "",
+    TypeOfAbsence: "",
+    dateFrom: "",
+    dateTo: "",
+  });
+
+  const toggleDiv = () => {
+    setIsDivVisible(!isDivVisible);
+  };
+
+  useEffect(() => {
+    if (_id) {
+      fetchAbsenceAndPermits();
+    }
+  }, [_id]);
+
+  const fetchAbsenceAndPermits = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/absence/${_id}`);
+      console.log(response);
+      setAbsenceType(response.data.data.permission);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleBlockMealsFromChange = (value) => {
+    setAbsent({ ...absent, blockMealsFrom: value });
+  };
+
+  const handleBlockMealsToChange = (value) => {
+    setAbsent({ ...absent, blockMealsTo: value });
+  };
+
+  const addAbsence = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/absence/${_id}`,
+        {
+          notes: absent.notes,
+          TypeOfAbsence: absent.TypeOfAbsence,
+          dateFrom: absent.dateFrom,
+          dateTo: absent.dateTo,
+        }
+      );
+      setAbsent({
+        notes: "",
+        TypeOfAbsence: "",
+        dateFrom: "",
+        dateTo: "",
+      });
+      fetchAbsenceAndPermits();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
-      <div className="warning">
-        <>
-          {["danger"].map((variant) => (
-            <Alert
-              key={variant}
-              variant={variant}
-              style={{ textAlign: "center" }}
+      <div>
+        <button
+          onClick={toggleDiv}
+          className="button"
+          style={{ backgroundColor: "blue", color: "white" }}
+        >
+          إضافة
+        </button>
+        {isDivVisible && (
+          <div style={{ fontWeight: "bold" }}>
+            <br />
+            <p>الإسم: {studentData.studentName}</p>
+            <br />
+            <div className="select1">
+              <Form.Label htmlFor="inputPassword5">النوع </Form.Label>
+              <Form.Control
+                type="text"
+                className="Type"
+                onChange={(e) => {
+                  setAbsent({ ...absent, TypeOfAbsence: e.target.value });
+                }}
+              />
+            </div>
+            <div className="select1">
+              <Form.Label htmlFor="inputPassword5">من تاريخ</Form.Label>
+              <Form.Control
+                type="text"
+                className="Type"
+                onChange={(e) => {
+                  setAbsent({ ...absent, dateFrom: e.target.value });
+                }}
+              />
+            </div>
+            <div className="select1">
+              <Form.Label htmlFor="inputPassword5">حتى تاريخ</Form.Label>
+              <Form.Control
+                type="text"
+                className="Type"
+                onChange={(e) => {
+                  setAbsent({ ...absent, dateTo: e.target.value });
+                }}
+              />
+            </div>
+            <div className="select1">
+              <Form.Label htmlFor="inputPassword5">ملاحظات</Form.Label>
+              <Form.Control
+                type="text"
+                className="Type"
+                onChange={(e) => {
+                  setAbsent({ ...absent, notes: e.target.value });
+                }}
+              />
+            </div>
+
+            <button
+              style={{ backgroundColor: "green", color: "white" }}
+              onClick={addAbsence}
             >
-              لا يوجد بيانات، الطالب غير مسجل بالسكن
-            </Alert>
-          ))}
-        </>
+              حفظ
+            </button>
+          </div>
+        )}
       </div>
+
+      <Table striped bordered hover size="sm">
+        <thead>
+          <tr>
+            <th>النوع</th>
+            <th>من تاريخ</th>
+            <th>حتى تاريخ</th>
+          </tr>
+        </thead>
+        <tbody>
+          {absenceType.map((absence, index) => (
+            <tr key={index}>
+              <td>{absence.TypeOfAbsence}</td>
+              <td>{new Date(absence.dateFrom).toLocaleDateString()}</td>
+              <td>{new Date(absence.dateTo).toLocaleDateString()}</td>{" "}
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+      {absenceType.length === 0 && (
+        <div className="warning">
+          <Alert
+            variant="danger"
+            style={{
+              textAlign: "center",
+              fontSize: "22px",
+              fontWeight: "bold",
+            }}
+          >
+            لا يوجد بيانات لهذا الطالب/طالبة{" "}
+          </Alert>
+        </div>
+      )}
     </div>
   );
 };
