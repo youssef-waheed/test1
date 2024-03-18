@@ -30,6 +30,7 @@ import "../Style/Header.css";
 import AdminFees from "../Pages/SystemManagment/AdminFees";
 import AdminFeeTypes from "../Pages/SystemManagment/AdminFeeTypes";
 import Statistics from "../Pages/Statistics";
+import UniPhoto from "../Pages/UniPhoto";
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -549,6 +550,20 @@ const Header = () => {
       </div>
     );
   }
+
+  function Text99999() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col">
+          <p>صور جامعة حلوان</p>
+        </div>
+        <div className="coll">
+          <UniPhoto />
+        </div>
+      </div>
+    );
+  }
+
   function Text14() {
     return (
       <div>
@@ -591,7 +606,7 @@ const Header = () => {
       [
         <Text10 />,
         <Text99 />,
-        "صور الجامعة",
+        <Text99999 />,
         <Text11 />,
         "الوجبات",
         <Text14 />,
