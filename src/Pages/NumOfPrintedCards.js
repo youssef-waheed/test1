@@ -3,77 +3,39 @@ import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
 
-const NumOfResident = () => {
-  const [selectedFilter, setSelectedFilter] = useState("pendingApplications");
+const NumOfPrintedCards = () => {
   const [ofYear, setOfYear] = useState("");
   const [students, setStudents] = useState("");
-
+  const [date, setDate] = useState("");
   const [checkboxes, setCheckboxes] = useState(() => {
     const storedCheckboxes = JSON.parse(sessionStorage.getItem("checkboxes"));
     return (
       storedCheckboxes || [
-        { label: "مصرى", checked: false },
-        { label: "وافد", checked: false },
-        { label: "متقدمين", checked: false },
-        { label: "مقبولين", checked: false },
-        { label: "قدامى", checked: false },
-        { label: "جدد", checked: false },
-        { label: "سكن عادى", checked: false },
-        { label: "سكن مميز", checked: false },
-        { label: "ذوى احتياجات خاصة", checked: false },
+        { label: "ساكن", checked: false },
+        { label: "تاريخ الطباعة", checked: false },
         { label: "إخلاء  ", checked: false },
       ]
     );
   });
-  var egyptions;
-  var expartriates;
-  var normalHousing;
-  var specialHousing;
-  var oldStudent;
-  var newStudent;
+
   var isEvacuated;
+  var isHoused;
+  var dateOfPrinting;
 
   useEffect(() => {
-    fetchNumOfResident();
-  }, [ofYear, selectedFilter]);
+    fetchNumOfPrintedCards();
+  }, [ofYear, date]);
 
-  const fetchNumOfResident = async () => {
-    const queryString = `?ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&isEvacuated=${isEvacuated}`;
-    if (
-      egyptions ||
-      expartriates ||
-      normalHousing ||
-      specialHousing ||
-      oldStudent ||
-      newStudent ||
-      isEvacuated ||
-      ofYear
-    ) {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/statistics/getNumberOfResidents${queryString}`
-        );
-
-        const collegeCounts = response.data.data.collegeCounts;
-
-        // Update the students state with the received data
-        setStudents(collegeCounts);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/statistics/getNumberOfResidents`
-        );
-
-        const collegeCounts = response.data.data.collegeCounts;
-
-        // Update the students state with the received data
-        setStudents(collegeCounts);
-      } catch (error) {
-        console.log(error);
-      }
+  const fetchNumOfPrintedCards = async () => {
+    const queryString = `?ofYear=${ofYear}&isHoused=${isHoused}&isEvacuated=${isEvacuated}&dateOfPrinting=${date}`;
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/statistics/getNumberOfPrintedCardsForMales${queryString}`
+      );
+      setStudents(response.data.data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -87,23 +49,45 @@ const NumOfResident = () => {
 
     const selectedLabel = updatedCheckboxes[index].label;
 
-    egyptions = selectedLabel === "مصرى";
-    expartriates = selectedLabel === "وافد";
-
-    oldStudent = selectedLabel === "قدامى";
-    newStudent = selectedLabel === "جدد";
-    normalHousing = selectedLabel === "سكن عادى";
-    specialHousing = selectedLabel === "سكن مميز";
+    isHoused = selectedLabel === "ساكن";
+    dateOfPrinting = selectedLabel === "تاريخ الطباعة";
     isEvacuated = selectedLabel === "إخلاء";
 
-    fetchNumOfResident();
+    fetchNumOfPrintedCards();
   };
+  const updateTableAndDatabase = async (selectedDate) => {
+    // Assuming students is an array of objects with properties including date
+    const updatedStudents = students.map((student) => ({
+      ...student,
+      dateOfPrinting: selectedDate, // Assuming the property name is dateOfPrinting
+    }));
+
+    // Update the state to reflect the changes immediately
+    setStudents(updatedStudents);
+
+    try {
+      // Send updated data to the backend to update the database
+      const response = await axios.post(
+        "http://localhost:5000/updateStudents",
+        updatedStudents
+      );
+      console.log("Data updated successfully:", response.data);
+    } catch (error) {
+      console.error("Error updating data:", error);
+      // Handle error
+    }
+  };
+
   function handleYearChange(event) {
     const selectedYear = event.target.value;
     setOfYear(selectedYear);
-
-    setOfYear(selectedYear, () => fetchNumOfResident());
   }
+
+  function handleDateChange(event) {
+    const selectedDate = event.target.value;
+    setDate(selectedDate);
+  }
+
   return (
     <div>
       <div className="two-column-wrapper">
@@ -121,6 +105,15 @@ const NumOfResident = () => {
               <option>2024-2025</option>
               <option>2023-2024</option>
             </Form.Select>
+          </div>
+          <div className="select1">
+            <Form.Label>اليوم </Form.Label>
+            <Form.Control
+              type="date"
+              className="Type"
+              onChange={handleDateChange}
+              value={date}
+            />
           </div>
           {checkboxes.map((checkbox, index) => (
             <div key={index} className="checkbox-row">
@@ -142,14 +135,15 @@ const NumOfResident = () => {
             <thead>
               <tr>
                 <th>الكلية</th>
-                <th>أعداد الساكنين</th>
+                <th>أعداد الطباعة</th>
               </tr>
             </thead>
             <tbody>
               {Object.keys(students).map((collegeName, index) => (
                 <tr key={index}>
                   <td>{collegeName}</td>
-                  <td>{students[collegeName].isHoused}</td>
+                  <td>{students[collegeName].printedCard}</td>
+                  {/* <td>{student.dateOfPrinting}</td> Display the date in the table */}
                 </tr>
               ))}
             </tbody>
@@ -160,4 +154,4 @@ const NumOfResident = () => {
   );
 };
 
-export default NumOfResident;
+export default NumOfPrintedCards;

@@ -13,16 +13,17 @@ const Penalties = ({ studentData, _id }) => {
   const [selectedPenalty, setSelectedPenalty] = useState([]);
   const penaltyKinds = ["جزاء اداري", "جزاء سلوكي"];
   const [penalties, setPenalties] = useState([]);
-
   const [penalty, setPenalty] = useState({
     reason: "",
     penaltyKind: "",
     PenaltyDate: "",
     cancellationDate: "",
   });
+
   const toggleDiv = () => {
     setIsDivVisible(!isDivVisible);
   };
+
   useEffect(() => {
     if (_id) {
       fetchPenalty();
@@ -52,6 +53,7 @@ const Penalties = ({ studentData, _id }) => {
       </div>
     );
   }
+
   const incremented = async () => {
     try {
       const inc = await axios.put(
@@ -77,6 +79,7 @@ const Penalties = ({ studentData, _id }) => {
       console.log(error);
     }
   };
+
   const addPenaltyForMale = async () => {
     try {
       console.log("Sending data:", {
@@ -205,19 +208,20 @@ const Penalties = ({ studentData, _id }) => {
           ))}
         </tbody>
       </Table>
-      <div className="warning">
-        <>
-          {["danger"].map((variant) => (
-            <Alert
-              key={variant}
-              variant={variant}
-              style={{ textAlign: "center" }}
-            >
-              This is a {variant} alert—check it out!
-            </Alert>
-          ))}
-        </>
-      </div>
+      {penalties.length === 0 && (
+        <div className="warning">
+          <Alert
+            variant="danger"
+            style={{
+              textAlign: "center",
+              fontSize: "22px",
+              fontWeight: "bold",
+            }}
+          >
+            لا يوجد بيانات لهذا الطالب/طالبة{" "}
+          </Alert>
+        </div>
+      )}
     </div>
   );
 };

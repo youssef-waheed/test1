@@ -4,7 +4,7 @@ import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
 import { getAuthUser } from "../helper/storage";
-const auth= getAuthUser();
+const auth = getAuthUser();
 
 const Fees = ({ _id }) => {
   const [isDivVisible, setIsDivVisible] = useState(false);
@@ -55,44 +55,38 @@ const Fees = ({ _id }) => {
     }
   };
 
+  const incremented = async () => {
+    try {
+      const inc = await axios.put(
+        `http://localhost:5000/logs/increment/${auth.log.adminID}`,
+        {
+          type: "add",
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-
-const incremented = async()=>{
-  try {
-   const inc= await axios.put(`http://localhost:5000/logs/increment/${auth.log.adminID}`, {
-      type:"add"
-    });
-  
-  
-  } catch (error) {
-    console.log(error);
-    
-  }
-
-}
-
-const createLogs= async()=>{
-  try {
-    const logs= await axios.post('http://localhost:5000/logs/createLogs', {
-      adminID:auth.log.adminID,
-      adminUserName:auth.log.adminUserName,
-      action:"اضافة رسوم",
-      objectName:`للطالب ${userData.studentName},برقم الطالب ${userData.nationalID}`
-    })
-  
-  } catch (error) {
-    console.log(error);
-    
-  }
- 
-
-}
+  const createLogs = async () => {
+    try {
+      const logs = await axios.post("http://localhost:5000/logs/createLogs", {
+        adminID: auth.log.adminID,
+        adminUserName: auth.log.adminUserName,
+        action: "اضافة رسوم",
+        objectName: `للطالب ${userData.studentName},برقم الطالب ${userData.nationalID}`,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const addFee = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios
-        .post(` http://localhost:5000/fees/addFeesForStudents`, {
+      const response = await axios.post(
+        ` http://localhost:5000/fees/addFeesForStudents`,
+        {
           id: _id,
           kind: fee.kind,
           paymentType: fee.paymentType,
@@ -102,21 +96,22 @@ const createLogs= async()=>{
           paymentDate: fee.paymentDate,
           paymentValue: fee.paymentValue,
           payment: fee.payment,
-        })
-        setFee({
-          id: "",
-          kind: "",
-          paymentType: "",
-          ofMonth: "",
-          ofYear: "",
-          PaymentValueNumber: "",
-          paymentDate: "",
-          paymentValue: "",
-          payment: "",
-        });
-        createLogs()
-        incremented() 
-        fetchFeeStatment(_id); 
+        }
+      );
+      setFee({
+        id: "",
+        kind: "",
+        paymentType: "",
+        ofMonth: "",
+        ofYear: "",
+        PaymentValueNumber: "",
+        paymentDate: "",
+        paymentValue: "",
+        payment: "",
+      });
+      createLogs();
+      incremented();
+      fetchFeeStatment(_id);
     } catch (error) {
       console.log(error);
     }
@@ -284,7 +279,7 @@ const createLogs= async()=>{
           <tr></tr>
         </tbody>
       </Table>
-      <div className="warning">
+      {/* <div className="warning">
         <>
           {["danger"].map((variant) => (
             <Alert
@@ -296,7 +291,22 @@ const createLogs= async()=>{
             </Alert>
           ))}
         </>
-      </div>
+        
+      </div> */}
+      {feesData.length === 0 && (
+        <div className="warning">
+          <Alert
+            variant="danger"
+            style={{
+              textAlign: "center",
+              fontSize: "22px",
+              fontWeight: "bold",
+            }}
+          >
+            لا يوجد بيانات لهذا الطالب/طالبة{" "}
+          </Alert>
+        </div>
+      )}
     </div>
   );
 };

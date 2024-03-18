@@ -82,7 +82,7 @@ const Living = ({ studentData }) => {
             </tr>
             <tr>
               <th>المبنى</th>
-              <td>{studentData.buildingId}</td>
+              <td>{studentData.buildingName}</td>
             </tr>
             <tr>
               <th>تاريخ السكن</th>
