@@ -51,7 +51,7 @@ const NumOfResident = () => {
     ) {
       try {
         const response = await axios.get(
-          `http://localhost:5000/statistics/getNumberOfResidents${queryString}`
+          `http://localhost:5000/statistics/getNumberOfResidentsMale${queryString}`
         );
 
         const collegeCounts = response.data.data.collegeCounts;
@@ -64,7 +64,7 @@ const NumOfResident = () => {
     } else {
       try {
         const response = await axios.get(
-          `http://localhost:5000/statistics/getNumberOfResidents`
+          `http://localhost:5000/statistics/getNumberOfResidentsMale`
         );
 
         const collegeCounts = response.data.data.collegeCounts;
