@@ -84,24 +84,57 @@ const SocialResearch = () => {
     applyFilter();
   }, [filter, oldChecked, newChecked, applications]); // Include dependencies in useEffect
 
+  // const applyFilter = () => {
+  //   if (!Array.isArray(applications)) {
+  //     // Ensure applications is an array
+  //     console.error("Applications is not an array");
+  //     return;
+  //   }
+  
+  //   const filteredApps = applications.filter(
+  //     (application) =>
+  //       application.studentName.includes(filter) ||
+  //       application.nationalID.includes(filter) ||
+  //       (oldChecked ? application.oldStudent : true) ||
+  //       (newChecked ? application.newStudent : true)
+  //   );
+  //   console.log("Filtered Applications:", filteredApps);
+  //   setFilteredApplications(filteredApps);
+  // };
+
   const applyFilter = () => {
     if (!Array.isArray(applications)) {
-      // Ensure applications is an array
       console.error("Applications is not an array");
       return;
     }
   
-    const filteredApps = applications.filter(
-      (application) =>
-        application.studentName.includes(filter) ||
-        application.nationalID.includes(filter) ||
-        (oldChecked ? application.oldStudent : true) ||
-        (newChecked ? application.newStudent : true)
-    );
-    console.log("Filtered Applications:", filteredApps);
+    const normalizedFilter = filter.toLowerCase().trim();
+  
+    const filteredApps = applications.filter((application) => {
+      const normalizedName = application.studentName?.trim().toLowerCase();
+      const matchesName = normalizedName?.includes(normalizedFilter);
+      const matchesNationalID = application.nationalID?.includes(filter);
+      const isOldStudent = application.oldStudent;
+      const isNewStudent = application.newStudent;
+  
+      // Check if socialResearchcases is defined and an array before using includes
+      const socialResearchCases = Array.isArray(application.socialResearchcases)
+        ? application.socialResearchcases.map((caseItem) => caseItem.trim().toLowerCase())
+        : [];
+      const matchesSocialResearch = socialResearchCases.includes(normalizedFilter);
+  
+      return (
+        (matchesName || matchesNationalID) &&
+        ((oldChecked && isOldStudent) || (!oldChecked && isNewStudent)) &&
+        (!filter || matchesSocialResearch)
+      );
+    });
+  
     setFilteredApplications(filteredApps);
   };
-
+  
+  
+  
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
   };
