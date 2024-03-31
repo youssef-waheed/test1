@@ -11,6 +11,7 @@ import ExpulsionStudents from "./Reportts/ExpulsionStudents";
 import PrintedCards from "./Reportts/PrintedCards";
 import StudentList from "./Reportts/StudentList";
 import Penalties from "./Reportts/Penalties";
+import ApsenceAndPermitsReport from "./Reportts/ApsenceAndPermitsReport";
 // import Review from "./ReviewOnlineRequests";
 // import AcceptSpecialCases from "./AcceptSpecialCases";
 
@@ -45,6 +46,11 @@ const Page6 = () => (
     <PrintedCards />
   </div>
 );
+const Page7 = () => (
+  <div>
+    <ApsenceAndPermitsReport />
+  </div>
+);
 
 const ButtonDisplay = ({ buttons, handleClick }) => (
   <div>
@@ -63,7 +69,7 @@ const Reports = () => {
   const buttons = [
     { text: "قوائم الطلاب ", page: <Page1 /> },
     { text: "الجزاءات", page: <Page2 /> },
-    { text: "الغياب والتصاريح " },
+    { text: "الغياب والتصاريح ", page: <Page7 /> },
     { text: "الرسوم ", page: <Page3 /> },
     { text: "حالة الغرف  ", page: <Page4 /> },
     { text: "الطلاب المقصوئين ", page: <Page5 /> },
