@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
+import Alert from "react-bootstrap/Alert";
 
 const Penalties = () => {
   const [ofYear, setOfYear] = useState("");
@@ -72,6 +73,7 @@ const Penalties = () => {
           <div className="select1">
             <p>نوع الجزاء</p>
             <Form.Select
+              style={{ width: "150px" }}
               size="sm"
               className="Type"
               m-5
@@ -127,6 +129,20 @@ const Penalties = () => {
               ))}
             </tbody>
           </Table>
+          {penalties.length === 0 && (
+            <div className="warning">
+              <Alert
+                variant="danger"
+                style={{
+                  textAlign: "center",
+                  fontSize: "22px",
+                  fontWeight: "bold",
+                }}
+              >
+                لا يوجد بيانات لهذا الطالب/طالبة{" "}
+              </Alert>
+            </div>
+          )}
         </div>
       </div>
     </div>
