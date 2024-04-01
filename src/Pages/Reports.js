@@ -12,6 +12,8 @@ import PrintedCards from "./Reportts/PrintedCards";
 import StudentList from "./Reportts/StudentList";
 import Penalties from "./Reportts/Penalties";
 import ApsenceAndPermitsReport from "./Reportts/ApsenceAndPermitsReport";
+import StudentsWithOutImage from "./Reportts/StudentsWithOutImage";
+import ResidenceOrder from "./Reportts/ResidenceOrder";
 // import Review from "./ReviewOnlineRequests";
 // import AcceptSpecialCases from "./AcceptSpecialCases";
 
@@ -51,6 +53,16 @@ const Page7 = () => (
     <ApsenceAndPermitsReport />
   </div>
 );
+const Page8 = () => (
+  <div>
+    <StudentsWithOutImage />
+  </div>
+);
+const Page9 = () => (
+  <div>
+    <ResidenceOrder />
+  </div>
+);
 
 const ButtonDisplay = ({ buttons, handleClick }) => (
   <div>
@@ -74,8 +86,8 @@ const Reports = () => {
     { text: "حالة الغرف  ", page: <Page4 /> },
     { text: "الطلاب المقصوئين ", page: <Page5 /> },
     { text: "البطاقات المطبوعة   ", page: <Page6 /> },
-    { text: "احصائية استلام الوجبات " },
-    { text: "احصائية استلام الوجبات " },
+    { text: "طلاب بدون صور ", page: <Page8 /> },
+    { text: "امر تسكين ", page: <Page9 /> },
     { text: "احصائية استلام الوجبات " },
     { text: "احصائية استلام الوجبات " },
     { text: "احصائية استلام الوجبات " },
