@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./Tatbeekat.css";
-import NumOfStudents from "./NumOfStudents";
-import NumOfResident from "./NumOfResident";
-import NumOfAppliers from "./NumOfAppliers";
-import NumOfPrintedCards from "./NumOfPrintedCards";
-import MealPreparation from "./MealPreparation";
+// import NumOfStudents from "./NumOfStudents";
+// import NumOfResident from "./NumOfResident";
+// import NumOfAppliers from "./NumOfAppliers";
+// import NumOfPrintedCards from "./NumOfPrintedCards";
+// import MealPreparation from "./MealPreparation";
 import StatuesOfRooms from "./Reportts/StatuesOfRooms";
 import FeesReports from "./Reportts/FeesReports";
 import ExpulsionStudents from "./Reportts/ExpulsionStudents";
@@ -14,6 +14,7 @@ import Penalties from "./Reportts/Penalties";
 import ApsenceAndPermitsReport from "./Reportts/ApsenceAndPermitsReport";
 import StudentsWithOutImage from "./Reportts/StudentsWithOutImage";
 import ResidenceOrder from "./Reportts/ResidenceOrder";
+import SocialResearchReport from "./Reportts/SocialResearchReport";
 // import Review from "./ReviewOnlineRequests";
 // import AcceptSpecialCases from "./AcceptSpecialCases";
 
@@ -63,6 +64,11 @@ const Page9 = () => (
     <ResidenceOrder />
   </div>
 );
+const Page10 = () => (
+  <div>
+    <SocialResearchReport />
+  </div>
+);
 
 const ButtonDisplay = ({ buttons, handleClick }) => (
   <div>
@@ -88,7 +94,7 @@ const Reports = () => {
     { text: "البطاقات المطبوعة   ", page: <Page6 /> },
     { text: "طلاب بدون صور ", page: <Page8 /> },
     { text: "امر تسكين ", page: <Page9 /> },
-    { text: "احصائية استلام الوجبات " },
+    { text: "  حالات البحث الاجتماعي ", page: <Page10 /> },
     { text: "احصائية استلام الوجبات " },
     { text: "احصائية استلام الوجبات " },
     { text: "احصائية استلام الوجبات " },
