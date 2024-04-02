@@ -3,14 +3,16 @@ import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
+// import ResidenceOrder from './ResidenceOrder';
 
 const ResidenceOrder = () => {
   const [students, setStudents] = useState([]);
+  const [printResidenceOrder, setPrintResidenceOrder] = useState([]);
   const [ofYear, setOfYear] = useState("");
 
   useEffect(() => {
     fetchResidenceOrder();
-    fetchPrintResidenceORder();
+    // fetchPrintResidenceORder();
   }, [ofYear]);
 
   const fetchResidenceOrder = async () => {
@@ -38,44 +40,50 @@ const ResidenceOrder = () => {
       }
     }
   };
-  const fetchPrintResidenceORder = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/reports/printResidenceOrder?ofYear=${ofYear}`,
-        { nationalID: "11111111111111" }
-      );
-      console.log(response);
-    } catch (error) {
-      console.log("====================================");
-      console.log(ofYear);
-      console.log("====================================");
-      console.log(error);
-    }
-  };
+  // const fetchPrintResidenceORder = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       `http://localhost:5000/reports/printResidenceOrderMale?ofYear=2023-2024`,
+  //       { nationalID: ["11111111111111"] }
+  //     );
+  //     console.log("response:");
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  
   function handleYearChange(event) {
     const selectedYear = event.target.value;
     setOfYear(selectedYear);
     setOfYear(selectedYear, () => fetchResidenceOrder());
   }
-  // const handleStudentCheckboxChange = async (index) => {
-  //   const updatedStudents = [...students];
-  //   updatedStudents[index].checked = !updatedStudents[index].checked;
-  //   setStudents(updatedStudents);
-
-  //   if (updatedStudents[index].checked) {
-  //     const nationalID = updatedStudents[index].nationalID;
-
-  //     try {
-  //       const response = await axios.get(
-  //         `http://localhost:5000/reports/printResidenceOrder?ofYear=2023-2024`,
-  //         { nationalID: [nationalID] }
-  //       );
-  //       console.log(response);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // };
+  const handleStudentCheckboxChange = async (index) => {
+    const updatedStudents = [...students];
+    updatedStudents[index].checked = !updatedStudents[index].checked;
+    setStudents(updatedStudents);
+  
+    const selectedStudents = updatedStudents.filter(student => student.checked);
+  
+    const selectedStudentNationalIDs = selectedStudents.map(student => student.nationalID);
+  
+    const selectedStudentsData = [];
+  
+    for (let id of selectedStudentNationalIDs) {
+      try {
+        const response = await axios.post(
+          `http://localhost:5000/reports/printResidenceOrderMale?ofYear=2023-2024`,
+          { nationalID: [id] }
+        );
+        selectedStudentsData.push(...response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  
+    setPrintResidenceOrder(selectedStudentsData);
+  };
+  
 
   return (
     <div>
@@ -102,7 +110,7 @@ const ResidenceOrder = () => {
                 type="checkbox"
                 id={`student-${index}`}
                 label={student.studentName}
-                // onChange={() => handleStudentCheckboxChange(index)}
+                onChange={() => handleStudentCheckboxChange(index)}
               />
             </ul>
           ))}
@@ -111,12 +119,19 @@ const ResidenceOrder = () => {
           <Table striped bordered hover size="sm">
             <thead>
               <tr>
-                <th>اسم الطالب </th>
-                <th>الكلية</th>
-                <th>المبنى </th>
+                <th>امر التسكين</th>
+                {/* <th>الكلية</th>
+                <th>المبنى </th> */}
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+              {printResidenceOrder.map((list, index) => (
+                <tr key={index}>
+                  <td> {list} </td>
+               
+                </tr>
+              ))}
+            </tbody>
           </Table>
           {students.length === 0 && (
             <div className="warning">
