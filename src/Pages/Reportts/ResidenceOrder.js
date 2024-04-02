@@ -72,7 +72,7 @@ const ResidenceOrder = () => {
     for (let id of selectedStudentNationalIDs) {
       try {
         const response = await axios.post(
-          `http://localhost:5000/reports/printResidenceOrderMale?ofYear=2023-2024`,
+          `http://localhost:5000/reports/printResidenceOrder?ofYear=${ofYear}`,
           { nationalID: [id] }
         );
         selectedStudentsData.push(...response.data.data);
