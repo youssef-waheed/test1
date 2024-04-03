@@ -16,11 +16,11 @@ const ResidenceOrder = () => {
   }, [ofYear]);
 
   const fetchResidenceOrder = async () => {
-    const queryString = `?ofYear=${ofYear}`;
+    const queryString = `?ofYear=${ofYear};`;
     if (ofYear) {
       try {
         const response = await axios.get(
-          `http://localhost:5000/reports/residenceOrderMale${queryString}`
+          ` http://localhost:5000/reports/residenceOrderMale${queryString}`
         );
         setStudents(response.data.data.students);
 
@@ -43,7 +43,7 @@ const ResidenceOrder = () => {
   // const fetchPrintResidenceORder = async () => {
   //   try {
   //     const response = await axios.post(
-  //       `http://localhost:5000/reports/printResidenceOrderMale?ofYear=2023-2024`,
+  //      ` http://localhost:5000/reports/printResidenceOrderMale?ofYear=2023-2024,`
   //       { nationalID: ["11111111111111"] }
   //     );
   //     console.log("response:");
@@ -76,7 +76,7 @@ const ResidenceOrder = () => {
     for (let id of selectedStudentNationalIDs) {
       try {
         const response = await axios.post(
-          `http://localhost:5000/reports/printResidenceOrderMale?ofYear=2023-2024`,
+          `http://localhost:5000/reports/printResidenceOrder?ofYear=${ofYear}`,
           { nationalID: [id] }
         );
         selectedStudentsData.push(...response.data.data);
