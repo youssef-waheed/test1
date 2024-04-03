@@ -52,7 +52,7 @@ const ResidenceOrder = () => {
   //     console.log(error);
   //   }
   // };
-  
+
   function handleYearChange(event) {
     const selectedYear = event.target.value;
     setOfYear(selectedYear);
@@ -62,13 +62,17 @@ const ResidenceOrder = () => {
     const updatedStudents = [...students];
     updatedStudents[index].checked = !updatedStudents[index].checked;
     setStudents(updatedStudents);
-  
-    const selectedStudents = updatedStudents.filter(student => student.checked);
-  
-    const selectedStudentNationalIDs = selectedStudents.map(student => student.nationalID);
-  
+
+    const selectedStudents = updatedStudents.filter(
+      (student) => student.checked
+    );
+
+    const selectedStudentNationalIDs = selectedStudents.map(
+      (student) => student.nationalID
+    );
+
     const selectedStudentsData = [];
-  
+
     for (let id of selectedStudentNationalIDs) {
       try {
         const response = await axios.post(
@@ -80,10 +84,9 @@ const ResidenceOrder = () => {
         console.log(error);
       }
     }
-  
+
     setPrintResidenceOrder(selectedStudentsData);
   };
-  
 
   return (
     <div>
@@ -128,7 +131,6 @@ const ResidenceOrder = () => {
               {printResidenceOrder.map((list, index) => (
                 <tr key={index}>
                   <td> {list} </td>
-               
                 </tr>
               ))}
             </tbody>
@@ -154,4 +156,5 @@ const ResidenceOrder = () => {
 };
 
 export default ResidenceOrder;
+
 // ta3del by nour
