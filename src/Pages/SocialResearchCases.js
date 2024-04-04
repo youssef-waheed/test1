@@ -19,40 +19,6 @@ const SocialResearch = () => {
   const [filter, setFilter] = useState("");
   const [filteredApplications, setFilteredApplications] = useState([]); // Define filteredApplications state
 
-  const handleOldChange = () => {
-    setOldChecked(!oldChecked);
-    setNewChecked(oldChecked);
-  };
-
-  const handleNewChange = () => {
-    setNewChecked(!newChecked);
-    setOldChecked(newChecked);
-  };
-
-  useEffect(() => {
-    const areAllChecked = Object.values(childChecked).every((val) => val);
-    setParentChecked(areAllChecked);
-  }, [childChecked]);
-
-  const handleParentChange = (event) => {
-    const isChecked = event.target.checked;
-    setParentChecked(isChecked);
-    setChildChecked({
-      checkbox1: isChecked,
-      checkbox2: isChecked,
-      checkbox3: isChecked,
-      checkbox4: isChecked,
-      checkbox5: isChecked,
-    });
-  };
-
-  const handleChildChange = (event) => {
-    const { name, checked } = event.target;
-    setChildChecked({
-      ...childChecked,
-      [name]: checked,
-    });
-  };
 
   useEffect(() => {
     fetchData();
@@ -77,38 +43,55 @@ const SocialResearch = () => {
       setApplications([]); // Set applications to an empty array on error
     }
   };
-  
-  
+
+
+  const handleOldChange = () => {
+    setOldChecked(!oldChecked);
+    setNewChecked(oldChecked);
+  };
+
+  const handleNewChange = () => {
+    setNewChecked(!newChecked);
+    setOldChecked(newChecked);
+  };
+
+  const handleParentChange = (event) => {
+    const isChecked = event.target.checked;
+    setParentChecked(isChecked);
+    setChildChecked({
+      checkbox1: isChecked,
+      checkbox2: isChecked,
+      checkbox3: isChecked,
+      checkbox4: isChecked,
+      checkbox5: isChecked,
+    });
+  };
+
+  const handleChildChange = (event) => {
+    const { name, checked } = event.target;
+    setChildChecked({
+      ...childChecked,
+      [name]: checked,
+    });
+  };
+
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
+  };
 
   useEffect(() => {
-    applyFilter();
-  }, [filter, oldChecked, newChecked, applications]); // Include dependencies in useEffect
+    const areAllChecked = Object.values(childChecked).every((val) => val);
+    setParentChecked(areAllChecked);
+  }, [childChecked]);
 
-  // const applyFilter = () => {
-  //   if (!Array.isArray(applications)) {
-  //     // Ensure applications is an array
-  //     console.error("Applications is not an array");
-  //     return;
-  //   }
   
-  //   const filteredApps = applications.filter(
-  //     (application) =>
-  //       application.studentName.includes(filter) ||
-  //       application.nationalID.includes(filter) ||
-  //       (oldChecked ? application.oldStudent : true) ||
-  //       (newChecked ? application.newStudent : true)
-  //   );
-  //   console.log("Filtered Applications:", filteredApps);
-  //   setFilteredApplications(filteredApps);
-  // };
-
   const applyFilter = () => {
     if (!Array.isArray(applications)) {
       console.error("Applications is not an array");
       return;
     }
-  
-    const normalizedFilter = filter.toLowerCase().trim();
+
+const normalizedFilter = filter.toLowerCase().trim();
   
     const filteredApps = applications.filter((application) => {
       const normalizedName = application.studentName?.trim().toLowerCase();
@@ -125,19 +108,38 @@ const SocialResearch = () => {
   
       return (
         (matchesName || matchesNationalID) &&
-        ((oldChecked && isOldStudent) || (!oldChecked && isNewStudent)) &&
-        (!filter || matchesSocialResearch)
+        ((oldChecked && isOldStudent) || (!oldChecked && isNewStudent))
       );
     });
   
     setFilteredApplications(filteredApps);
   };
-  
-  
-  
-  const handleFilterChange = (e) => {
-    setFilter(e.target.value);
+
+  const addSocialResearchCase = async () => {
+    const selectedCases = Object.keys(childChecked).filter((key) => childChecked[key]);
+    if (selectedCases.length === 0 || !selectedApplication) {
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/applications/socialResearchcases/${selectedApplication.nationalID}`,
+        { cases: selectedCases }
+      );
+      console.log("Social Research Case Added:", response.data);
+      fetchData();
+
+      // You can handle success or show a message to the user
+    } catch (error) {
+      console.error("Error adding social research case:", error);
+      // You can handle the error and show an appropriate message to the user
+    }
   };
+
+  useEffect(() => {
+    applyFilter();
+  }, [filter, oldChecked, newChecked, applications]); // Include dependencies in useEffect
+
 
   const showDetails = (application) => {
     setSelectedApplication(application);
@@ -243,7 +245,7 @@ const SocialResearch = () => {
       <div className="coll">
   {selectedApplication && (
     <div  style={{ position: 'relative' }}>
-      <img
+       {selectedApplication.image?.data && (<img
         src={`data:image/png;base64,${arrayBufferToBase64(selectedApplication.image.data)}`}
         alt="Student"
         style={{
@@ -253,26 +255,31 @@ const SocialResearch = () => {
           top: 0,
           left: 0,
         }}
-      />
+      />)}
       <div  style={{ marginLeft: '120px' }}>
         <h2>{selectedApplication.studentName}</h2>
-        <p><strong>ID:</strong> {selectedApplication._id}</p>
+        {selectedApplication.nationalID &&<p><strong>National ID:</strong> {selectedApplication.nationalID}</p>}
         <p><strong>Student ID:</strong> {selectedApplication.studentCode}</p>
         <p><strong>Phone Number:</strong> {selectedApplication.phoneNumber}</p>
         <p><strong>Address:</strong> {selectedApplication.residence}</p>
         <p><strong>Date of Birth:</strong> {new Date(selectedApplication.birthDate).toLocaleDateString()}</p>
+        {selectedApplication.socialResearchcases?.length > 0 && (
+      <div>
         <p><strong>Social Research Cases:</strong></p>
         <ul>
           {selectedApplication.socialResearchcases.map((caseItem, index) => (
             <li key={index}>{caseItem}</li>
           ))}
         </ul>
+      </div>
+    )}
         <p><strong>Old Student:</strong> {selectedApplication.oldStudent ? 'Yes' : 'No'}</p>
 <p><strong>New Student:</strong> {selectedApplication.newStudent ? 'Yes' : 'No'}</p>
         {/* Display any other important data */}
       </div>
     </div>
   )}
+   <button onClick={addSocialResearchCase}>Add Social Research Case</button>
 </div>
     </div>
   );
