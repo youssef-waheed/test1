@@ -4,6 +4,8 @@ import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
+import MultilevelDropdown from '../Pages/SakanTest'; 
+
 
 const Living = ({ studentData }) => {
   const [isDivVisible, setIsDivVisible] = useState(false);
@@ -166,44 +168,20 @@ const Living = ({ studentData }) => {
         </>
       </div>
       {isDivVisible && (
-        <div>
-          <select
-            value={selectedBuilding}
-            onChange={(e) => setSelectedBuilding(e.target.value)}
-          >
-            <option value="">Select Building</option>
-            {buildings.map((building) => (
-              <option key={building.buildingId} value={building.buildingId}>
-                {building.buildingName}
-              </option>
-            ))}
-          </select>
+  <div>
+    <MultilevelDropdown
+      selectedCity={selectedBuilding}
+      selectedBuilding={selectedBuilding}
+      selectedFloor={selectedFloor}
+      selectedRoom={selectedRoom}
+      onSelectCity={setSelectedBuilding}
+      onSelectBuilding={setSelectedBuilding}
+      onSelectFloor={setSelectedFloor}
+      onSelectRoom={setSelectedRoom}
+    />
+  </div>
+)}
 
-          <select
-            value={selectedFloor}
-            onChange={(e) => setSelectedFloor(e.target.value)}
-          >
-            <option value="">Select Floor</option>
-            {floors.map((floor) => (
-              <option key={floor.floorId} value={floor.floorId}>
-                {floor.floorNumber}
-              </option>
-            ))}
-          </select>
-
-          <select
-            value={selectedRoom}
-            onChange={(e) => setSelectedRoom(e.target.value)}
-          >
-            <option value="">Select Room</option>
-            {rooms.map((room) => (
-              <option key={room.roomId} value={room.roomId}>
-                {room.roomNumber}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
     </div>
   );
 };

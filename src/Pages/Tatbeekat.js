@@ -5,6 +5,8 @@ import AcceptSpecialCases from "./AcceptSpecialCases";
 import Social from "../Pages/SocialResearchCases";
 import Upload from "../Pages/UploadPhoto";
 import CardPrinting from "../Pages/PrintCard";
+import Recieve from "../Pages/RecieveMeal";
+import Book from "../Pages/BookMeal";
 
 const Page1 = () => (
   <div>
@@ -51,6 +53,19 @@ const Page7 = () => (
     <CardPrinting />
   </div>
 );
+const Page8 = () => (
+  <div>
+    <h2>استلام الوجبات(اكسل)</h2>
+    <Recieve />
+  </div>
+);
+
+const Page9 = () => (
+  <div>
+    <h2>حجز الوجبات(اكسل)</h2>
+    <Book />
+  </div>
+);
 const ButtonDisplay = ({ buttons, handleClick }) => (
   <div>
     <h2>تطبيقات</h2>
@@ -71,13 +86,13 @@ const App = () => {
     { text: "سحب الصور", page: <Page3 /> },
     { text: "تصريح جماعي", page: <Page3 /> },
     { text: "قبول حالات خاصة", page: <Page5 /> },
-    { text: "حجز وجبات (اكسل)", page: <Page3 /> },
+    { text: "حجز وجبات (اكسل)", page: <Page9 /> },
     { text: "رفع الصور", page: <Page6 /> },
     { text: "جزاء جماعي", page: <Page3 /> },
     { text: "طباعة البطاقات", page: <Page7 /> },
     { text: "تغيير نوع السكن", page: <Page3 /> },
     { text: "طباعة اخطار القبول", page: <Page3 /> },
-    { text: "استلام الوجبات(اكسل)", page: <Page3 /> },
+    { text: "استلام الوجبات(اكسل)", page: <Page8 /> },
     { text: "حالات البحث الاجتماعي", page: <Page4 /> },
     { text: "اخلاء جماعي", page: <Page3 /> },
   ];
