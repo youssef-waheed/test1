@@ -76,6 +76,7 @@ const Living = ({ studentData }) => {
         >
           تعديل
         </button>
+        {studentData && (
         <Table>
           <thead>
             <tr>
@@ -115,7 +116,7 @@ const Living = ({ studentData }) => {
               </td>
             </tr>
           </thead>
-        </Table>
+        </Table>)}
       </div>{" "}
       {isUpdating && (
         <div>
@@ -138,6 +139,7 @@ const Living = ({ studentData }) => {
           بيانات الطالب
         </p>
       </div>
+      {studentData && studentData.buildingId && (
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
@@ -153,7 +155,7 @@ const Living = ({ studentData }) => {
             <td>{new Date(studentData.housingDate).toLocaleDateString()}</td>
           </tr>
         </thead>
-      </Table>
+      </Table>)}
       <div className="warning">
         <>
           {["danger"].map((variant) => (
@@ -187,3 +189,5 @@ const Living = ({ studentData }) => {
 };
 
 export default Living;
+
+//BookMeal,RecieveMela Done and Living Done choosing
