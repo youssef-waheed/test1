@@ -7,6 +7,9 @@ import Upload from "../Pages/UploadPhoto";
 import CardPrinting from "../Pages/PrintCard";
 import Recieve from "../Pages/RecieveMeal";
 import Book from "../Pages/BookMeal";
+import Abscence from "../Pages/MassPermissions";
+import Penalty from "../Pages/MassPenalty";
+import Expulsion from "../Pages/MassExpulsion";
 
 const Page1 = () => (
   <div>
@@ -66,6 +69,27 @@ const Page9 = () => (
     <Book />
   </div>
 );
+
+const Page10 = () => (
+  <div>
+    <h2> تصريح جماعي</h2>
+    <Abscence />
+  </div>
+);
+const Page11 = () => (
+  <div>
+    <h2> تصريح جماعي</h2>
+    <Penalty />
+  </div>
+);
+
+const Page12 = () => (
+  <div>
+    <h2> تصريح جماعي</h2>
+    <Expulsion />
+  </div>
+);
+
 const ButtonDisplay = ({ buttons, handleClick }) => (
   <div>
     <h2>تطبيقات</h2>
@@ -83,18 +107,17 @@ const App = () => {
   const buttons = [
     { text: "مراجعة طلبات الانترنت", page: <Page1 /> },
     { text: "تنسيق", page: <Page2 /> },
-    { text: "سحب الصور", page: <Page3 /> },
-    { text: "تصريح جماعي", page: <Page3 /> },
+    { text: "تصريح جماعي", page: <Page10 /> },
     { text: "قبول حالات خاصة", page: <Page5 /> },
     { text: "حجز وجبات (اكسل)", page: <Page9 /> },
     { text: "رفع الصور", page: <Page6 /> },
-    { text: "جزاء جماعي", page: <Page3 /> },
+    { text: "جزاء جماعي", page: <Page11 /> },
     { text: "طباعة البطاقات", page: <Page7 /> },
     { text: "تغيير نوع السكن", page: <Page3 /> },
     { text: "طباعة اخطار القبول", page: <Page3 /> },
     { text: "استلام الوجبات(اكسل)", page: <Page8 /> },
     { text: "حالات البحث الاجتماعي", page: <Page4 /> },
-    { text: "اخلاء جماعي", page: <Page3 /> },
+    { text: "اخلاء جماعي", page: <Page12 /> },
   ];
 
   const handleClick = (page) => {

@@ -5,11 +5,11 @@ import axios from "axios";
 const SocialResearch = () => {
   const [parentChecked, setParentChecked] = useState(false);
   const [childChecked, setChildChecked] = useState({
-    checkbox1: false,
-    checkbox2: false,
-    checkbox3: false,
-    checkbox4: false,
-    checkbox5: false,
+    longDistance: false,
+    divorce: false,
+    death: false,
+    social: false,
+    sick: false,
   });
 
   const [oldChecked, setOldChecked] = useState(true);
@@ -59,11 +59,11 @@ const SocialResearch = () => {
     const isChecked = event.target.checked;
     setParentChecked(isChecked);
     setChildChecked({
-      checkbox1: isChecked,
-      checkbox2: isChecked,
-      checkbox3: isChecked,
-      checkbox4: isChecked,
-      checkbox5: isChecked,
+      longDistance: isChecked,
+      divorce: isChecked,
+      death: isChecked,
+      social: isChecked,
+      sick: isChecked,
     });
   };
 
@@ -115,19 +115,46 @@ const normalizedFilter = filter.toLowerCase().trim();
     setFilteredApplications(filteredApps);
   };
 
+
+  // const addSocialResearchCase = async () => {
+  //   const selectedCases = Object.keys(childChecked).filter((key) => childChecked[key]);
+  //   if (selectedCases.length === 0 || !selectedApplication) {
+  //     return;
+  //   }
+  
+  //   const queryParams = selectedCases.map((caseKey) => `${caseKey}=true`).join('&');
+  //   const url = `http://localhost:5000/applications/socialResearchcases/${selectedApplication.nationalID}?${queryParams}`;
+  //   console.log(url);
+  //   try {
+  //     const response = await axios.post(url, { cases: selectedCases });
+  //     console.log("Social Research Case Added:", response.data);
+  //     fetchData();
+  
+  //     // You can handle success or show a message to the user
+  //   } catch (error) {
+  //     console.error("Error adding social research case:", error);
+  //     // You can handle the error and show an appropriate message to the user
+  //   }
+  // };
+  
   const addSocialResearchCase = async () => {
     const selectedCases = Object.keys(childChecked).filter((key) => childChecked[key]);
     if (selectedCases.length === 0 || !selectedApplication) {
       return;
     }
-
+  
+    const queryParams = selectedCases.map((caseKey) => `${caseKey}=true`).join('&');
+    const url = `http://localhost:5000/applications/socialResearchcases/${selectedApplication.nationalID}?${queryParams}`;
+    
     try {
-      const response = await axios.post(
-        `http://localhost:5000/applications/socialResearchcases/${selectedApplication.nationalID}`,
-        { cases: selectedCases }
-      );
-      console.log("Social Research Case Added:", response.data);
-      fetchData();
+      await axios.post(url, { cases: selectedCases });
+      console.log("Social Research Case Added");
+      await fetchData(); // Fetch updated data
+      const updatedStudent = applications.find(app => app.nationalID === selectedApplication.nationalID);
+      if (updatedStudent) {
+        setSelectedApplication(updatedStudent);
+        showDetails(updatedStudent);
+      }
 
       // You can handle success or show a message to the user
     } catch (error) {
@@ -135,6 +162,7 @@ const normalizedFilter = filter.toLowerCase().trim();
       // You can handle the error and show an appropriate message to the user
     }
   };
+  
 
   useEffect(() => {
     applyFilter();
@@ -178,18 +206,18 @@ const normalizedFilter = filter.toLowerCase().trim();
       <div>
       <label><input
           type="checkbox"
-          id="checkbox1"
-          name="checkbox1"
-          checked={childChecked.checkbox1}
+          id="longDistance"
+          name="longDistance"
+          checked={childChecked.longDistance}
           onChange={handleChildChange}
         />{" "}بعد المسافة</label>
       </div>
       <div>
       <label> <input
           type="checkbox"
-          id="checkbox2"
-          name="checkbox2"
-          checked={childChecked.checkbox2}
+          id="divorce"
+          name="divorce"
+          checked={childChecked.divorce}
           onChange={handleChildChange}
         />
         {" "}انفصال</label>
@@ -197,9 +225,9 @@ const normalizedFilter = filter.toLowerCase().trim();
       <div>
       <label> <input
           type="checkbox"
-          id="checkbox3"
-          name="checkbox3"
-          checked={childChecked.checkbox3}
+          id="death"
+          name="death"
+          checked={childChecked.death}
           onChange={handleChildChange}
         />
          {" "}وفاة</label>
@@ -207,9 +235,9 @@ const normalizedFilter = filter.toLowerCase().trim();
       <div>
       <label> <input
           type="checkbox"
-          id="checkbox4"
-          name="checkbox4"
-          checked={childChecked.checkbox4}
+          id="social"
+          name="social"
+          checked={childChecked.social}
           onChange={handleChildChange}
         />
           {" "}اجتماعي</label>
@@ -217,9 +245,9 @@ const normalizedFilter = filter.toLowerCase().trim();
       <div>
       <label> <input
           type="checkbox"
-          id="checkbox5"
-          name="checkbox5"
-          checked={childChecked.checkbox5}
+          id="sick"
+          name="sick"
+          checked={childChecked.sick}
           onChange={handleChildChange}
         />
         {" "}مرضي</label>
