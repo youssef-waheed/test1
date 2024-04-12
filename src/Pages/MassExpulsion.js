@@ -12,6 +12,10 @@ const MassExpulsion = () => {
     fetchStudents();
   }, []);
 
+  useEffect(() => {
+    handleSearch();
+  }, [searchQuery]);
+
   const fetchStudents = async () => {
     try {
       const response = await axios.get('http://localhost:5000/basicData/getBasicDataMales');
@@ -75,10 +79,12 @@ const MassExpulsion = () => {
 
   return (
     <div>
-      <label>
+     <div className="two-column-wrapper">
+        <div className="col">
+        <label>
         <input
           type="text"
-          placeholder="Reason for expulsion"
+          placeholder="السبب"
           value={reason}
           onChange={e => setReason(e.target.value)}
         />
@@ -91,7 +97,7 @@ const MassExpulsion = () => {
           onChange={e => setSearchQuery(e.target.value)}
         />
       </label>
-      <h1>Students:</h1>
+      <h1>الطلاب:</h1>
       <ul>
         {filteredStudents.map(student => (
           <li key={student._id}>
@@ -101,12 +107,23 @@ const MassExpulsion = () => {
               onChange={() => toggleSelectStudent(student._id)}
             />
             <div>
-              <strong>Student Name:</strong> {student.studentName || 'Unknown Name'}<br />
+              <strong>اسم الطالب :  </strong> {student.studentName || 'Unknown Name'}<br />
             </div>
           </li>
         ))}
       </ul>
-      <button onClick={applyExpulsion}>Apply Expulsion</button>
+      <button onClick={applyExpulsion}>تسجيل الاخلاء</button>
+        </div>
+
+        <div className="coll">
+          <ul>
+                <li>يتم كتابة سبب الاخلاء ان وجد</li>
+                <li>و من قائمة الطلاب يتم اختيار الاسماء ثم الضغط علي زر تسجيل الاخلاء </li>            
+            </ul>
+            </div>
+        
+        </div>
+      
     </div>
   );
 };

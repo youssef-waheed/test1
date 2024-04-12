@@ -10,6 +10,8 @@ import Book from "../Pages/BookMeal";
 import Abscence from "../Pages/MassPermissions";
 import Penalty from "../Pages/MassPenalty";
 import Expulsion from "../Pages/MassExpulsion";
+import PrintAcceptanceNotification from "./PrintAcceptanceNotification";
+import ChangeHousinhgType from "./ChangeHousingType";
 
 const Page1 = () => (
   <div>
@@ -25,7 +27,8 @@ const Page2 = () => (
 );
 const Page3 = () => (
   <div>
-    <h2>Page 3</h2>
+    <h2>تغيير نوع السكن</h2>
+    <ChangeHousinhgType />
   </div>
 );
 
@@ -78,17 +81,25 @@ const Page10 = () => (
 );
 const Page11 = () => (
   <div>
-    <h2> تصريح جماعي</h2>
+    <h2> جزاء جماعي</h2>
     <Penalty />
   </div>
 );
 
 const Page12 = () => (
   <div>
-    <h2> تصريح جماعي</h2>
+    <h2> اخلاء جماعي</h2>
     <Expulsion />
   </div>
 );
+
+const Page13 = () => (
+  <div>
+    <h2> طباعة اخطار القبول</h2>
+    <PrintAcceptanceNotification />
+  </div>
+);
+
 
 const ButtonDisplay = ({ buttons, handleClick }) => (
   <div>
@@ -114,7 +125,7 @@ const App = () => {
     { text: "جزاء جماعي", page: <Page11 /> },
     { text: "طباعة البطاقات", page: <Page7 /> },
     { text: "تغيير نوع السكن", page: <Page3 /> },
-    { text: "طباعة اخطار القبول", page: <Page3 /> },
+    { text: "طباعة اخطار القبول", page: <Page13 /> },
     { text: "استلام الوجبات(اكسل)", page: <Page8 /> },
     { text: "حالات البحث الاجتماعي", page: <Page4 /> },
     { text: "اخلاء جماعي", page: <Page12 /> },
