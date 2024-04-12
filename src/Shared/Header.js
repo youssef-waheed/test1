@@ -33,6 +33,9 @@ import Statistics from "../Pages/Statistics";
 import UniPhoto from "../Pages/UniPhoto";
 
 import Reports from "../Pages/Reports";
+import ReportsAdmin from "../Pages/SystemManagment/Reports/ReportsAdmin";
+import ApplicationsAdmin from "../Pages/SystemManagment/Applications/ApplicationsAdmins";
+import StatAdmin from "../Pages/SystemManagment/StatisticsAdmin/StatAdmin";
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -549,6 +552,29 @@ const Header = () => {
       </div>
     );
   }
+
+  function ReportAdmin() {
+    return (
+      <div>
+        <ReportsAdmin />
+      </div>
+    );
+  }
+  function AppAdmin() {
+    return (
+      <div>
+        <ApplicationsAdmin />
+      </div>
+    );
+  }
+  function StatisticsAdminn() {
+    return (
+      <div>
+        <StatAdmin />
+      </div>
+    );
+  }
+
   function Text9999() {
     return (
       <div className="two-column-wrapper">
@@ -625,9 +651,9 @@ const Header = () => {
         "الفئات",
         <Text9999 />,
         "المستخدمين",
-        "تطبيقات الطلاب",
-        "احصائيات عامة",
-        "تقارير",
+        <AppAdmin />,
+        <StatisticsAdminn />,
+        <ReportAdmin />,
       ],
     ];
     return show && <div>{buttonContent[activeTab][activeIndex]}</div>;
