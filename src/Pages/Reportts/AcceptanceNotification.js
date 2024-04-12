@@ -1,63 +1,39 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
-// import ResidenceOrder from './ResidenceOrder';
-
-const ResidenceOrder = () => {
+import axios from "axios";
+const AcceptanceNotification = () => {
   const [students, setStudents] = useState([]);
-  const [printResidenceOrder, setPrintResidenceOrder] = useState([]);
-  const [ofYear, setOfYear] = useState("");
+  const [printAcceptanceNotification, setPrintAcceptanceNotification] =
+    useState([]);
+  const { acceptanceNotif, setAcceptanceNotif } = useState({
+    nationalIds: "",
+    ofYear: "",
+  });
 
   useEffect(() => {
-    fetchResidenceOrder();
-    // fetchPrintResidenceORder();
-  }, [ofYear]);
-
-  const fetchResidenceOrder = async () => {
-    const queryString = `?ofYear=${ofYear};`;
-    if (ofYear) {
-      try {
-        const response = await axios.get(
-          ` http://localhost:5000/reports/residenceOrderMale${queryString}`
-        );
-        setStudents(response.data.data.students);
-
-        // console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/reports/residenceOrderMale`
-        );
-        setStudents(response.data.data.students);
-        // console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
+    fetchAcceptanceNotification();
+  });
+  const fetchAcceptanceNotification = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/AcceptanceNotification`,
+        {
+          nationalIds: acceptanceNotif.nationalIds,
+          ofYear: acceptanceNotif.ofYear,
+        }
+      );
+      setAcceptanceNotif({
+        nationalIds: "",
+        ofYear: "",
+      });
+      fetchAcceptanceNotification();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     }
   };
-  // const fetchPrintResidenceORder = async () => {
-  //   try {
-  //     const response = await axios.post(
-  //      ` http://localhost:5000/reports/printResidenceOrderMale?ofYear=2023-2024,`
-  //       { nationalID: ["11111111111111"] }
-  //     );
-  //     console.log("response:");
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  function handleYearChange(event) {
-    const selectedYear = event.target.value;
-    setOfYear(selectedYear);
-    setOfYear(selectedYear, () => fetchResidenceOrder());
-  }
   const handleStudentCheckboxChange = async (index) => {
     const updatedStudents = [...students];
     updatedStudents[index].checked = !updatedStudents[index].checked;
@@ -76,7 +52,7 @@ const ResidenceOrder = () => {
     for (let id of selectedStudentNationalIDs) {
       try {
         const response = await axios.post(
-          `http://localhost:5000/reports/printResidenceOrder?ofYear=${ofYear}`,
+          `http://localhost:5000/AcceptanceNotification/print`,
           { nationalID: [id] }
         );
         selectedStudentsData.push(...response.data.data);
@@ -85,28 +61,13 @@ const ResidenceOrder = () => {
       }
     }
 
-    setPrintResidenceOrder(selectedStudentsData);
+    setPrintAcceptanceNotification(selectedStudentsData);
   };
-
   return (
     <div>
       {" "}
       <div className="two-column-wrapper">
         <div className="col">
-          <div className="select">
-            <p className="academicyear">العام الاكديمي</p>
-            <Form.Select
-              size="sm"
-              className="selectmenu"
-              onChange={handleYearChange}
-              value={ofYear}
-            >
-              <option>اختر العام الاكديمي</option>
-              <option>2025-2026</option>
-              <option>2024-2025</option>
-              <option>2023-2024</option>
-            </Form.Select>
-          </div>
           {students.map((student, index) => (
             <ul key={index}>
               <Form.Check
@@ -124,11 +85,11 @@ const ResidenceOrder = () => {
               <tr>
                 <th>امر التسكين</th>
                 {/* <th>الكلية</th>
-                <th>المبنى </th> */}
+            <th>المبنى </th> */}
               </tr>
             </thead>
             <tbody>
-              {printResidenceOrder.map((list, index) => (
+              {printAcceptanceNotification.map((list, index) => (
                 <tr key={index}>
                   <td> {list} </td>
                 </tr>
@@ -155,6 +116,4 @@ const ResidenceOrder = () => {
   );
 };
 
-export default ResidenceOrder;
-
-// ta3del by nour
+export default AcceptanceNotification;
