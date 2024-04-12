@@ -328,11 +328,18 @@ const Header = () => {
               <div style={{ width: "20px" }} className="search-bar">
                 <input
                   type="text"
+                  placeholder="Search by name or national ID"
+                  value={searchQuery}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                />
+
+                {/* <input
+                  type="text"
                   placeholder="Search students..."
                   value={searchQuery}
                   onChange={handleSearchChange}
                   className="search-input"
-                />
+                /> */}
               </div>
             </div>
             <div
