@@ -16,6 +16,7 @@ import StudentsWithOutImage from "./Reportts/StudentsWithOutImage";
 import ResidenceOrder from "./Reportts/ResidenceOrder";
 import SocialResearchReport from "./Reportts/SocialResearchReport";
 import DeprivedOfMeals from "./Reportts/DeprivedOfMeals";
+import AcceptanceNotification from "./Reportts/AcceptanceNotification";
 // import Review from "./ReviewOnlineRequests";
 // import AcceptSpecialCases from "./AcceptSpecialCases";
 
@@ -75,6 +76,11 @@ const Page11 = () => (
     <DeprivedOfMeals />
   </div>
 );
+const Page12 = () => (
+  <div>
+    <AcceptanceNotification />
+  </div>
+);
 
 const ButtonDisplay = ({ buttons, handleClick }) => (
   <div>
@@ -102,7 +108,7 @@ const Reports = () => {
     { text: "امر تسكين ", page: <Page9 /> },
     { text: "  حالات البحث الاجتماعي ", page: <Page10 /> },
     { text: "  المحرومين من الوجبات ", page: <Page11 /> },
-    { text: "احصائية استلام الوجبات " },
+    { text: "  اخطار القبول ", page: <Page12 /> },
     { text: "احصائية استلام الوجبات " },
     { text: "احصائية استلام الوجبات " },
   ];

@@ -5,8 +5,8 @@ import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import "../Style/StatementCase.css";
 import { getAuthUser } from "../helper/storage";
-const auth= getAuthUser();
-var userData
+const auth = getAuthUser();
+var userData;
 const StatementCase = ({ _id }) => {
   const [loading, setLoading] = useState(false);
   const [statementSituation, setStatementSituation] = useState([]);
@@ -24,37 +24,32 @@ const StatementCase = ({ _id }) => {
   // console.log(_id);
   // console.log('===========dddddddddd=========================');
 
-  const incremented = async()=>{
+  const incremented = async () => {
     try {
-     const inc= await axios.put(`http://localhost:5000/logs/increment/${auth.log.adminID}`, {
-        type:"get"
+      const inc = await axios.put(
+        `http://localhost:5000/logs/increment/${auth.log.adminID}`,
+        {
+          type: "get",
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createLogs = async () => {
+    try {
+      const logs = await axios.post("http://localhost:5000/logs/createLogs", {
+        adminID: auth.log.adminID,
+        adminUserName: auth.log.adminUserName,
+        action: "عرض بيان الحالة",
+        objectName: `للطالب ${userData.studentName},برقم الطالب ${userData.nationalID}`,
       });
-    
-    
     } catch (error) {
       console.log(error);
-      
     }
-  
-  }
-  
-  const createLogs= async()=>{
-    try {
-      const logs= await axios.post('http://localhost:5000/logs/createLogs', {
-        adminID:auth.log.adminID,
-        adminUserName:auth.log.adminUserName,
-        action:"عرض بيان الحالة",
-        objectName:`للطالب ${userData.studentName},برقم الطالب ${userData.nationalID}`
-      })
-    
-    } catch (error) {
-      console.log(error);
-      
-    }
-   
-  
-  }
-  
+  };
+
   const fetchStatementCase = async (_id) => {
     setLoading(true);
     try {
@@ -68,11 +63,11 @@ const StatementCase = ({ _id }) => {
 
       setStatementSituation([response.data.data.student]); // Ensure statementSituation is an array
       // setUserData(response.data.data.student)
-      userData = response.data.data.student
-      console.log('====================================');
+      userData = response.data.data.student;
+      console.log("====================================");
       console.log(userData);
-      console.log('====================================');
-      
+      console.log("====================================");
+
       setPermission(response.data.data.permissionsWithDuration);
       setBuilding(response.data.data.building);
       setLoading(false);
