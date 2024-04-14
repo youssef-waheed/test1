@@ -8,9 +8,10 @@ const CorrectNationalID = ({ nationalID }) => {
   const [students, setStudents] = useState([]);
   const [selectedStudentData, setSelectedStudentData] = useState(null);
   const [updateID, setUpdateID] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchStudents(); // Fetch all students initially
+    fetchStudents(); 
   }, []);
 
   const fetchStudents = async () => {
@@ -21,61 +22,59 @@ const CorrectNationalID = ({ nationalID }) => {
       setStudents(response.data.data.students);
     } catch (error) {
       console.log(error);
+      setError("Failed to fetch student data");
     }
   };
 
   const handleStudentClick = (student) => {
-    setSelectedStudentData(student); // Set the selected student data
-    setUpdateID(student.nationalID); // Set the current national ID in the input field
+    setSelectedStudentData(student);
+    setUpdateID(student.nationalID);
   };
 
   const handleInputChange = (e) => {
-    setUpdateID(e.target.value); // Update the value of the input field
+    setUpdateID(e.target.value);
   };
 
   const updateNationalID = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/changeInfo/${selectedStudentData.nationalID}`, // Use student's nationalID for the endpoint
+        `http://localhost:5000/changeInfo/${selectedStudentData.nationalID}`,
         {
-          newNationalID: updateID, // Update the national ID with the input field value
+          ofYear: selectedStudentData.ofYear,
+          newNationalID: updateID,
         }
       );
-      console.log("Update response:", response.data);
-
+  
+      const updatedStudent = response.data.data.changedData;
+  
       // Update the student in the local state
-      const updatedStudents = students.map((student) => {
-        if (student.nationalID === selectedStudentData.nationalID) {
-          return {
-            ...student,
-            nationalID: updateID, // Update the national ID
-          };
-        }
-        return student;
-      });
-      setStudents(updatedStudents);
-
+      setStudents((prevStudents) =>
+        prevStudents.map((student) =>
+          student.nationalID === selectedStudentData.nationalID
+            ? { ...student, nationalID: updatedStudent.nationalID }
+            : student
+        )
+      );
+  
       // Reset the input field after successful update
       setUpdateID("");
+      setSelectedStudentData(null);
+      setError(null);
     } catch (error) {
       console.log("Update error:", error);
+      setError("Failed to update national ID");
     }
   };
+  
 
   return (
     <div className="two-column-wrapper">
       <div className="col">
-        <div
-          className="students-list-container"
-          style={{ maxHeight: "200px", overflowY: "auto" }}
-        >
+        <div className="students-list-container" style={{ maxHeight: "200px", overflowY: "auto" }}>
           <ul>
             {students.slice(0, 10).map((student, index) => (
               <li key={index}>
-                <button
-                  className="button"
-                  onClick={() => handleStudentClick(student)}
-                >
+                <button className="button" onClick={() => handleStudentClick(student)}>
                   {student.studentName}
                 </button>
               </li>
@@ -84,7 +83,7 @@ const CorrectNationalID = ({ nationalID }) => {
         </div>
       </div>
       <div className="coll">
-        {selectedStudentData && (
+        {selectedStudentData ? (
           <>
             <Table striped bordered hover size="sm">
               <thead>
@@ -103,41 +102,30 @@ const CorrectNationalID = ({ nationalID }) => {
                   <td>{selectedStudentData.College}</td>
                   <td>{selectedStudentData.studentCode}</td>
                   <td>{selectedStudentData.residence}</td>
-                  {/* Add other fields as needed */}
                 </tr>
               </tbody>
             </Table>
             <Form>
               <Form.Group controlId="newNationalID">
                 <Form.Label>الرقم القومي الجديد</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="newNationalID"
-                  value={updateID}
-                  onChange={handleInputChange}
-                />
+                <Form.Control type="text" name="newNationalID" value={updateID} onChange={handleInputChange} />
               </Form.Group>
-              <button
-                type="button"
-                onClick={updateNationalID}
-                style={{ backgroundColor: "blue" }}
-              >
+              <button type="button" onClick={updateNationalID} style={{ backgroundColor: "blue" }}>
                 تحديث الرقم القومي
               </button>
             </Form>
           </>
-        )}
-        {!selectedStudentData && (
+        ) : (
           <div className="warning">
-            <Alert
-              variant="danger"
-              style={{
-                textAlign: "center",
-                fontSize: "22px",
-                fontWeight: "bold",
-              }}
-            >
+            <Alert variant="danger" style={{ textAlign: "center", fontSize: "22px", fontWeight: "bold" }}>
               لم يتم اختيار طالب بعد
+            </Alert>
+          </div>
+        )}
+        {error && (
+          <div className="error">
+            <Alert variant="danger" style={{ textAlign: "center", fontSize: "18px" }}>
+              {error}
             </Alert>
           </div>
         )}

@@ -9,6 +9,27 @@ const Page1 = () => (
   </div>
 );
 
+const Page2 = () => (
+  <div>
+    <h2> تغيير رقم الطالب </h2>
+  </div>
+);
+const Page3 = () => (
+  <div>
+    <h2> الغاء قبول الطالب</h2>
+  </div>
+);
+const Page4 = () => (
+  <div>
+    <h2> تغيير اسم الطالب </h2>
+  </div>
+);
+const Page5 = () => (
+  <div>
+    <h2> نقل الطالب من الجامعة</h2>
+  </div>
+);
+
 const ButtonDisplay = ({ buttons, handleClick }) => (
   <div>
     <h2>تطبيقات</h2>
@@ -30,7 +51,11 @@ const ApplicationsAdmin = () => {
     setStudentId(student._id); // Set the _id of the clicked student
     setSelectedStudentData(student); // Set the selected student data
   };
-  const buttons = [{ text: "تغيير الرقم القومي  ", page: <Page1 /> }];
+  const buttons = [{ text: "تغيير الرقم القومي  ", page: <Page1 /> },
+  { text: "تغيير رقم الطالب  ", page: <Page2 /> },
+  { text: "الغاء قبول الطالب ", page: <Page3 /> },
+  { text: "تغيير اسم الطالب  ", page: <Page4 /> },
+  { text: "نقل الطالب من الجامعة ", page: <Page5 /> }];
 
   const handleClick = (page) => {
     setCurrentPage(page);
