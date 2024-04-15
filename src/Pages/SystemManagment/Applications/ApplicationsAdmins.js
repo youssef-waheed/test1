@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../../Tatbeekat.css";
 import CorrectNationalID from "./CorrectNationalID";
+import CorrectName from "./CorrectName";
 
 const Page1 = () => (
   <div>
@@ -22,6 +23,7 @@ const Page3 = () => (
 const Page4 = () => (
   <div>
     <h2> تغيير اسم الطالب </h2>
+    <CorrectName />
   </div>
 );
 const Page5 = () => (

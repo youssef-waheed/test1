@@ -7,7 +7,7 @@ import Alert from "react-bootstrap/Alert";
 const CorrectNationalID = ({ nationalID }) => {
   const [students, setStudents] = useState([]);
   const [selectedStudentData, setSelectedStudentData] = useState(null);
-  const [updateID, setUpdateID] = useState("");
+  const [updateName, setUpdateName] = useState("");
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -30,20 +30,20 @@ const CorrectNationalID = ({ nationalID }) => {
 
   const handleStudentClick = (student) => {
     setSelectedStudentData(student);
-    setUpdateID(student.nationalID);
+    setUpdateName(student.studentName);
   };
 
   const handleInputChange = (e) => {
-    setUpdateID(e.target.value);
+    setUpdateName(e.target.value);
   };
 
   const updateNationalID = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/changeInfo/${selectedStudentData.nationalID}`,
+        `http://localhost:5000/changeInfo/name/${selectedStudentData._id}`,
         {
           ofYear: selectedStudentData.ofYear,
-          newNationalID: updateID,
+          studentName: updateName,
         }
       );
   
@@ -52,19 +52,19 @@ const CorrectNationalID = ({ nationalID }) => {
       // Update the student in the local state
       setStudents((prevStudents) =>
         prevStudents.map((student) =>
-          student.nationalID === selectedStudentData.nationalID
-            ? { ...student, nationalID: updatedStudent.nationalID }
+          student.studentName === selectedStudentData.studentName
+            ? { ...student, studentName: updatedStudent.studentName }
             : student
         )
       );
   
       // Reset the input field after successful update
-      setUpdateID("");
+      setUpdateName("");
       setSelectedStudentData(null);
       setError(null);
     } catch (error) {
       console.log("Update error:", error);
-      setError("Failed to update national ID");
+      setError("Failed to update Name");
     }
   };
 
@@ -121,11 +121,11 @@ const CorrectNationalID = ({ nationalID }) => {
             </Table>
             <Form>
               <Form.Group controlId="newNationalID">
-                <Form.Label>الرقم القومي الجديد</Form.Label>
-                <Form.Control type="text" name="newNationalID" value={updateID} onChange={handleInputChange} />
+                <Form.Label>الاسم الصحيح</Form.Label>
+                <Form.Control type="text" name="newNationalID" value={updateName} onChange={handleInputChange} />
               </Form.Group>
               <button type="button" onClick={updateNationalID} style={{ backgroundColor: "blue" }}>
-                تحديث الرقم القومي
+                تحديث الاسم
               </button>
             </Form>
           </>
