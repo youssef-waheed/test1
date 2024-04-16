@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import "../../Tatbeekat.css";
 import CorrectNationalID from "./CorrectNationalID";
 import CorrectName from "./CorrectName";
+import CorrectCode from "./CorrectCode";
+import Cancel from "./CancelAcceptance";
+import ChangeUni from "./ChangeUni";
 
 const Page1 = () => (
   <div>
@@ -12,12 +15,14 @@ const Page1 = () => (
 
 const Page2 = () => (
   <div>
-    <h2> تغيير رقم الطالب </h2>
+    <h2> تغيير كود الطالب </h2>
+    <CorrectCode />
   </div>
 );
 const Page3 = () => (
   <div>
     <h2> الغاء قبول الطالب</h2>
+    <Cancel />
   </div>
 );
 const Page4 = () => (
@@ -29,6 +34,7 @@ const Page4 = () => (
 const Page5 = () => (
   <div>
     <h2> نقل الطالب من الجامعة</h2>
+    <ChangeUni />
   </div>
 );
 
@@ -54,7 +60,7 @@ const ApplicationsAdmin = () => {
     setSelectedStudentData(student); // Set the selected student data
   };
   const buttons = [{ text: "تغيير الرقم القومي  ", page: <Page1 /> },
-  { text: "تغيير رقم الطالب  ", page: <Page2 /> },
+  { text: "تغيير كود الطالب  ", page: <Page2 /> },
   { text: "الغاء قبول الطالب ", page: <Page3 /> },
   { text: "تغيير اسم الطالب  ", page: <Page4 /> },
   { text: "نقل الطالب من الجامعة ", page: <Page5 /> }];
