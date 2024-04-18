@@ -36,6 +36,7 @@ import Reports from "../Pages/Reports";
 import ReportsAdmin from "../Pages/SystemManagment/Reports/ReportsAdmin";
 import ApplicationsAdmin from "../Pages/SystemManagment/Applications/ApplicationsAdmins";
 import StatAdmin from "../Pages/SystemManagment/StatisticsAdmin/StatAdmin";
+import Explusion from "../Pages/Explusion";
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -397,7 +398,7 @@ const Header = () => {
           <SIdeBar />
         </div>
         <div className="coll">
-          <Students />
+          <Explusion />
         </div>
       </div>
     );

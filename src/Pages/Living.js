@@ -4,8 +4,7 @@ import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
-import MultilevelDropdown from '../Pages/SakanTest'; 
-
+import MultilevelDropdown from "../Pages/SakanTest";
 
 const Living = ({ studentData }) => {
   const [isDivVisible, setIsDivVisible] = useState(false);
@@ -17,7 +16,15 @@ const Living = ({ studentData }) => {
   const [buildings, setBuildings] = useState([]);
   const [floors, setFloors] = useState([]);
   const [rooms, setRooms] = useState([]);
-
+  const [house, setHouse] = useState({
+    studentId: "",
+    buildingId: "",
+    floorId: "",
+    roomId: "",
+    housingDate: "",
+    evacuationDate: "",
+  });
+  const [housing, housingType] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -52,12 +59,27 @@ const Living = ({ studentData }) => {
     try {
       const response = await axios.put(
         `http://localhost:5000/housing/update/male/${studentData._id}`,
-        updatedData
+        {
+          buildingId: updatedData.buildingId,
+          floorId: updatedData.floorId,
+          housingDate: updatedData.housingDate,
+          evacuationDate: updatedData.evacuationDate,
+        }
       );
       console.log(response);
       setIsUpdating(false);
     } catch (error) {
-      console.error("Error updating data: ", error);
+      if (error.response) {
+        console.log(
+          "Server responded with error status:",
+          error.response.status
+        );
+        console.log("Error data:", error.response.data);
+      } else if (error.request) {
+        console.log("No response received from server.");
+      } else {
+        console.log("Error setting up the request:", error.message);
+      }
     }
   };
 
@@ -77,46 +99,47 @@ const Living = ({ studentData }) => {
           تعديل
         </button>
         {studentData && (
-        <Table>
-          <thead>
-            <tr>
-              <th>الاسم</th>
-              <td>{studentData.studentName}</td>
-            </tr>
-            <tr>
-              <th>المبنى</th>
-              <td>{studentData.buildingName}</td>
-            </tr>
-            <tr>
-              <th>تاريخ السكن</th>
-              <td>
-                {isUpdating ? (
-                  <textarea
-                    name="housingDate"
-                    value={updatedData.housingDate || ""}
-                    onChange={handleChange}
-                  />
-                ) : (
-                  new Date(studentData.housingDate).toLocaleDateString()
-                )}
-              </td>
-            </tr>
-            <tr>
-              <th> تاريخ الإخلاء</th>
-              <td>
-                {isUpdating ? (
-                  <textarea
-                    name="evacuationDate"
-                    value={updatedData.evacuationDate || ""}
-                    onChange={handleChange}
-                  />
-                ) : (
-                  new Date(studentData.evacuationDate).toLocaleDateString()
-                )}{" "}
-              </td>
-            </tr>
-          </thead>
-        </Table>)}
+          <Table>
+            <thead>
+              <tr>
+                <th>الاسم</th>
+                <td>{studentData.studentName}</td>
+              </tr>
+              <tr>
+                <th>المبنى</th>
+                <td>{studentData.buildingName}</td>
+              </tr>
+              <tr>
+                <th>تاريخ السكن</th>
+                <td>
+                  {isUpdating ? (
+                    <textarea
+                      name="housingDate"
+                      value={updatedData.housingDate || ""}
+                      onChange={handleChange}
+                    />
+                  ) : (
+                    new Date(studentData.housingDate).toLocaleDateString()
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <th> تاريخ الإخلاء</th>
+                <td>
+                  {isUpdating ? (
+                    <textarea
+                      name="evacuationDate"
+                      value={updatedData.evacuationDate || ""}
+                      onChange={handleChange}
+                    />
+                  ) : (
+                    new Date(studentData.evacuationDate).toLocaleDateString()
+                  )}
+                </td>
+              </tr>
+            </thead>
+          </Table>
+        )}
       </div>{" "}
       {isUpdating && (
         <div>
@@ -139,23 +162,27 @@ const Living = ({ studentData }) => {
           بيانات الطالب
         </p>
       </div>
-      {studentData && studentData.buildingId && (
-      <Table striped bordered hover size="sm">
-        <thead>
-          <tr>
-            <th>المبنى</th>
-            <td>{studentData.buildingId}</td>
-          </tr>
-          <tr>
-            <th>الغرفة</th>
-            <td>{studentData.roomId}</td>
-          </tr>
-          <tr>
-            <th>تاريخ السكن</th>
-            <td>{new Date(studentData.housingDate).toLocaleDateString()}</td>
-          </tr>
-        </thead>
-      </Table>)}
+      {studentData && studentData.buildingName && (
+        <Table striped bordered hover size="sm">
+          <thead>
+            <tr>
+              <th>المبنى</th>
+              <td>{studentData.buildingName}</td>
+            </tr>
+            <tr>
+              <th>الغرفة</th>
+              <td>{studentData.roomId}</td>
+            </tr>
+            <tr>
+              <th>تاريخ السكن</th>
+              <td>
+                {studentData.housingDate &&
+                  new Date(studentData.housingDate).toLocaleDateString()}
+              </td>
+            </tr>
+          </thead>
+        </Table>
+      )}
       <div className="warning">
         <>
           {["danger"].map((variant) => (
@@ -170,24 +197,21 @@ const Living = ({ studentData }) => {
         </>
       </div>
       {isDivVisible && (
-  <div>
-    <MultilevelDropdown
-      selectedCity={selectedBuilding}
-      selectedBuilding={selectedBuilding}
-      selectedFloor={selectedFloor}
-      selectedRoom={selectedRoom}
-      onSelectCity={setSelectedBuilding}
-      onSelectBuilding={setSelectedBuilding}
-      onSelectFloor={setSelectedFloor}
-      onSelectRoom={setSelectedRoom}
-    />
-  </div>
-)}
-
+        <div>
+          <MultilevelDropdown
+            selectedCity={selectedBuilding}
+            selectedBuilding={selectedBuilding}
+            selectedFloor={selectedFloor}
+            selectedRoom={selectedRoom}
+            onSelectCity={setSelectedBuilding}
+            onSelectBuilding={setSelectedBuilding}
+            onSelectFloor={setSelectedFloor}
+            onSelectRoom={setSelectedRoom}
+          />
+        </div>
+      )}
     </div>
   );
 };
 
 export default Living;
-
-//BookMeal,RecieveMela Done and Living Done choosing
