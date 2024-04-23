@@ -3,6 +3,7 @@ import "../../Tatbeekat.css";
 import ActiveAdmin from "./ActiveAdmin";
 import NumberOfStudentsBasedOnHousing from "./NumberOfStudentsBasedOnHousing";
 import NumberOfRecievedMeals from "./NumberOfRecievedMeals";
+import TakeMeal from "./TakeMeal";
 
 const Page1 = () => (
   <div>
@@ -12,7 +13,8 @@ const Page1 = () => (
 );
 const Page2 = () => (
   <div>
-    <h2> نشاط المستخدمين </h2>
+    <h2> احصائية استلام الوجبات </h2>
+    <TakeMeal />
   </div>
 );
 const Page3 = () => (
@@ -51,7 +53,7 @@ const StatAdmin = () => {
   };
   const buttons = [
     { text: "نشاط المستخدمين ", page: <Page1 /> },
-    // { text: " احصائية استلام وجبات    ", page: <Page2 /> },
+    { text: "احصائية استلام الوجبات", page: <Page2 /> },
     { text: " اعداد الطلاب حسب نوع السكن  ", page: <Page3 /> },
     { text: " عدد الوجبات المستلمة    ", page: <Page4 /> },
   ];

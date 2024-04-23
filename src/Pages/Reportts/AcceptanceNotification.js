@@ -3,36 +3,41 @@ import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
 import axios from "axios";
+
 const AcceptanceNotification = () => {
   const [students, setStudents] = useState([]);
-  const [printAcceptanceNotification, setPrintAcceptanceNotification] =
-    useState([]);
-  const { acceptanceNotif, setAcceptanceNotif } = useState({
-    nationalIds: "",
+  const [ofYear, setOfYear] = useState("");
+  const [printNotif, setPrintNotif] = useState({
     ofYear: "",
+    nationalIds: "",
+    year: "",
+    gradeOfLastYear: "",
+    HousingType: "",
   });
 
   useEffect(() => {
-    fetchAcceptanceNotification();
-  });
+    if (ofYear !== "") {
+      fetchAcceptanceNotification();
+    }
+  }, [ofYear]);
+
   const fetchAcceptanceNotification = async () => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         `http://localhost:5000/AcceptanceNotification`,
         {
-          nationalIds: acceptanceNotif.nationalIds,
-          ofYear: acceptanceNotif.ofYear,
+          ofYear: ofYear,
         }
       );
-      setAcceptanceNotif({
-        nationalIds: "",
-        ofYear: "",
-      });
-      fetchAcceptanceNotification();
-      console.log(response);
+      setStudents(response.data.responseArray);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleYearChange = (event) => {
+    const selectedYear = event.target.value;
+    setOfYear(selectedYear);
   };
   const handleStudentCheckboxChange = async (index) => {
     const updatedStudents = [...students];
@@ -53,50 +58,82 @@ const AcceptanceNotification = () => {
       try {
         const response = await axios.post(
           `http://localhost:5000/AcceptanceNotification/print`,
-          { nationalID: [id] }
+          {
+            ofYear: printNotif.ofYear,
+            nationalIds: printNotif.nationalIds,
+            year: printNotif.year,
+            gradeOfLastYear: printNotif.gradeOfLastYear,
+            HousingType: printNotif.HousingType,
+          }
         );
-        selectedStudentsData.push(...response.data.data);
+        setPrintNotif({
+          ofYear: "",
+          nationalIds: "",
+          year: "",
+          gradeOfLastYear: "",
+          HousingType: "",
+        });
       } catch (error) {
         console.log(error);
       }
     }
 
-    setPrintAcceptanceNotification(selectedStudentsData);
+    // setPrintResidenceOrder(selectedStudentsData);
   };
+
   return (
     <div>
-      {" "}
       <div className="two-column-wrapper">
         <div className="col">
-          {students.map((student, index) => (
-            <ul key={index}>
-              <Form.Check
-                type="checkbox"
-                id={`student-${index}`}
-                label={student.studentName}
-                onChange={() => handleStudentCheckboxChange(index)}
-              />
-            </ul>
-          ))}
+          <div className="select">
+            <p className="academicyear">العام الاكديمي</p>
+            <Form.Select
+              size="sm"
+              className="selectmenu"
+              onChange={handleYearChange}
+              value={ofYear}
+            >
+              <option>اختر العام الاكديمي</option>
+              <option>2025-2026</option>
+              <option>2024-2025</option>
+              <option>2023-2024</option>
+            </Form.Select>
+          </div>
+          {students &&
+            students.length > 0 &&
+            students.map((student, index) => (
+              <ul key={index}>
+                <Form.Check
+                  type="checkbox"
+                  id={`student-${index}`}
+                  label={student.data.studentName}
+                  onChange={() => handleStudentCheckboxChange(index)}
+                />
+              </ul>
+            ))}
         </div>
-        <div className="coll">
-          <Table striped bordered hover size="sm">
-            <thead>
-              <tr>
-                <th>امر التسكين</th>
-                {/* <th>الكلية</th>
-            <th>المبنى </th> */}
-              </tr>
-            </thead>
-            <tbody>
-              {printAcceptanceNotification.map((list, index) => (
+        <Table striped bordered hover size="sm">
+          <thead>
+            <tr>
+              <th>أسم الطالب</th>
+              <th>الكلية</th>
+              <th>كود الطالب </th>
+            </tr>
+          </thead>
+          <tbody>
+            {students &&
+              students.length > 0 &&
+              students.map((student, index) => (
                 <tr key={index}>
-                  <td> {list} </td>
+                  <td>{student.data.studentName}</td>
+                  <td>{student.data.College}</td>
+                  <td>{student.data.studentCode}</td>
                 </tr>
               ))}
-            </tbody>
-          </Table>
-          {students.length === 0 && (
+          </tbody>
+        </Table>
+        <div className="coll">
+          {students && students.length === 0 && (
             <div className="warning">
               <Alert
                 variant="danger"

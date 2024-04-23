@@ -36,6 +36,7 @@ import Reports from "../Pages/Reports";
 import ReportsAdmin from "../Pages/SystemManagment/Reports/ReportsAdmin";
 import ApplicationsAdmin from "../Pages/SystemManagment/Applications/ApplicationsAdmins";
 import StatAdmin from "../Pages/SystemManagment/StatisticsAdmin/StatAdmin";
+import Explusion from "../Pages/Explusion";
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -328,11 +329,18 @@ const Header = () => {
               <div style={{ width: "20px" }} className="search-bar">
                 <input
                   type="text"
+                  placeholder="Search by name or national ID"
+                  value={searchQuery}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                />
+
+                {/* <input
+                  type="text"
                   placeholder="Search students..."
                   value={searchQuery}
                   onChange={handleSearchChange}
                   className="search-input"
-                />
+                /> */}
               </div>
             </div>
             <div
@@ -390,7 +398,7 @@ const Header = () => {
           <SIdeBar />
         </div>
         <div className="coll">
-          <Students />
+          <Explusion />
         </div>
       </div>
     );
