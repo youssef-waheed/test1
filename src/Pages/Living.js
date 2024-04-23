@@ -83,6 +83,10 @@ const Living = ({ studentData }) => {
     }
   };
 
+  
+
+
+
   const handleCancel = () => {
     setIsUpdating(false);
     setUpdatedData({});

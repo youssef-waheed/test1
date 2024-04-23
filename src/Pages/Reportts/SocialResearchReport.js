@@ -19,13 +19,15 @@ const SocialResearchReport = () => {
   });
   var oldStudent;
   var newStudent;
+  var deathFather;
+  var deathParents;
   useEffect(() => {
     fetchSocialResearchRep();
   }, [ofYear]);
 
   const fetchSocialResearchRep = async () => {
-    const queryString = `?ofYear=${ofYear}&oldStudent=${oldStudent}&newStudent=${newStudent}`;
-    if (oldStudent || newStudent || ofYear) {
+    const queryString = `?ofYear=${ofYear}&oldStudent=${oldStudent}&newStudent=${newStudent}&deathFather=${deathFather}&deathParents=${deathParents}`;
+    if (oldStudent || newStudent || deathFather || deathParents || ofYear) {
       try {
         const response = await axios.get(
           `http://localhost:5000/reports/socialResearchcasesReportMale${queryString}`
@@ -61,6 +63,8 @@ const SocialResearchReport = () => {
 
     oldStudent = selectedLabel === "قدامى";
     newStudent = selectedLabel === "جدد";
+    deathFather = selectedLabel === "وفاة الوالد";
+    deathParents = selectedLabel === "وفاة الوالدين";
 
     fetchSocialResearchRep();
   };
