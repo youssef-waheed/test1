@@ -36,6 +36,8 @@ import ReportsAdmin from "../Pages/SystemManagment/Reports/ReportsAdmin";
 import ApplicationsAdmin from "../Pages/SystemManagment/Applications/ApplicationsAdmins";
 import StatAdmin from "../Pages/SystemManagment/StatisticsAdmin/StatAdmin";
 import Explusion from "../Pages/Explusion";
+import BlockMeals from "../Pages/BlockMeals";
+import Users from "../Pages/Users";
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -397,11 +399,12 @@ const Header = () => {
           <SIdeBar />
         </div>
         <div className="coll">
-          <Explusion />
+          <Explusion _id={studentId} />
         </div>
       </div>
     );
   }
+
   function Text4() {
     return (
       <div className="two-column-wrapper">
@@ -460,7 +463,7 @@ const Header = () => {
           <SIdeBar />
         </div>
         <div className="coll">
-          <Meals />{" "}
+          <BlockMeals _id={studentId} />
         </div>
       </div>
     );
@@ -617,6 +620,9 @@ const Header = () => {
       </div>
     );
   }
+  function Text15() {
+    return <Users />;
+  }
 
   function Content({ activeIndex, activeTab, show }) {
     const buttonContent = [
@@ -659,7 +665,7 @@ const Header = () => {
         <Text999 />,
         "الفئات",
         <Text9999 />,
-        "المستخدمين",
+        <Text15 />,
         <AppAdmin />,
         <StatisticsAdminn />,
         <ReportAdmin />,

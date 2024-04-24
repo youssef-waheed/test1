@@ -23,7 +23,7 @@ const AcceptanceNotification = () => {
 
   const fetchAcceptanceNotification = async () => {
     try {
-      const response = await axios.post(
+      const response = await axios.get(
         `http://localhost:5000/AcceptanceNotification`,
         {
           ofYear: ofYear,
@@ -54,29 +54,29 @@ const AcceptanceNotification = () => {
 
     const selectedStudentsData = [];
 
-    for (let id of selectedStudentNationalIDs) {
-      try {
-        const response = await axios.post(
-          `http://localhost:5000/AcceptanceNotification/print`,
-          {
-            ofYear: printNotif.ofYear,
-            nationalIds: printNotif.nationalIds,
-            year: printNotif.year,
-            gradeOfLastYear: printNotif.gradeOfLastYear,
-            HousingType: printNotif.HousingType,
-          }
-        );
-        setPrintNotif({
-          ofYear: "",
-          nationalIds: "",
-          year: "",
-          gradeOfLastYear: "",
-          HousingType: "",
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    // for (let id of selectedStudentNationalIDs) {
+    //   try {
+    //     const response = await axios.post(
+    //       `http://localhost:5000/AcceptanceNotification/print`,
+    //       {
+    //         ofYear: printNotif.ofYear,
+    //         nationalIds: printNotif.nationalIds,
+    //         year: printNotif.year,
+    //         gradeOfLastYear: printNotif.gradeOfLastYear,
+    //         HousingType: printNotif.HousingType,
+    //       }
+    //     );
+    //     setPrintNotif({
+    //       ofYear: "",
+    //       nationalIds: "",
+    //       year: "",
+    //       gradeOfLastYear: "",
+    //       HousingType: "",
+    //     });
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
 
     // setPrintResidenceOrder(selectedStudentsData);
   };
