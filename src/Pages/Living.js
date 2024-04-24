@@ -1,45 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
-import Form from "react-bootstrap/Form";
 import axios from "axios";
-import Spinner from "react-bootstrap/Spinner";
 import MultilevelDropdown from "../Pages/SakanTest";
 
 const Living = ({ studentData }) => {
   const [isDivVisible, setIsDivVisible] = useState(false);
   const [updatedData, setUpdatedData] = useState(studentData || {});
   const [isUpdating, setIsUpdating] = useState(false);
+  const [selectedCity, setSelectedCity] = useState("");
   const [selectedBuilding, setSelectedBuilding] = useState("");
   const [selectedFloor, setSelectedFloor] = useState("");
   const [selectedRoom, setSelectedRoom] = useState("");
-  const [buildings, setBuildings] = useState([]);
-  const [floors, setFloors] = useState([]);
-  const [rooms, setRooms] = useState([]);
-  const [house, setHouse] = useState({
-    studentId: "",
-    buildingId: "",
-    floorId: "",
-    roomId: "",
-    housingDate: "",
-    evacuationDate: "",
-  });
-  const [housing, housingType] = useState(null);
-  useEffect(() => {
-    fetchData();
-  }, []);
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/housing/");
-      const { buildings, floors, rooms } = response.data;
-      setBuildings(buildings);
-      setFloors(floors);
-      setRooms(rooms);
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-    }
-  };
+  
 
   const toggleDiv = () => {
     setIsDivVisible(!isDivVisible);
@@ -60,9 +34,9 @@ const Living = ({ studentData }) => {
       const response = await axios.put(
         `http://localhost:5000/housing/update/male/${studentData._id}`,
         {
-          buildingId: updatedData.buildingId,
-          floorId: updatedData.floorId,
-          roomId: updatedData.roomId,
+          buildingId: selectedBuilding,
+          floorId: selectedFloor,
+          roomId: selectedRoom,
           housingDate: updatedData.housingDate,
           evacuationDate: updatedData.evacuationDate,
         }
@@ -83,10 +57,6 @@ const Living = ({ studentData }) => {
       }
     }
   };
-
-  
-
-
 
   const handleCancel = () => {
     setIsUpdating(false);
@@ -204,11 +174,11 @@ const Living = ({ studentData }) => {
       {isDivVisible && (
         <div>
           <MultilevelDropdown
-            selectedCity={selectedBuilding}
+            selectedCity={selectedCity}
             selectedBuilding={selectedBuilding}
             selectedFloor={selectedFloor}
             selectedRoom={selectedRoom}
-            onSelectCity={setSelectedBuilding}
+            onSelectCity={setSelectedCity}
             onSelectBuilding={setSelectedBuilding}
             onSelectFloor={setSelectedFloor}
             onSelectRoom={setSelectedRoom}

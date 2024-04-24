@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const MultilevelDropdown = () => {
+const MultilevelDropdown = ({
+  selectedCity,
+  selectedBuilding,
+  selectedFloor,
+  selectedRoom,
+  onSelectCity,
+  onSelectBuilding,
+  onSelectFloor,
+  onSelectRoom
+}) => {
   const [cities, setCities] = useState([]);
-  const [selectedCity, setSelectedCity] = useState('');
   const [buildings, setBuildings] = useState([]);
-  const [selectedBuilding, setSelectedBuilding] = useState('');
   const [floors, setFloors] = useState([]);
-  const [selectedFloor, setSelectedFloor] = useState('');
   const [rooms, setRooms] = useState([]);
-  const [selectedRoom, setSelectedRoom] = useState('');
 
   useEffect(() => {
     fetchCities();
@@ -79,7 +84,7 @@ const MultilevelDropdown = () => {
   return (
     <div>
       <label>Select City:</label>
-      <select value={selectedCity} onChange={e => setSelectedCity(e.target.value)}>
+      <select value={selectedCity} onChange={e => onSelectCity(e.target.value)}>
         <option value="">Select City</option>
         {cities.map(city => (
           <option key={city._id} value={city._id}>{city.Name}</option>
@@ -87,7 +92,7 @@ const MultilevelDropdown = () => {
       </select>
 
       <label>Select Building:</label>
-      <select value={selectedBuilding} onChange={e => setSelectedBuilding(e.target.value)}>
+      <select value={selectedBuilding} onChange={e => onSelectBuilding(e.target.value)}>
         <option value="">Select Building</option>
         {buildings.map(building => (
           <option key={building._id} value={building._id}>{building.Name}</option>
@@ -95,7 +100,7 @@ const MultilevelDropdown = () => {
       </select>
 
       <label>Select Floor:</label>
-      <select value={selectedFloor} onChange={e => setSelectedFloor(e.target.value)}>
+      <select value={selectedFloor} onChange={e => onSelectFloor(e.target.value)}>
         <option value="">Select Floor</option>
         {floors.map(floor => (
           <option key={floor._id} value={floor._id}>{floor.Name}</option>
@@ -103,7 +108,7 @@ const MultilevelDropdown = () => {
       </select>
 
       <label>Select Room:</label>
-      <select value={selectedRoom} onChange={e => setSelectedRoom(e.target.value)}>
+      <select value={selectedRoom} onChange={e => onSelectRoom(e.target.value)}>
         <option value="">Select Room</option>
         {rooms.map(room => (
           <option key={room._id} value={room._id}>{room.roomNumber}</option>

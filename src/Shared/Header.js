@@ -178,6 +178,10 @@ const Header = () => {
     fetchStudents();
   }, [College, ofYear]);
 
+const Refresh = () =>{
+fetchStudents();
+}
+
   const fetchStudents = async () => {
     const queryString = `?College=${College}&ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&searchQuery=${searchQuery}`;
 
@@ -326,7 +330,19 @@ const Header = () => {
                   />
                 </div>
               ))}
-
+<button 
+  onClick={Refresh} 
+  style={{
+    backgroundColor: 'blue', 
+    color: 'white', 
+    padding: '5px 10px', 
+    border: 'none',
+    borderRadius: '5px',
+    margin : "5px",
+  }}
+>
+  تحديث البيانات
+</button>
               <div style={{ width: "20px" }} className="search-bar">
                 <input
                   type="text"
