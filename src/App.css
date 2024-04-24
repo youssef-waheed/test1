@@ -5,10 +5,8 @@ body {
   padding: 0;
 }
 
-
 .two-column-wrapper {
   display: flex;
-  flex-wrap: wrap;
   gap: 20px;
   background-color: #f9f9f9;
   padding: 20px;
@@ -27,10 +25,38 @@ body {
 }
 
 .coll {
-  flex: 0 0 72%; /* Flex-grow: 0, Flex-shrink: 0, Flex-basis: 75% */
-  max-width: 72%; /* Added to prevent stretching */
+  flex: 1; /* Flex-grow: 1, takes remaining space */
   background-color: #ffffff;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.student-details-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.right-div,
+.bottom-div,
+.left-div {
+  padding: 20px;
+}
+
+.right-div {
+  margin-top: 50px;
+  margin-left: auto; /* Align to right */
+}
+
+.bottom-div {
+  margin-top: auto; /* Align to bottom */
+}
+
+.left-div {
+  margin-right: 0; /* Align to top */
+}
+
+.left-div img {
+  max-height: 100%;
+  max-width: 10%;
 }

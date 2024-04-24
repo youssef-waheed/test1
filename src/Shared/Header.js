@@ -31,7 +31,6 @@ import AdminFees from "../Pages/SystemManagment/AdminFees";
 import AdminFeeTypes from "../Pages/SystemManagment/AdminFeeTypes";
 import Statistics from "../Pages/Statistics";
 import UniPhoto from "../Pages/UniPhoto";
-
 import Reports from "../Pages/Reports";
 import ReportsAdmin from "../Pages/SystemManagment/Reports/ReportsAdmin";
 import ApplicationsAdmin from "../Pages/SystemManagment/Applications/ApplicationsAdmins";
@@ -535,6 +534,8 @@ const Header = () => {
     );
   }
 
+  
+
   function Text13() {
     return (
       <div className="two-column-wrapper">
@@ -653,7 +654,7 @@ const Header = () => {
         <Text99 />,
         <Text99999 />,
         <Text11 />,
-        "الوجبات",
+       "الوجبات",
         <Text14 />,
         <Text999 />,
         "الفئات",

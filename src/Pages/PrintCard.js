@@ -124,7 +124,7 @@ const PrintCard = () => {
                 <p>Student Code: {selectedStudent.studentCode}</p>
                 {/* Add other student details */}
               </div>
-              <img src={`data:image/png;base64,${arrayBufferToBase64(selectedStudent.image.data)}`} alt="Student" className="student-image" />
+             {selectedStudent.image && <img src={`data:image/png;base64,${arrayBufferToBase64(selectedStudent.image.data)}`} alt="Student" className="student-image" />}
             </div>
             <button onClick={handleDownloadImage}>Download Image</button>
           </div>

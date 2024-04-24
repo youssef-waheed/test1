@@ -26,20 +26,20 @@ const Living = ({ studentData }) => {
   });
   const [housing, housingType] = useState(null);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/housing/");
-        const { buildings, floors, rooms } = response.data;
-        setBuildings(buildings);
-        setFloors(floors);
-        setRooms(rooms);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    };
-
     fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/housing/");
+      const { buildings, floors, rooms } = response.data;
+      setBuildings(buildings);
+      setFloors(floors);
+      setRooms(rooms);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
 
   const toggleDiv = () => {
     setIsDivVisible(!isDivVisible);
@@ -62,6 +62,7 @@ const Living = ({ studentData }) => {
         {
           buildingId: updatedData.buildingId,
           floorId: updatedData.floorId,
+          roomId: updatedData.roomId,
           housingDate: updatedData.housingDate,
           evacuationDate: updatedData.evacuationDate,
         }
@@ -175,7 +176,7 @@ const Living = ({ studentData }) => {
             </tr>
             <tr>
               <th>الغرفة</th>
-              <td>{studentData.roomId}</td>
+              <td>{studentData.roomName}</td>
             </tr>
             <tr>
               <th>تاريخ السكن</th>
