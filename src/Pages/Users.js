@@ -89,7 +89,11 @@ const Users = () => {
           <ul>
             {admins && admins.length > 0 ? (
               admins.map((admin, index) => (
-                <li key={index} onClick={() => handleAdminClick(admin)}>
+                <li
+                  key={index}
+                  onClick={() => handleAdminClick(admin)}
+                  style={{ color: selectedAdmin === admin ? "red" : "black" }}
+                >
                   {admin.name}
                 </li>
               ))
@@ -143,26 +147,11 @@ const Users = () => {
             </p>
             {isEditing ? (
               <>
-                <button
-                  onClick={handleSaveClick}
-                  style={{ backgroundColor: "green", color: "white" }}
-                >
-                  حفظ
-                </button>
-                <button
-                  onClick={handleCancelClick}
-                  style={{ backgroundColor: "red", color: "white" }}
-                >
-                  إلغاء
-                </button>
+                <button onClick={handleSaveClick}>حفظ</button>
+                <button onClick={handleCancelClick}>إلغاء</button>
               </>
             ) : (
-              <button
-                onClick={handleEditClick}
-                style={{ backgroundColor: "blue", color: "white" }}
-              >
-                تعديل
-              </button>
+              <button onClick={handleEditClick}>تعديل</button>
             )}
           </div>
         )}
