@@ -12,6 +12,7 @@ import Penalty from "../Pages/MassPenalty";
 import Expulsion from "../Pages/MassExpulsion";
 import PrintAcceptanceNotification from "./PrintAcceptanceNotification";
 import ChangeHousinhgType from "./ChangeHousingType";
+import ClassificationGeneral from "./ClassificationGeneral";
 
 const Page1 = () => (
   <div>
@@ -22,7 +23,8 @@ const Page1 = () => (
 
 const Page2 = () => (
   <div>
-    <h2>Page 2</h2>
+    <h2>تنسيق</h2>
+    <ClassificationGeneral />
   </div>
 );
 const Page3 = () => (

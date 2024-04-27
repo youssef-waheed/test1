@@ -1,0 +1,37 @@
+ .classification-rules {
+    margin-top: 20px;
+  }
+  
+  .rules-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  
+  .rule {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .add-rule-form {
+    margin-top: 20px;
+  }
+  
+  .classify-form {
+    margin-top: 20px;
+  }
+  
+  .classified-students {
+    margin-top: 20px;
+  }
+  
+  .classified-students ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .classified-students ul li {
+    margin-bottom: 5px;
+  }
+  

@@ -183,6 +183,8 @@ fetchStudents();
 }
 
   const fetchStudents = async () => {
+
+    //TODO : show only those who are classified
     const queryString = `?College=${College}&ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&searchQuery=${searchQuery}`;
 
     if (
