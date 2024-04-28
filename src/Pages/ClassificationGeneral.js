@@ -165,7 +165,7 @@ const ClassificationGeneral = () => {
                     <div className="add-rule-form">
                         <h3>اضافة</h3>
 
-                        <form onSubmit={handleSubmit}>
+                        <form >
                             <input type="text" name="forWho" value={formData.forWho} onChange={handleChange} placeholder="اسم القاعدة" />
                             <input type="text" name="housingType" value={formData.housingType} onChange={handleChange} placeholder="نوع السكن بالتفصيل" />
                             <p>الجنسية</p>
