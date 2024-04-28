@@ -10,7 +10,7 @@ const ClassificationGeneral = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [ofYear, setOfYear] = useState('');
     const [limit, setLimit] = useState(10);
-    const [selectedRule, setSelectedRule] = useState(null); // Track the selected rule
+    const [selectedRule, setSelectedRule] = useState(null); 
     const [ruleId, setRuleId] = useState('');
     const [formData, setFormData] = useState({
         forWho: '',
@@ -170,23 +170,26 @@ const ClassificationGeneral = () => {
                             <input type="text" name="housingType" value={formData.housingType} onChange={handleChange} placeholder="نوع السكن بالتفصيل" />
                             <p>الجنسية</p>
                             <select name="natonality" value={formData.natonality} onChange={handleChange}>
+                            <option value="">_____ </option>
                                 <option value="مصري">مصري </option>
                                 <option value="وافد"> وافد</option>
                             </select>
                             <p>قدم الطالب</p>
                             <select name="oldOrNew" value={formData.oldOrNew} onChange={handleChange}>
-                                <option value="قديم">قديم </option>
+                            <option value="">_____ </option>
+ <option value="قديم">قديم </option>
                                 <option value="جديد"> جديد</option>
                             </select>
                             <p>السكن في السنين الماضية</p>
                             <select name="housingInLastYears" value={formData.housingInLastYears} onChange={handleChange}>
-                                <option value="قديم">قديم </option>
+                            <option value="">_____ </option>
+ <option value="قديم">قديم </option>
                                 <option value="مستجد"> مستجد </option>
                                 <option value="منقطع"> منقطع </option>
                             </select>
                             <div>
-    <input type="number" name="distance" value={formData.distance} onChange={handleChange} placeholder="البعد" disabled={ignoreCriteria.distance} />
-    <input type="checkbox" name="distance" checked={ignoreCriteria.distance} onChange={handleIgnoreChange} />
+    <input type="number" name="distanceRank" value={formData.distanceRank} onChange={handleChange} placeholder="البعد" disabled={ignoreCriteria.distanceRank} />
+    <input type="checkbox" name="distanceRank" checked={ignoreCriteria.distanceRank} onChange={handleIgnoreChange} />
     {/* Repeat for other criteria */}
     <input type="number" name="yearRank" value={formData.yearRank} onChange={handleChange} placeholder="الفرقة الاكبر" disabled={ignoreCriteria.yearRank} />
     <input type="checkbox" name="yearRank" checked={ignoreCriteria.yearRank} onChange={handleIgnoreChange} />
