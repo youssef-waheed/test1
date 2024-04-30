@@ -3,12 +3,16 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
-import "./UserNav.css";
 import Logo from "./HL.jpeg";
 
-const UserNav = () => {
+const TestHeader = () => {
   return (
- <Nav className="Nav">
+    <div>
+         <Navbar expand="lg" className="custom-navbarar">
+     <Container>
+
+          
+          <Nav className="mr-auto">
              <Navbar.Brand href="/" className="custom-logo" >
             <img src={Logo} alt="Logo" className="custom-logo-img" />
           </Navbar.Brand>
@@ -29,7 +33,12 @@ const UserNav = () => {
               تقديم طلب التحاق للمدن الجامعية
             </Nav.Link>
           </Nav>
+         
+        </Container>
+    </Navbar>
+    </div>
+   
 );
 };
 
-export default UserNav;
+export default TestHeader;

@@ -25,7 +25,6 @@ import Instructions from "../Pages/InstructionsForApplying";
 import Tskeen from "../Pages/Tskeen";
 import Tatbeekat from "../Pages/Tatbeekat";
 import TatbeekatFemale from "../FemaleTatbekatTakareerE7saa/TatbeekatFemale";
-import Test from "../Pages/SakanTest";
 import "../Style/Header.css";
 import AdminFees from "../Pages/SystemManagment/AdminFees";
 import AdminFeeTypes from "../Pages/SystemManagment/AdminFeeTypes";
@@ -608,12 +607,8 @@ fetchStudents();
   function Text9999() {
     return (
       <div className="two-column-wrapper">
-        <div className="col">
-          <p>سبحان الله</p>
-        </div>
-        <div className="coll">
-          <Test />
-        </div>
+      
+        
       </div>
     );
   }
