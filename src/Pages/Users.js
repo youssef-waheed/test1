@@ -147,11 +147,26 @@ const Users = () => {
             </p>
             {isEditing ? (
               <>
-                <button onClick={handleSaveClick}>حفظ</button>
-                <button onClick={handleCancelClick}>إلغاء</button>
+                <button
+                  onClick={handleSaveClick}
+                  style={{ backgroundColor: "green", color: "white" }}
+                >
+                  حفظ
+                </button>
+                <button
+                  onClick={handleCancelClick}
+                  style={{ backgroundColor: "red", color: "white" }}
+                >
+                  إلغاء
+                </button>
               </>
             ) : (
-              <button onClick={handleEditClick}>تعديل</button>
+              <button
+                onClick={handleEditClick}
+                style={{ backgroundColor: "blue", color: "white" }}
+              >
+                تعديل
+              </button>
             )}
           </div>
         )}

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
+import { getAuthUser } from "../helper/storage";
+const auth = getAuthUser();
 
 const Explusion = ({ _id }) => {
   const penaltyKinds = ["جزاء اداري", "جزاء سلوكي"];
@@ -13,6 +15,31 @@ const Explusion = ({ _id }) => {
     reason: "",
   });
 
+  const incremented = async () => {
+    try {
+      const inc = await axios.put(
+        `http://localhost:5000/logs/increment/${auth.log.adminID}`,
+        {
+          type: "add",
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createLogs = async () => {
+    try {
+      const logs = await axios.post("http://localhost:5000/logs/createLogs", {
+        adminID: auth.log.adminID,
+        adminUserName: auth.log.adminUserName,
+        action: "اضافة فصل الطالب",
+        objectName: `للطالب ${students.studentName},برقم الطالب ${students.nationalID}`,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const addExplusion = async () => {
     try {
       console.log("Sending data:", {
@@ -26,6 +53,12 @@ const Explusion = ({ _id }) => {
           roomId: students.roomId,
           penaltyKind: students.penaltyKind,
           reason: students.reason,
+        },
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
       console.log(response);
@@ -87,48 +120,17 @@ const Explusion = ({ _id }) => {
               }}
             />
           </div>
-
-          <button
-            style={{ backgroundColor: "green", color: "white" }}
-            onClick={addExplusion}
-          >
-            حفظ
-          </button>
+          {auth && (auth.athurity === "الكل" || auth.athurity === "ادخال") && (
+            <button
+              style={{ backgroundColor: "green", color: "white" }}
+              onClick={addExplusion}
+            >
+              حفظ
+            </button>
+          )}
         </div>
             
       </div>{" "}
-      {/* <Table striped bordered hover size="sm">
-        <thead>
-          <tr>
-            <th>النوع</th>
-            <th>السبب</th>
-            <th>التاريخ </th>
-          </tr>
-        </thead>
-        <tbody>
-          {penalties.map((pen, index) => (
-            <tr key={index}>
-              <td>{pen.penaltyKind}</td>
-              <td>{pen.reason}</td>
-              <td>{new Date(pen.PenaltyDate).toLocaleDateString()}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-      {penalties.length === 0 && (
-        <div className="warning">
-          <Alert
-            variant="danger"
-            style={{
-              textAlign: "center",
-              fontSize: "22px",
-              fontWeight: "bold",
-            }}
-          >
-            لا يوجد بيانات لهذا الطالب/طالبة{" "}
-          </Alert>
-        </div>
-      )} */}
     </div>
   );
 };
