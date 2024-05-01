@@ -32,6 +32,9 @@ const Fees = ({ _id }) => {
       fetchFeeStatment(_id);
       fetchFeeTypes();
     }
+    console.log('====================================');
+    console.log(auth.athurity);
+    console.log('====================================');
   }, [_id]);
 
   const fetchFeeStatment = async (_id) => {
@@ -120,13 +123,19 @@ const Fees = ({ _id }) => {
   return (
     <div>
       <div>
-        <button
-          onClick={toggleDiv}
-          className="button"
-          style={{ backgroundColor: "blue", color: "white" }}
-        >
-          إضافة
-        </button>
+        {auth.athurity=="الكل"&&(
+
+
+<button
+onClick={toggleDiv}
+className="button"
+style={{ backgroundColor: "blue", color: "white" }}
+>
+إضافة
+</button>
+
+        )}
+       
         {isDivVisible && (
           <div style={{ fontWeight: "bold" }}>
             <br></br>
@@ -251,6 +260,7 @@ const Fees = ({ _id }) => {
                 <option>تسدده الطالبة</option>
               </Form.Select>
             </div>
+            
             <button
               style={{ backgroundColor: "green", color: "white" }}
               onClick={addFee}
