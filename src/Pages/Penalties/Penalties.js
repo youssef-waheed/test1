@@ -36,7 +36,12 @@ const Penalties = ({ studentData, _id }) => {
         console.error("Error: _id is undefined");
         return;
       }
-      const response = await axios.get(`http://localhost:5000/penalty/` + _id);
+      const response = await axios.get(`http://localhost:5000/penalty/` + _id, {
+        headers: {
+          authorization: `Bearer__${auth.token}`,
+          "Content-Type": "application/json",
+        },
+      });
       console.log(response);
       setPenalties(response.data.data);
     } catch (error) {
@@ -96,6 +101,12 @@ const Penalties = ({ studentData, _id }) => {
           penaltyKind: selectedPenalty,
           PenaltyDate: penalty.PenaltyDate,
           cancellationDate: penalty.cancellationDate,
+        },
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
 
@@ -176,7 +187,10 @@ const Penalties = ({ studentData, _id }) => {
                 type="text"
                 className="Type"
                 onChange={(e) => {
-                  setPenalty({ ...penalty, cancellationDate: e.target.value });
+                  setPenalty({
+                    ...penalty,
+                    cancellationDate: e.target.value,
+                  });
                 }}
               />
             </div>
@@ -189,7 +203,8 @@ const Penalties = ({ studentData, _id }) => {
           </div>
         )}
             
-      </div>{" "}
+      </div>
+
       <Table striped bordered hover size="sm">
         <thead>
           <tr>

@@ -28,6 +28,7 @@ const BlockMeals = ({ _id }) => {
         `http://localhost:5000/blockMeals/` + _id
       );
       console.log(response);
+      setStudents(response.data.data); // Update students state with the fetched data
     } catch (error) {
       console.log(error);
     }
@@ -148,7 +149,7 @@ const BlockMeals = ({ _id }) => {
         <tbody>
           {students.map((meal, index) => (
             <tr key={index}>
-              <td>{meal.penaltyKind}</td>
+              <td>{meal.meals}</td>
               <td>{new Date(meal.dateFrom).toLocaleDateString()}</td>
               <td>{new Date(meal.dateTo).toLocaleDateString()}</td>
             </tr>
