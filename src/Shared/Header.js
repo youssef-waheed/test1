@@ -37,6 +37,13 @@ import StatAdmin from "../Pages/SystemManagment/StatisticsAdmin/StatAdmin";
 import Explusion from "../Pages/Explusion";
 import BlockMeals from "../Pages/BlockMeals";
 import Users from "../Pages/Users";
+import { removeAuthUser } from "../helper/storage";
+const logout=()=>{
+  removeAuthUser()
+  window.location.href = "/";
+  // window.location.reload()
+  
+}
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -142,6 +149,7 @@ const Header = () => {
     { id: 0, image: man, titel: "بيانات الطلاب" },
     { id: 1, image: woman, titel: "بيانات الطالبات" },
     { id: 2, image: settings, titel: "الإشراف على النظام" },
+    
   ];
 
   function handleButtonClick(index) {
@@ -697,7 +705,9 @@ fetchStudents();
               <button>{tab.titel}</button>
             </li>
           ))}
+          <button className="button"  style={{ backgroundColor: "red", color: "white" }}  onClick={logout}> logout</button>
         </ul>
+        
       </nav>
       <div id="contentDiv">
         {buttonSets[activeTab].map((btn, index) => (
