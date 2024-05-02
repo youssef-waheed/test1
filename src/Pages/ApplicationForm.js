@@ -16,10 +16,6 @@ const App = () => {
   // const [dropdownValue3, setDropdown3Value] = useState("");
   // const [dropdownValue4, setDropdown4Value] = useState("");
 
-  const [newExpartriates, setNewExpartriates] = useState(false);
-  const [oldExpartriates, setOldExpartriates] = useState(false);
-  const [newEgyption, setNewEgyption] = useState(false);
-  const [oldEgyption, setOldEgyption] = useState(false);
   //  const handleCheckbox3Change = () => {
   //     setCheckbox3Checked(!checkbox3Checked);
   //   };
@@ -61,7 +57,7 @@ const App = () => {
   const [checkbox2Checked, setCheckbox2Checked] = useState(false);
   const [checkbox7Checked, setCheckbox7Checked] = useState(false);
   const [nationalID, setNationalID] = useState("");
-  const [studentCode, setStudentCode] = useState("");
+  const [studentCode, setStudentCode] = useState(null);
   const [studentName, setStudentName] = useState("");
   const [birthDate, setBirthDate] = useState("2001-01-01");
   const [placeOfBirth, setPlaceOfBirth] = useState("");
@@ -79,17 +75,16 @@ const App = () => {
   const [guardianRelation, setGuardianRelation] = useState("");
   const [guardianNationalId, setGuardianNationalId] = useState("");
   const [guardianPhone, setGuardianPhone] = useState("");
-  const [AsituationRelatedToTheParents, setAsituationRelatedToTheParents] =
-    useState("");
+  const [AsituationRelatedToTheParents, setAsituationRelatedToTheParents] =useState("");
   const [college, setCollege] = useState("");
-  const [grade, setGrade] = useState("");
+  const [year, setYear] = useState("");
   const [gradeOfLastYear, setGradeOfLastYear] = useState("");
-  const [gradePercentage, setGradePercentage] = useState("");
+  const [gradePercentage, setGradePercentage] = useState(null);
   const [housingInLastYears, setHousingInLastYears] = useState("");
   const [HighSchoolDivision, setHighSchoolDivision] = useState("");
   const [HighSchoolFromAbroad, setHighSchoolFromAbroad] = useState(false);
-  const [HighSchoolGrade, setHighSchoolGrade] = useState("");
-  const [HighSchoolPercentage, setHighSchoolPercentage] = useState("");
+  const [HighSchoolGrade, setHighSchoolGrade] = useState(null);
+  const [HighSchoolPercentage, setHighSchoolPercentage] = useState(null);
   const [HousingType, setHousingType] = useState("");
   const [HousingWithoutFood, setHousingWithoutFood] = useState(false);
   const [withSpecialNeeds, setWithSpecialNeeds] = useState(false);
@@ -122,15 +117,13 @@ const App = () => {
   };
 
   const handleSubmit = async () => {
-    const url = "http://localhost:5000/registration/registerEgy";
-    const Surl = "http://localhost:5000/registration/registerExp";
 
     const NEformData = {
       policy,
-      newEgyption: true,
-      oldEgyption: false,
-      newExpartriates: false,
-      oldExpartriates: false,
+      egyptions: true,
+      oldStudent: false,
+      expartriates: false,
+      newStudent: true,
       nationalID,
       studentCode,
       studentName,
@@ -152,21 +145,20 @@ const App = () => {
       guardianPhone,
       AsituationRelatedToTheParents,
       college,
-      grade,
+      year,
       HighSchoolDivision,
       HighSchoolFromAbroad,
       HighSchoolGrade,
       HighSchoolPercentage,
       HousingType,
-      password,
-      confirmPassword,
+     
     };
     const OEformData = {
       policy,
-      newEgyption: false,
-      oldEgyption: true,
-      newExpartriates: false,
-      oldExpartriates: false,
+      egyptions: true,
+      oldStudent: true,
+      expartriates: false,
+      newStudent: false,
       nationalID,
       studentCode,
       studentName,
@@ -188,20 +180,19 @@ const App = () => {
       guardianPhone,
       AsituationRelatedToTheParents,
       college,
-      grade,
+      year,
       gradeOfLastYear,
       gradePercentage,
       housingInLastYears,
       HousingType,
-      password,
-      confirmPassword,
+      
     };
     const NNEformData = {
       policy,
-      newEgyption: false,
-      oldEgyption: false,
-      newExpartriates: true,
-      oldExpartriates: false,
+      egyptions: false,
+      oldStudent: false,
+      expartriates: true,
+      newStudent: true,
       studentCode,
       studentName,
       birthDate,
@@ -213,23 +204,20 @@ const App = () => {
       landLinePhone,
       phoneNumber,
       college,
-      grade,
+      year,
       HighSchoolDivision,
-      HighSchoolFromAbroad,
       HighSchoolGrade,
       HighSchoolPercentage,
       HousingType,
-      password,
-      confirmPassword,
       PassportNumber,
       nationality,
     };
     const ONEformData = {
       policy,
-      newEgyption: false,
-      oldEgyption: false,
-      newExpartriates: false,
-      oldExpartriates: true,
+      egyptions: false,
+      oldStudent: true,
+      expartriates: true,
+      newStudent: false,
       studentCode,
       studentName,
       birthDate,
@@ -241,13 +229,12 @@ const App = () => {
       landLinePhone,
       phoneNumber,
       college,
-      grade,
+      year,
       gradeOfLastYear,
       gradePercentage,
       housingInLastYears,
       HousingType,
-      password,
-      confirmPassword,
+      
       PassportNumber,
       nationality,
     };
@@ -279,18 +266,19 @@ const App = () => {
         !guardianNationalId ||
         !guardianPhone ||
         !college ||
-        !grade ||
+        !year ||
         !HighSchoolGrade ||
         !HighSchoolPercentage ||
-        !HousingType ||
-        !password ||
-        !confirmPassword
+        !HousingType 
+       
       ) {
         setErrorMessage("يرجى ملء جميع الحقول الإلزامية");
         window.scrollTo({ top: 0, behavior: "smooth" });
+        console.log(NEformData);
+
       } else {
         try {
-          const response = await axios.post(url, NEformData);
+          const response = await axios.post("http://localhost:5000/auth/signUp", NEformData);
           console.log(response);
 
           // Handle success
@@ -341,18 +329,17 @@ const App = () => {
         !guardianNationalId ||
         !guardianPhone ||
         !college ||
-        !grade ||
+        !year ||
         !gradePercentage ||
         !housingInLastYears ||
-        !HousingType ||
-        !password ||
-        !confirmPassword
+        !HousingType 
       ) {
         setErrorMessage("يرجى ملء جميع الحقول الإلزامية");
         window.scrollTo({ top: 0, behavior: "smooth" });
+        console.log(OEformData);
       } else {
         try {
-          const response = await axios.post(url, OEformData);
+          const response = await axios.post("http://localhost:5000/auth/signUp", OEformData);
           console.log(response);
 
           // Handle success
@@ -394,44 +381,70 @@ const App = () => {
         !landLinePhone ||
         !phoneNumber ||
         !college ||
-        !grade ||
+        !year ||
         !HighSchoolGrade ||
         !HighSchoolPercentage ||
         !HousingType ||
-        !password ||
-        !confirmPassword ||
+        
         !PassportNumber ||
         !nationality
       ) {
         setErrorMessage("يرجى ملء جميع الحقول الإلزامية");
         window.scrollTo({ top: 0, behavior: "smooth" });
+        console.log(NNEformData);
         console.log(gender, checkbox1Checked, checkbox2Checked, NewSt, oldSt);
       } else {
         try {
-          const response = await axios.post(Surl, NNEformData);
-
+          console.log("Data being sent:", NNEformData);
+          console.log(`HighSchoolDivision: ${typeof NNEformData.HighSchoolDivision}`);
+          console.log(`HighSchoolGrade: ${typeof NNEformData.HighSchoolGrade}`);
+          console.log(`HighSchoolPercentage: ${typeof NNEformData.HighSchoolPercentage}`);
+          console.log(`HousingType: ${typeof NNEformData.HousingType}`);
+          console.log(`PassportNumber: ${typeof NNEformData.PassportNumber}`);
+          console.log(`birthDate: ${typeof NNEformData.birthDate}`);
+          console.log(`college: ${typeof NNEformData.college}`);
+          console.log(`detailedAddress: ${typeof NNEformData.detailedAddress}`);
+          console.log(`egyptions: ${typeof NNEformData.egyptions}`);
+          console.log(`email: ${typeof NNEformData.email}`);
+          console.log(`expartriates: ${typeof NNEformData.expartriates}`);
+          console.log(`gender: ${typeof NNEformData.gender}`);
+          console.log(`grade: ${typeof NNEformData.grade}`);
+          console.log(`landLinePhone: ${typeof NNEformData.landLinePhone}`);
+          console.log(`nationality: ${typeof NNEformData.nationality}`);
+          console.log(`newStudent: ${typeof NNEformData.newStudent}`);
+          console.log(`oldStudent: ${typeof NNEformData.oldStudent}`);
+          console.log(`phoneNumber: ${typeof NNEformData.phoneNumber}`);
+          console.log(`placeOfBirth: ${typeof NNEformData.placeOfBirth}`);
+          console.log(`policy: ${typeof NNEformData.policy}`);
+          console.log(`religion: ${typeof NNEformData.religion}`);
+          console.log(`studentCode: ${typeof NNEformData.studentCode}`);
+          console.log(`studentName: ${typeof NNEformData.studentName}`);          
+          const response = await axios.post("http://localhost:5000/auth/signUp", NNEformData);
+           
           // Handle success
           console.log("Form data submitted successfully");
           setErrorMessage("تم التسجيل بنجاح");
           window.scrollTo({ top: 0, behavior: "smooth" });
         } catch (error) {
           // Log detailed error information
-
           if (error.response) {
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx
             console.error("Response data:", error.response.data);
             console.error("Response status:", error.response.status);
             console.error("Response headers:", error.response.headers);
-            console.log(
-              gender,
-              religion,
-
-              checkbox1Checked,
-              checkbox2Checked,
-              NewSt,
-              oldSt
-            );
+        
+            // Check for specific error messages or codes and handle them accordingly
+            if (error.response.status === 500) {
+              // Internal Server Error
+              console.error("Internal Server Error occurred:", error.response.data.msgError);
+              // Display error message to the user
+              setErrorMessage("An internal server error occurred. Please try again later.");
+            } else {
+              // Handle other error cases
+              console.error("Unhandled error occurred:", error.response.data.msgError);
+              setErrorMessage("An error occurred. Please try again later.");
+            }
           } else if (error.request) {
             // The request was made but no response was received
             console.error("No response received:", error.request);
@@ -439,8 +452,8 @@ const App = () => {
             // Something happened in setting up the request that triggered an Error
             console.error("Error setting up the request:", error.message);
           }
-          console.error("Error during form submission", error);
         }
+        
       }
     } else if (checkbox2Checked && oldSt) {
       // setOldExpartriates(true);
@@ -459,25 +472,28 @@ const App = () => {
         !landLinePhone ||
         !phoneNumber ||
         !college ||
-        !grade ||
+        !year ||
         !gradePercentage ||
         !housingInLastYears ||
         !HousingType ||
-        !password ||
-        !confirmPassword ||
+       
         !PassportNumber ||
         !nationality
       ) {
-        setErrorMessage("يرجى ملء جميع الحقول الإلزامية");
+        setErrorMessage(
+          <span style={{ color: 'red', fontSize: '1.2rem' }}>يرجى ملء جميع الحقول الإلزامية</span>);
+                console.log(ONEformData);
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         try {
-          const response = await axios.post(Surl, ONEformData);
+          const response = await axios.post("http://localhost:5000/auth/signUp", ONEformData);
 
           console.log(response);
           // Handle success
           console.log("Form data submitted successfully");
-          setErrorMessage("تم التسجيل بنجاح");
+          setErrorMessage(
+            <span style={{ color: 'green', fontSize: '1.2rem' }}>تم التسجيل بنجاح</span>);
+          
           window.scrollTo({ top: 0, behavior: "smooth" });
         } catch (error) {
           // Log detailed error information
@@ -504,7 +520,6 @@ const App = () => {
 
   return (
     <div style={{ marginTop: "10px", marginBottom: "10px" }} id="Form">
-      {/* <TestHeader /> */}
       <button
         className={displayDiv ? "toggle-button active" : "toggle-button"}
         onClick={handleButtonClick}
@@ -514,8 +529,11 @@ const App = () => {
 
       {/* <form onSubmit={handleSubmit}>    </form> */}
 
-      {errorMessage && <h3 style={{ color: "gray" }}>{errorMessage}</h3>}
-
+      {errorMessage && (
+  <h3 style={{ color: errorMessage.includes('نجاح') ? 'green' : 'red', fontSize: '1.2rem' }}>
+    {errorMessage}
+  </h3>
+)}
       {displayDiv && (
         <div
           style={{ marginTop: "10px", marginBottom: "20px" }}
@@ -602,6 +620,7 @@ const App = () => {
               label="كود الطالب"
               variant="outlined"
               size="small"
+              type="number"
               value={studentCode}
               onChange={(e) => setStudentCode(e.target.value)}
             />
@@ -655,8 +674,8 @@ const App = () => {
             >
               <option value="."> </option>
               <option value="ذكر">ذكر</option>
-              <option value="أنثي">أنثي</option>
-            </select>
+              <option value="انثي">انثي</option>
+   </select>
 
             <p style={{ marginLeft: "10px", marginRight: "170px" }}>الديانة</p>
             <select
@@ -846,8 +865,8 @@ const App = () => {
               label="الفرقة"
               variant="outlined"
               size="small"
-              value={grade}
-              onChange={(e) => setGrade(e.target.value)}
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
             />
           </div>
           <div className="input-group">
@@ -885,6 +904,7 @@ const App = () => {
               label="النسبة %"
               variant="outlined"
               size="small"
+              type="number"
               value={gradePercentage}
               onChange={(e) => setGradePercentage(e.target.value)}
             />
@@ -1035,6 +1055,7 @@ const App = () => {
               label="كود الطالب"
               variant="outlined"
               size="small"
+              type="number"
               value={studentCode}
               onChange={(e) => setStudentCode(e.target.value)}
             />
@@ -1088,7 +1109,7 @@ const App = () => {
             >
               <option value="."> </option>
               <option value="ذكر">ذكر</option>
-              <option value="أنثي">أنثي</option>
+              <option value="انثي">انثي</option>
             </select>
 
             <p style={{ marginLeft: "10px", marginRight: "170px" }}>الديانة</p>
@@ -1279,8 +1300,8 @@ const App = () => {
               label="الفرقة"
               variant="outlined"
               size="small"
-              value={grade}
-              onChange={(e) => setGrade(e.target.value)}
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
             />
           </div>
 
@@ -1339,6 +1360,7 @@ const App = () => {
               label="المجموع"
               variant="outlined"
               size="small"
+              type="number"
               value={HighSchoolGrade}
               onChange={(e) => setHighSchoolGrade(e.target.value)}
             />
@@ -1350,6 +1372,8 @@ const App = () => {
               label="النسبة %"
               variant="outlined"
               size="small"
+              type="number"
+
               value={HighSchoolPercentage}
               onChange={(e) => setHighSchoolPercentage(e.target.value)}
             />

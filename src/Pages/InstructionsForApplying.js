@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import InstructionsList from './InstructionsList';
 import InstructionForm from './InstructionForm';
 import './Instruction.css';
+import axios from 'axios';
 
 const AdminPanel = () => {
   const [instructions, setInstructions] = useState([]);
   const [editingInstruction, setEditingInstruction] = useState(null);
   const [orderCounter, setOrderCounter] = useState(1);
+  const [pdfFile, setPdfFile] = useState(null);
+  
+  const [uploadStatus, setUploadStatus] = useState(null);
 
   useEffect(() => {
     const fetchInstructionsFromDB = async () => {
@@ -45,7 +49,44 @@ const AdminPanel = () => {
     }
   };
   
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    setPdfFile(file);
+  };
+
+  const uploadPdfFile = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('avatar', pdfFile);
   
+      const response = await axios.post('http://localhost:5000/instructions/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+  
+      if (response.status === 201 && response.data.status === 'success') {
+        setUploadStatus({
+          success: true,
+          message: 'PDF file uploaded successfully',
+          fileName: response.data.data.newPdf.avatar,
+        });
+      } else {
+        setUploadStatus({
+          success: false,
+          message: 'Error uploading PDF file',
+        });
+      }
+    } catch (error) {
+      console.error('Error uploading PDF file:', error.message);
+      setUploadStatus({
+        success: false,
+        message: 'Error uploading PDF file',
+      });
+    }
+  };
+  
+
 
   const addInstruction = async (newInstruction) => {
     try {
@@ -123,6 +164,22 @@ const AdminPanel = () => {
       <h1>التعليمات</h1>
       <InstructionsList instructions={instructions} onDelete={deleteInstruction} onEdit={editInstruction} />
       <InstructionForm onSubmit={editingInstruction ? saveChanges : addInstruction} onCancel={cancelEdit} editedInstruction={editingInstruction} />
+      <div>
+      <input type="file" onChange={handleFileUpload} />
+      <button onClick={uploadPdfFile}>Upload PDF</button>
+      {uploadStatus && (
+        <div>
+          {uploadStatus.success ? (
+            <p style={{ color: 'green' }}>{uploadStatus.message}</p>
+          ) : (
+            <p style={{ color: 'red' }}>{uploadStatus.message}</p>
+          )}
+          {uploadStatus.fileName && (
+            <p>Uploaded PDF File: {uploadStatus.fileName}</p>
+          )}
+        </div>
+      )}
+      </div>
     </div>
   );
 };
