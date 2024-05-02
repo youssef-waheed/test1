@@ -28,6 +28,9 @@ const UserNav = () => {
             <Nav.Link as={Link} to="/AppForm" className="custom-link">
               تقديم طلب التحاق للمدن الجامعية
             </Nav.Link>
+            <Nav.Link as={Link} to="/Instructions" className="custom-link">
+            إرشادات التقدم والإقرارت
+            </Nav.Link>
           </Nav>
 );
 };
