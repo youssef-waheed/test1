@@ -245,31 +245,16 @@ const App = () => {
       // setOldEgyption(false);
       // setNewExpartriates(false);
       if (
-        // Add more conditions for other required fields
 
-        !nationalID ||
         !studentCode ||
-        !studentName ||
-        !birthDate ||
-        !placeOfBirth ||
+       
         !policy ||
         !detailedAddress ||
         !email ||
-        !landLinePhone ||
-        !phoneNumber ||
-        !fatherName ||
-        !fatherNationalId ||
-        !fatherJop ||
-        !fatherPhone ||
-        !guardianName ||
-        !guardianRelation ||
-        !guardianNationalId ||
-        !guardianPhone ||
+        
         !college ||
-        !year ||
-        !HighSchoolGrade ||
-        !HighSchoolPercentage ||
-        !HousingType 
+        !year 
+        
        
       ) {
         setErrorMessage("يرجى ملء جميع الحقول الإلزامية");
@@ -309,30 +294,14 @@ const App = () => {
       // setNewEgyption(false);
       // setNewExpartriates(false);
       if (
-        // Add more conditions for other required fields
-        !nationalID ||
         !studentCode ||
-        !studentName ||
-        !birthDate ||
-        !placeOfBirth ||
+       
         !policy ||
         !detailedAddress ||
         !email ||
-        !landLinePhone ||
-        !phoneNumber ||
-        !fatherName ||
-        !fatherNationalId ||
-        !fatherJop ||
-        !fatherPhone ||
-        !guardianName ||
-        !guardianRelation ||
-        !guardianNationalId ||
-        !guardianPhone ||
+        
         !college ||
-        !year ||
-        !gradePercentage ||
-        !housingInLastYears ||
-        !HousingType 
+        !year 
       ) {
         setErrorMessage("يرجى ملء جميع الحقول الإلزامية");
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -370,24 +339,14 @@ const App = () => {
       // setOldEgyption(false);
       // setNewEgyption(false);
       if (
-        // Add more conditions for other required fields
         !studentCode ||
-        !studentName ||
-        !birthDate ||
-        !placeOfBirth ||
+       
         !policy ||
         !detailedAddress ||
         !email ||
-        !landLinePhone ||
-        !phoneNumber ||
-        !college ||
-        !year ||
-        !HighSchoolGrade ||
-        !HighSchoolPercentage ||
-        !HousingType ||
         
-        !PassportNumber ||
-        !nationality
+        !college ||
+        !year 
       ) {
         setErrorMessage("يرجى ملء جميع الحقول الإلزامية");
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -461,24 +420,14 @@ const App = () => {
       // setNewEgyption(false);
       // setNewExpartriates(false);
       if (
-        // Add more conditions for other required fields
         !studentCode ||
-        !studentName ||
-        !birthDate ||
-        !placeOfBirth ||
+       
         !policy ||
         !detailedAddress ||
         !email ||
-        !landLinePhone ||
-        !phoneNumber ||
+        
         !college ||
-        !year ||
-        !gradePercentage ||
-        !housingInLastYears ||
-        !HousingType ||
-       
-        !PassportNumber ||
-        !nationality
+        !year 
       ) {
         setErrorMessage(
           <span style={{ color: 'red', fontSize: '1.2rem' }}>يرجى ملء جميع الحقول الإلزامية</span>);

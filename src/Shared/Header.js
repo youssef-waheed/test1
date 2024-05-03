@@ -37,6 +37,8 @@ import StatAdmin from "../Pages/SystemManagment/StatisticsAdmin/StatAdmin";
 import Explusion from "../Pages/Explusion";
 import BlockMeals from "../Pages/BlockMeals";
 import Users from "../Pages/Users";
+import AdminMeals from "../Pages/SystemManagment/AdminMeals";
+
 import { removeAuthUser } from "../helper/storage";
 const logout=()=>{
   removeAuthUser()
@@ -645,6 +647,11 @@ fetchStudents();
     return <Users />;
   }
 
+  function Text1010() {
+    return <AdminMeals /> ;
+     
+  }
+
   function Content({ activeIndex, activeTab, show }) {
     const buttonContent = [
       [
@@ -681,7 +688,7 @@ fetchStudents();
         <Text99 />,
         <Text99999 />,
         <Text11 />,
-       "الوجبات",
+       <Text1010 />,
         <Text14 />,
         <Text999 />,
         "الفئات",
