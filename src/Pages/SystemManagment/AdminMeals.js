@@ -139,14 +139,23 @@ const MealsOFAdmin = () => {
 
         <h2>اضافة وجبات</h2>
         <form>
+            <p>         اسم الوجبة    </p>
         <input type="text" name="mealsName"  label="اسم الوجبة " onChange={handleInputChange} className="form-input" />
-          <input type="text" name="mealsKind"  label="نوع الوجبة " onChange={handleInputChange} className="form-input" />
-          <input type="text" name="mealStartTime"  label="وقت بداية استلام الوجبة " onChange={handleInputChange} className="form-input" />
-          <input type="text" name="mealEndTime"  label="وقت نهاية استلام الوجبة " onChange={handleInputChange} className="form-input" />
-          <input type="text" name="mealReligion"  label="ديانة الوجبة " onChange={handleInputChange} className="form-input" />
-          <input type="text" name="studentReligion" label="ديانة مستلم الوجبة " onChange={handleInputChange} className="form-input" />
-          <input type="text" name=" mealBeforeSubsidy"  label="قيمة الوجبة بدون دعم "  onChange={handleInputChange} className="form-input" />
-          <input type="text" name=" mealAfterSubsidy"  label="قيمة الوجبة بعد الدعم " onChange={handleInputChange} className="form-input" />
+    
+        <p>       نوع الوجبة    </p>
+      <input type="text" name="mealsKind"  label="نوع الوجبة " onChange={handleInputChange} className="form-input" />
+      <p>         وقت بداية استلام الوجبة    </p>
+ <input type="text" name="mealStartTime"  label="وقت بداية استلام الوجبة " onChange={handleInputChange} className="form-input" />
+ <p>        وقت نهاية استلام الوجبة    </p>
+<input type="text" name="mealEndTime"  label="وقت نهاية استلام الوجبة " onChange={handleInputChange} className="form-input" />
+<p>        ديانة الوجبة    </p>
+ <input type="text" name="mealReligion"  label="ديانة الوجبة " onChange={handleInputChange} className="form-input" />
+ <p>       ديانة مستلم الوجبة    </p>
+ <input type="text" name="studentReligion" label="ديانة مستلم الوجبة " onChange={handleInputChange} className="form-input" />
+ <p>       قيمة الوجبة بدون دعم    </p>
+ <input type="text" name=" mealBeforeSubsidy"  label="قيمة الوجبة بدون دعم "  onChange={handleInputChange} className="form-input" />
+ <p>       قيمة الوجبة بعد الدعم    </p>
+  <input type="text" name=" mealAfterSubsidy"  label="قيمة الوجبة بعد الدعم " onChange={handleInputChange} className="form-input" />
           <label className="checkbox-label">
             الوجبة رمضانية:
             <input type="checkbox" name="RamadanMeal" checked={formData.RamadanMeal} onChange={handleInputChange} className="checkbox-input" />
@@ -167,7 +176,7 @@ const MealsOFAdmin = () => {
             <p>ديانة الوجبة: {selectedMeal.mealReligion}</p>
             <p>ديانة من يتناول الوجبة: {selectedMeal.studentReligion}</p>
             <p>قيمة الوجبة بدون دعم: {selectedMeal.mealBeforeSubsidy}</p>
-            <p>قيمة الوجبة بعدالدعم: {selectedMeal.mealAfterSubsidy}</p>
+            <p>قيمة الوجبة بعد الدعم: {selectedMeal.mealAfterSubsidy}</p>
 
             <button type="button" onClick={handleEditButtonClick} style={{ padding: '10px 20px', fontSize: '16px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>تعديل</button>
           </div>
