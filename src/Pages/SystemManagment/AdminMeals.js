@@ -49,7 +49,7 @@ const MealsOFAdmin = () => {
         mealEndTime: '',
         RamadanMeal: false,
         mealReligion: '',
-        studentReligion: '',
+        studentReligion: '', 
         mealAfterSubsidy: '',
         mealBeforeSubsidy: '',
       });
