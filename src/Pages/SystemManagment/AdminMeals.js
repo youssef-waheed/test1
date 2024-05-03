@@ -13,8 +13,6 @@ const MealsOFAdmin = () => {
     RamadanMeal: false,
     mealReligion: '',
     studentReligion: '',
-    mealAfterSubsidy: '',
-    mealBeforeSubsidy: '',
   });
   const [showRamadanMeals, setShowRamadanMeals] = useState(false);
   const [showNonRamadanMeals, setShowNonRamadanMeals] = useState(true);
@@ -50,8 +48,6 @@ const MealsOFAdmin = () => {
         RamadanMeal: false,
         mealReligion: '',
         studentReligion: '', 
-        mealAfterSubsidy: '',
-        mealBeforeSubsidy: '',
       });
     } catch (error) {
       console.error('Error adding meal:', error);
@@ -74,8 +70,6 @@ const MealsOFAdmin = () => {
         RamadanMeal: false,
         mealReligion: '',
         studentReligion: '',
-        mealAfterSubsidy: '',
-        mealBeforeSubsidy: '',
       });
 
       handleCancelButtonClick();
@@ -105,8 +99,6 @@ const MealsOFAdmin = () => {
       RamadanMeal: selectedMeal.RamadanMeal,
       mealReligion: selectedMeal.mealReligion,
       studentReligion: selectedMeal.studentReligion,
-      mealAfterSubsidy: selectedMeal.mealAfterSubsidy,
-      mealBeforeSubsidy: selectedMeal.mealBeforeSubsidy,
     });
     setShowUpdateForm(true);
   };
@@ -152,11 +144,7 @@ const MealsOFAdmin = () => {
  <input type="text" name="mealReligion"  label="ديانة الوجبة " onChange={handleInputChange} className="form-input" />
  <p>       ديانة مستلم الوجبة    </p>
  <input type="text" name="studentReligion" label="ديانة مستلم الوجبة " onChange={handleInputChange} className="form-input" />
- <p>       قيمة الوجبة بدون دعم    </p>
- <input type="text" name=" mealBeforeSubsidy"  label="قيمة الوجبة بدون دعم "  onChange={handleInputChange} className="form-input" />
- <p>       قيمة الوجبة بعد الدعم    </p>
-  <input type="text" name=" mealAfterSubsidy"  label="قيمة الوجبة بعد الدعم " onChange={handleInputChange} className="form-input" />
-          <label className="checkbox-label">
+  <label className="checkbox-label">
             الوجبة رمضانية:
             <input type="checkbox" name="RamadanMeal" checked={formData.RamadanMeal} onChange={handleInputChange} className="checkbox-input" />
           </label>
@@ -175,8 +163,6 @@ const MealsOFAdmin = () => {
             <p>الوجبة رمضانية: {selectedMeal.RamadanMeal ? 'ايوة' : 'لا'}</p>
             <p>ديانة الوجبة: {selectedMeal.mealReligion}</p>
             <p>ديانة من يتناول الوجبة: {selectedMeal.studentReligion}</p>
-            <p>قيمة الوجبة بدون دعم: {selectedMeal.mealBeforeSubsidy}</p>
-            <p>قيمة الوجبة بعد الدعم: {selectedMeal.mealAfterSubsidy}</p>
 
             <button type="button" onClick={handleEditButtonClick} style={{ padding: '10px 20px', fontSize: '16px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>تعديل</button>
           </div>
@@ -190,8 +176,6 @@ const MealsOFAdmin = () => {
           <input type="text" name="mealEndTime" label="وقت نهاية استلام الوجبة " value={formData.mealEndTime} onChange={handleInputChange} className="form-input" />
           <input type="text" name="mealReligion" label="ديانة الوجبة " value={formData.mealReligion} onChange={handleInputChange} className="form-input" />
           <input type="text" name="studentReligion" label="ديانة مستلم الوجبة " value={formData.studentReligion} onChange={handleInputChange} className="form-input" />
-          <input type="text" name=" mealBeforeSubsidy" label="قيمة الوجبة بدون دعم " value={formData.mealBeforeSubsidy} onChange={handleInputChange} className="form-input" />
-          <input type="text" name=" mealAfterSubsidy" label="قيمة الوجبة بعد الدعم " value={formData.mealAfterSubsidy} onChange={handleInputChange} className="form-input" />
           <label className="checkbox-label">
             الوجبة رمضانية:
             <input type="checkbox" name="RamadanMeal" checked={formData.RamadanMeal} onChange={handleInputChange} className="checkbox-input" />
