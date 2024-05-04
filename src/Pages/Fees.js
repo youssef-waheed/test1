@@ -32,15 +32,21 @@ const Fees = ({ _id }) => {
       fetchFeeStatment(_id);
       fetchFeeTypes();
     }
-    console.log('====================================');
+    console.log("====================================");
     console.log(auth.athurity);
-    console.log('====================================');
+    console.log("====================================");
   }, [_id]);
 
   const fetchFeeStatment = async (_id) => {
     try {
       const response = await axios.get(
-        ` http://localhost:5000/fees/feeStatement/${_id}`
+        ` http://localhost:5000/fees/feeStatement/${_id}`,
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       setFeesData(response.data.data.feesData);
       setuserData(response.data.data.userData);
@@ -51,7 +57,15 @@ const Fees = ({ _id }) => {
 
   const fetchFeeTypes = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/fees/getFeeType`);
+      const response = await axios.get(
+        `http://localhost:5000/fees/getFeeType`,
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       setFeeTypes(response.data.data.fees);
     } catch (error) {
       console.log(error);
@@ -99,6 +113,12 @@ const Fees = ({ _id }) => {
           paymentDate: fee.paymentDate,
           paymentValue: fee.paymentValue,
           payment: fee.payment,
+        },
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
       setFee({
@@ -123,19 +143,16 @@ const Fees = ({ _id }) => {
   return (
     <div>
       <div>
-        {auth.athurity=="الكل"&&(
-
-
-<button
-onClick={toggleDiv}
-className="button"
-style={{ backgroundColor: "blue", color: "white" }}
->
-إضافة
-</button>
-
+        {auth.athurity == "الكل" && (
+          <button
+            onClick={toggleDiv}
+            className="button"
+            style={{ backgroundColor: "blue", color: "white" }}
+          >
+            إضافة
+          </button>
         )}
-       
+
         {isDivVisible && (
           <div style={{ fontWeight: "bold" }}>
             <br></br>
@@ -260,7 +277,6 @@ style={{ backgroundColor: "blue", color: "white" }}
                 <option>تسدده الطالبة</option>
               </Form.Select>
             </div>
-            
             <button
               style={{ backgroundColor: "green", color: "white" }}
               onClick={addFee}

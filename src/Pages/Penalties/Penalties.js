@@ -133,13 +133,15 @@ const Penalties = ({ studentData, _id }) => {
   return (
     <div>
       <div>
-        <button
-          onClick={toggleDiv}
-          className="button"
-          style={{ backgroundColor: "blue", color: "white" }}
-        >
-          إضافة
-        </button>
+        {auth && (auth.athurity === "الكل" || auth.athurity === "ادخال") && (
+          <button
+            onClick={toggleDiv}
+            className="button"
+            style={{ backgroundColor: "blue", color: "white" }}
+          >
+            إضافة
+          </button>
+        )}
         {isDivVisible && (
           <div style={{ fontWeight: "bold" }}>
             <p>الإسم: {studentData.studentName}</p>{" "}

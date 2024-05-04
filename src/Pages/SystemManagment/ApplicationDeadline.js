@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
+import { getAuthUser } from "../../helper/storage";
+const auth = getAuthUser();
 
 const ApplicationDeadline = () => {
   const [students, setStudents] = useState([]);
@@ -31,7 +33,13 @@ const ApplicationDeadline = () => {
   const fetchDates = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/generalTiming/getAllDate`
+        `http://localhost:5000/generalTiming/getAllDate`,
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       setStudents(response.data.data.date);
       // console.log(response.data.data.date);
@@ -43,9 +51,41 @@ const ApplicationDeadline = () => {
   const fetchYear = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/generalTiming/getYear`
+        `http://localhost:5000/generalTiming/getYear`,
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       setYear(response.data.year); // Set the year state with the fetched value
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const incremented = async () => {
+    try {
+      const inc = await axios.put(
+        `http://localhost:5000/logs/increment/${auth.log.adminID}`,
+        {
+          type: "add",
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createLogs = async () => {
+    try {
+      const logs = await axios.post("http://localhost:5000/logs/createLogs", {
+        adminID: auth.log.adminID,
+        adminUserName: auth.log.adminUserName,
+        action: "اضافة مواعيد التقدم ",
+        objectName: `للطالب ${students.studentName},برقم الطالب ${students.nationalID}`,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -69,6 +109,12 @@ const ApplicationDeadline = () => {
     try {
       const response = await axios.put(
         `http://localhost:5000/generalTiming/updateDate/` + _id,
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        },
         editDate
       );
       const updatedDate = response.data.updatedDate;
@@ -77,6 +123,8 @@ const ApplicationDeadline = () => {
           index === editIndex ? updatedDate : student
         )
       );
+      createLogs();
+      incremented();
       setEditIndex(-1);
       setEditDate({ to: "", from: "", ofYear: "", forWho: "" });
       window.location.reload();
@@ -94,8 +142,16 @@ const ApplicationDeadline = () => {
           from: addDate.from,
           ofYear: addDate.ofYear,
           forWho: addDate.forWho,
+        },
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
+      createLogs();
+      incremented();
       fetchDates();
       setAddDate({
         to: "",
@@ -111,8 +167,16 @@ const ApplicationDeadline = () => {
   const handleDelete = async (_id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/generalTiming/deleteDate/${_id}`
+        `http://localhost:5000/generalTiming/deleteDate/${_id}`,
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
+      createLogs();
+      incremented();
       fetchDates();
     } catch (error) {
       console.log(error);
@@ -184,19 +248,25 @@ const ApplicationDeadline = () => {
                       </button>
                     </>
                   ) : (
-                    <button
-                      style={{ backgroundColor: "blue" }}
-                      onClick={() => handleEdit(index)}
-                    >
-                      تعديل
-                    </button>
+                    ((auth && auth.athurity === "الكل") ||
+                      auth.athurity === "تعديل") && (
+                      <button
+                        style={{ backgroundColor: "blue" }}
+                        onClick={() => handleEdit(index)}
+                      >
+                        تعديل
+                      </button>
+                    )
                   )}
-                  <button
-                    style={{ backgroundColor: "red" }}
-                    onClick={() => handleDelete(dat._id)}
-                  >
-                    حذف
-                  </button>
+                  {auth &&
+                    (auth.athurity === "الكل" || auth.athurity === "حذف") && (
+                      <button
+                        style={{ backgroundColor: "red" }}
+                        onClick={() => handleDelete(dat._id)}
+                      >
+                        حذف
+                      </button>
+                    )}
                 </td>
               </tr>
             ))}
@@ -230,9 +300,15 @@ const ApplicationDeadline = () => {
               />
             </td>
             <td>
-              <button onClick={handleAdd} style={{ backgroundColor: "green" }}>
-                إضافة
-              </button>
+              {auth &&
+                (auth.athurity === "الكل" || auth.athurity === "ادخال") && (
+                  <button
+                    onClick={handleAdd}
+                    style={{ backgroundColor: "green" }}
+                  >
+                    إضافة
+                  </button>
+                )}
             </td>
           </tr>
         </tbody>

@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import '../Style/NewAppDate.css'; 
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "../Style/NewAppDate.css";
+import { getAuthUser } from "../helper/storage";
+const auth = getAuthUser();
 
 const ApplicationDates = () => {
   const [dates, setDates] = useState([]);
@@ -11,7 +13,15 @@ const ApplicationDates = () => {
 
   const fetchDates = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/generalTiming/getAllDate');
+      const response = await axios.get(
+        "http://localhost:5000/generalTiming/getAllDate",
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       setDates(response.data.data.date);
     } catch (error) {
       console.log(error);

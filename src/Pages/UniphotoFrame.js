@@ -1,57 +1,69 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./UniPhoto.css";
+import { getAuthUser } from "../helper/storage";
+const auth = getAuthUser();
 
 const PhotoFrame = ({ frameId, uploadUrl }) => {
-    const [whatForText, setWhatForText] = useState(frameId === 1 ? 'شعار الجامعة' : 'توقيع');
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [uploadMessage, setUploadMessage] = useState('');
-    const [photos, setPhotos] = useState([]);
-  
-    const fetchPhotos = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/universityPhotos/getPhotos');
-        setPhotos(response.data);
-      } catch (error) {
-        console.error('Error fetching photos:', error);
-      }
-    };
-  
-    useEffect(() => {
-      fetchPhotos();
-    }, []);
+  const [whatForText, setWhatForText] = useState(
+    frameId === 1 ? "شعار الجامعة" : "توقيع"
+  );
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [uploadMessage, setUploadMessage] = useState("");
+  const [photos, setPhotos] = useState([]);
+
+  const fetchPhotos = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/universityPhotos/getPhotos",
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setPhotos(response.data);
+    } catch (error) {
+      console.error("Error fetching photos:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPhotos();
+  }, []);
 
   // Handle file upload
   const handleUpload = async () => {
     if (!selectedFile) {
-      alert('Please select a file.');
+      alert("Please select a file.");
       return;
     }
 
     const formData = new FormData();
-    formData.append('avatar', selectedFile);
-    formData.append('whatFor', whatForText);
+    formData.append("avatar", selectedFile);
+    formData.append("whatFor", whatForText);
 
     setLoading(true);
-    setUploadMessage('');
+    setUploadMessage("");
 
     try {
       const response = await axios.post(uploadUrl, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
-      console.log(response.data); 
-      setUploadMessage('Upload successful');
+      console.log(response.data);
+      setUploadMessage("Upload successful");
       fetchPhotos();
     } catch (error) {
-      console.error('Error uploading photo:', error);
-      setUploadMessage('Upload failed');
+      console.error("Error uploading photo:", error);
+      setUploadMessage("Upload failed");
     } finally {
       setLoading(false);
       setSelectedFile(null);
-      setUploadMessage('');
+      setUploadMessage("");
     }
   };
 
@@ -70,16 +82,23 @@ const PhotoFrame = ({ frameId, uploadUrl }) => {
         value={whatForText}
         onChange={(e) => setWhatForText(e.target.value)}
       />
-      <button onClick={handleUpload}>Upload</button>
+      {auth && (auth.athurity === "الكل" || auth.athurity === "ادخال") && (
+        <button style={{ backgroundColor: "blue" }} onClick={handleUpload}>
+          Upload
+        </button>
+      )}
 
       {/* Display photos based on their WhatFor value */}
       <div className="photo-grid">
-        {photos.map(photo => {
+        {photos.map((photo) => {
           if (photo.whatFor === whatForText) {
             return (
               <div key={photo._id} className="photo-item">
                 <p>{photo.whatFor}</p>
-                <img src={`data:${photo.contentType};base64,${photo.data}`} alt={photo.name} />
+                <img
+                  src={`data:${photo.contentType};base64,${photo.data}`}
+                  alt={photo.name}
+                />
               </div>
             );
           }

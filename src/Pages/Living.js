@@ -13,8 +13,6 @@
 //   const [selectedFloor, setSelectedFloor] = useState("");
 //   const [selectedRoom, setSelectedRoom] = useState("");
 
-  
-
 //   const toggleDiv = () => {
 //     setIsDivVisible(!isDivVisible);
 //     setUpdatedData(studentData);
@@ -191,12 +189,13 @@
 
 // export default Living;
 
-
 import React, { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
 import axios from "axios";
 import MultilevelDropdown from "../Pages/SakanTest";
+import { getAuthUser } from "../helper/storage";
+const auth = getAuthUser();
 
 const Living = ({ studentData }) => {
   const [isDivVisible, setIsDivVisible] = useState(false);
@@ -232,8 +231,16 @@ const Living = ({ studentData }) => {
           roomId: selectedRoom,
           housingDate: updatedData.housingDate,
           evacuationDate: updatedData.evacuationDate,
+        },
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
+      createLogs();
+      incremented();
       console.log(response);
       setIsUpdating(false);
       setError(""); // Clear error if save is successful
@@ -259,17 +266,44 @@ const Living = ({ studentData }) => {
     setIsUpdating(false);
     setUpdatedData({});
   };
+  const incremented = async () => {
+    try {
+      const inc = await axios.put(
+        `http://localhost:5000/logs/increment/${auth.log.adminID}`,
+        {
+          type: "add",
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  const createLogs = async () => {
+    try {
+      const logs = await axios.post("http://localhost:5000/logs/createLogs", {
+        adminID: auth.log.adminID,
+        adminUserName: auth.log.adminUserName,
+        action: "اضافة سكن",
+        objectName: `للطالب ${studentData.studentName},برقم الطالب ${studentData.nationalID}`,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div>
       <div>
-        <button
-          onClick={toggleDiv}
-          className="button"
-          style={{ backgroundColor: "blue", color: "white" }}
-        >
-          تعديل
-        </button>
+        {auth && (auth.athurity === "الكل" || auth.athurity === "تعديل") && (
+          <button
+            onClick={toggleDiv}
+            className="button"
+            style={{ backgroundColor: "blue", color: "white" }}
+          >
+            تعديل
+          </button>
+        )}
+
         {studentData && (
           <Table>
             <thead>
@@ -310,35 +344,39 @@ const Living = ({ studentData }) => {
                 </td>
               </tr>
               <tr>
-  <th>تم الإخلاء</th>
-  <td>
-    {isUpdating ? (
-      <textarea
-        name="isEvacuated"
-        value={updatedData.isEvacuated || ""}
-        onChange={handleChange}
-        disabled // Disable editing for this field
-      />
-    ) : (
-      studentData.isEvacuated ? "نعم" : "لا"
-    )}
-  </td>
-</tr>
-<tr>
-  <th>تم التحويل</th>
-  <td>
-    {isUpdating ? (
-      <textarea
-        name="transferred"
-        value={updatedData.transferred || ""}
-        onChange={handleChange}
-        disabled // Disable editing for this field
-      />
-    ) : (
-      studentData.transferred ? "نعم" : "لا"
-    )}
-  </td>
-</tr>
+                <th>تم الإخلاء</th>
+                <td>
+                  {isUpdating ? (
+                    <textarea
+                      name="isEvacuated"
+                      value={updatedData.isEvacuated || ""}
+                      onChange={handleChange}
+                      disabled // Disable editing for this field
+                    />
+                  ) : studentData.isEvacuated ? (
+                    "نعم"
+                  ) : (
+                    "لا"
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <th>تم التحويل</th>
+                <td>
+                  {isUpdating ? (
+                    <textarea
+                      name="transferred"
+                      value={updatedData.transferred || ""}
+                      onChange={handleChange}
+                      disabled // Disable editing for this field
+                    />
+                  ) : studentData.transferred ? (
+                    "نعم"
+                  ) : (
+                    "لا"
+                  )}
+                </td>
+              </tr>
             </thead>
           </Table>
         )}
@@ -388,10 +426,7 @@ const Living = ({ studentData }) => {
       <div className="warning">
         <>
           {error && ( // Render Alert if error exists
-            <Alert
-              variant="danger"
-              style={{ textAlign: "center" }}
-            >
+            <Alert variant="danger" style={{ textAlign: "center" }}>
               {error}
             </Alert>
           )}

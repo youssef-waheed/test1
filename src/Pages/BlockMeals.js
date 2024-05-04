@@ -25,7 +25,13 @@ const BlockMeals = ({ _id }) => {
   const fetchBlockMeals = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/blockMeals/` + _id
+        `http://localhost:5000/blockMeals/` + _id,
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       console.log(response);
       setStudents(response.data.data); // Update students state with the fetched data
@@ -47,6 +53,12 @@ const BlockMeals = ({ _id }) => {
           dateTo: blockMeal.dateTo,
           dateFrom: blockMeal.dateFrom,
           meals: blockMeal.meals,
+        },
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
       setBlockMeal({
@@ -89,13 +101,15 @@ const BlockMeals = ({ _id }) => {
   return (
     <div>
       <div>
-        <button
-          onClick={toggleDiv}
-          className="button"
-          style={{ backgroundColor: "blue", color: "white" }}
-        >
-          إضافة
-        </button>
+        {auth && (auth.athurity === "الكل" || auth.athurity === "ادخال") && (
+          <button
+            onClick={toggleDiv}
+            className="button"
+            style={{ backgroundColor: "blue", color: "white" }}
+          >
+            إضافة
+          </button>
+        )}
         {isDivVisible && (
           <div style={{ fontWeight: "bold" }}>
             <div className="select1">
