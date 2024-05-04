@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
+import { getAuthUser } from "../helper/storage";
+const auth = getAuthUser();
 
 const Users = () => {
   const [admins, setAdmins] = useState([]);
@@ -20,7 +22,12 @@ const Users = () => {
 
   const fetchAdmins = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/auth/getAdmins");
+      const response = await axios.get("http://localhost:5000/auth/getAdmins", {
+        headers: {
+          authorization: `Bearer__${auth.token}`,
+          "Content-Type": "application/json",
+        },
+      });
       setAdmins(response.data.data.admins);
       console.log(response);
     } catch (error) {
@@ -40,7 +47,31 @@ const Users = () => {
     setIsEditing(true);
     setTempAdminData({ ...selectedAdmin });
   };
+  const incremented = async () => {
+    try {
+      const inc = await axios.put(
+        `http://localhost:5000/logs/increment/${auth.log.adminID}`,
+        {
+          type: "add",
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  const createLogs = async () => {
+    try {
+      const logs = await axios.post("http://localhost:5000/logs/createLogs", {
+        adminID: auth.log.adminID,
+        adminUserName: auth.log.adminUserName,
+        action: "تعديل الادمن  ",
+        objectName: `للطالب ${admins.studentName},برقم الطالب ${admins.nationalID}`,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleSaveClick = async () => {
     try {
       const { name, userName, athurity } = updateAdmin;
@@ -59,6 +90,12 @@ const Users = () => {
           name,
           userName,
           athurity,
+        },
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
 
@@ -69,6 +106,8 @@ const Users = () => {
         userName: "",
         athurity: "",
       });
+      createLogs();
+      incremented();
       setIsEditing(false);
     } catch (error) {
       console.log("Error updating admin:", error);
@@ -161,12 +200,15 @@ const Users = () => {
                 </button>
               </>
             ) : (
-              <button
-                onClick={handleEditClick}
-                style={{ backgroundColor: "blue", color: "white" }}
-              >
-                تعديل
-              </button>
+              auth &&
+              (auth.athurity === "الكل" || auth.athurity === "تعديل") && (
+                <button
+                  onClick={handleEditClick}
+                  style={{ backgroundColor: "blue", color: "white" }}
+                >
+                  تعديل
+                </button>
+              )
             )}
           </div>
         )}

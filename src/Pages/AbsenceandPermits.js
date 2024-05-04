@@ -3,6 +3,8 @@ import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
+import { getAuthUser } from "../helper/storage";
+const auth = getAuthUser();
 
 const AbsenceandPermits = ({ _id, studentData }) => {
   const [isDivVisible, setIsDivVisible] = useState(false);
@@ -28,7 +30,12 @@ const AbsenceandPermits = ({ _id, studentData }) => {
 
   const fetchAbsenceAndPermits = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/absence/${_id}`);
+      const response = await axios.get(`http://localhost:5000/absence/${_id}`, {
+        headers: {
+          authorization: `Bearer__${auth.token}`,
+          "Content-Type": "application/json",
+        },
+      });
       console.log(response);
       setAbsenceType(response.data.data.permission);
     } catch (error) {
@@ -43,7 +50,31 @@ const AbsenceandPermits = ({ _id, studentData }) => {
   const handleBlockMealsToChange = (value) => {
     setAbsent({ ...absent, blockMealsTo: value });
   };
+  const incremented = async () => {
+    try {
+      const inc = await axios.put(
+        `http://localhost:5000/logs/increment/${auth.log.adminID}`,
+        {
+          type: "add",
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  const createLogs = async () => {
+    try {
+      const logs = await axios.post("http://localhost:5000/logs/createLogs", {
+        adminID: auth.log.adminID,
+        adminUserName: auth.log.adminUserName,
+        action: "اضافة غياب وتصاريح",
+        objectName: `للطالب ${absenceType.studentName},برقم الطالب ${absenceType.nationalID}`,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const addAbsence = async (e) => {
     e.preventDefault();
     try {
@@ -54,6 +85,12 @@ const AbsenceandPermits = ({ _id, studentData }) => {
           TypeOfAbsence: absent.TypeOfAbsence,
           dateFrom: absent.dateFrom,
           dateTo: absent.dateTo,
+        },
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
       setAbsent({
@@ -62,6 +99,8 @@ const AbsenceandPermits = ({ _id, studentData }) => {
         dateFrom: "",
         dateTo: "",
       });
+      createLogs();
+      incremented();
       fetchAbsenceAndPermits();
     } catch (error) {
       console.log(error);
@@ -71,13 +110,16 @@ const AbsenceandPermits = ({ _id, studentData }) => {
   return (
     <div>
       <div>
-        <button
-          onClick={toggleDiv}
-          className="button"
-          style={{ backgroundColor: "blue", color: "white" }}
-        >
-          إضافة
-        </button>
+        {auth && (auth.athurity === "الكل" || auth.athurity === "ادخال") && (
+          <button
+            onClick={toggleDiv}
+            className="button"
+            style={{ backgroundColor: "blue", color: "white" }}
+          >
+            إضافة
+          </button>
+        )}
+
         {isDivVisible && (
           <div style={{ fontWeight: "bold" }}>
             <br />

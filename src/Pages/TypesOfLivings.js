@@ -3,6 +3,8 @@ import "../Shared/Header";
 import Checkbox from "../Shared/Checkbox";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
+import { getAuthUser } from "../helper/storage";
+const auth = getAuthUser();
 
 const TypesOfLivings = () => {
   const [checkbox1Checked, setCheckbox1Checked] = useState(true);
@@ -18,7 +20,13 @@ const TypesOfLivings = () => {
   const fetchTypeOfLiving = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/typeOfSpecialHousing/getTypeOfSpecialHousing"
+        "http://localhost:5000/typeOfSpecialHousing/getTypeOfSpecialHousing",
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       setTabs(response.data.data.housing);
     } catch (error) {
@@ -30,7 +38,13 @@ const TypesOfLivings = () => {
     try {
       const response = await axios.get(
         "http://localhost:5000/detailsAboutTypeOfSpecialHousing/getDetailsAboutTypeOfSpecialHousing/" +
-          idMale
+          idMale,
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       return response.data.data.detailsAboutTypeOfSpecialHousing;
     } catch (error) {
@@ -43,7 +57,13 @@ const TypesOfLivings = () => {
     try {
       const response = await axios.get(
         "http://localhost:5000/detailsAboutTypeOfSpecialHousing/getDetailsAboutTypeOfSpecialHousing/" +
-          idFemale
+          idFemale,
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       console.log(response);
 
@@ -53,13 +73,45 @@ const TypesOfLivings = () => {
       return [];
     }
   };
+  const incremented = async () => {
+    try {
+      const inc = await axios.put(
+        `http://localhost:5000/logs/increment/${auth.log.adminID}`,
+        {
+          type: "add",
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createLogs = async () => {
+    try {
+      const logs = await axios.post("http://localhost:5000/logs/createLogs", {
+        adminID: auth.log.adminID,
+        adminUserName: auth.log.adminUserName,
+        action: "حذف نوع سكن  ",
+        objectName: `للطالب ${tabs.studentName},برقم الطالب ${tabs.nationalID}`,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const deleteTypeOfLivingMale = async (idMale) => {
     try {
       const response = await axios.delete(
         "http://localhost:5000/typeOfSpecialHousing/deleteTypeOfSpecialHousing/" +
-          idMale
+          idMale,
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
-
+      createLogs();
+      incremented();
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -69,8 +121,16 @@ const TypesOfLivings = () => {
     try {
       const response = await axios.delete(
         "http://localhost:5000/typeOfSpecialHousing/deleteTypeOfSpecialHousing/" +
-          idFemale
+          idFemale,
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
+      createLogs();
+      incremented();
       console.log("IDFEMALEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
       console.log(idFemale);
       console.log("IDMFEALEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
@@ -179,18 +239,21 @@ const TypesOfLivings = () => {
                   <td>{tab.isActive ? "نعم" : "لا"}</td>
                   <th>
                     {" "}
-                    <button
-                      style={{
-                        color: "white",
-                        backgroundColor: "red",
-                        fontWeight: "bold",
-                      }}
-                      onClick={(e) => {
-                        deleteTypeOfLivingMale(tab.id);
-                      }}
-                    >
-                      حذف
-                    </button>{" "}
+                    {auth &&
+                      (auth.athurity === "الكل" || auth.athurity === "حذف") && (
+                        <button
+                          style={{
+                            color: "white",
+                            backgroundColor: "red",
+                            fontWeight: "bold",
+                          }}
+                          onClick={(e) => {
+                            deleteTypeOfLivingMale(tab.id);
+                          }}
+                        >
+                          حذف
+                        </button>
+                      )}{" "}
                   </th>
                 </tr>
               ))}

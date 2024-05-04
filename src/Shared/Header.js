@@ -40,12 +40,11 @@ import Users from "../Pages/Users";
 import AdminMeals from "../Pages/SystemManagment/AdminMeals";
 
 import { removeAuthUser } from "../helper/storage";
-const logout=()=>{
-  removeAuthUser()
+const logout = () => {
+  removeAuthUser();
   window.location.href = "/";
   // window.location.reload()
-  
-}
+};
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -151,7 +150,6 @@ const Header = () => {
     { id: 0, image: man, titel: "بيانات الطلاب" },
     { id: 1, image: woman, titel: "بيانات الطالبات" },
     { id: 2, image: settings, titel: "الإشراف على النظام" },
-    
   ];
 
   function handleButtonClick(index) {
@@ -187,12 +185,11 @@ const Header = () => {
     fetchStudents();
   }, [College, ofYear]);
 
-const Refresh = () =>{
-fetchStudents();
-}
+  const Refresh = () => {
+    fetchStudents();
+  };
 
   const fetchStudents = async () => {
-
     //TODO : show only those who are classified
     const queryString = `?College=${College}&ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&searchQuery=${searchQuery}`;
 
@@ -341,19 +338,19 @@ fetchStudents();
                   />
                 </div>
               ))}
-<button 
-  onClick={Refresh} 
-  style={{
-    backgroundColor: 'blue', 
-    color: 'white', 
-    padding: '5px 10px', 
-    border: 'none',
-    borderRadius: '5px',
-    margin : "5px",
-  }}
->
-  تحديث البيانات
-</button>
+              <button
+                onClick={Refresh}
+                style={{
+                  backgroundColor: "blue",
+                  color: "white",
+                  padding: "5px 10px",
+                  border: "none",
+                  borderRadius: "5px",
+                  margin: "5px",
+                }}
+              >
+                تحديث البيانات
+              </button>
               <div style={{ width: "20px" }} className="search-bar">
                 <input
                   type="text"
@@ -564,8 +561,6 @@ fetchStudents();
     );
   }
 
-  
-
   function Text13() {
     return (
       <div className="two-column-wrapper">
@@ -615,12 +610,7 @@ fetchStudents();
   }
 
   function Text9999() {
-    return (
-      <div className="two-column-wrapper">
-      
-        
-      </div>
-    );
+    return <div className="two-column-wrapper"></div>;
   }
 
   function Text99999() {
@@ -648,8 +638,7 @@ fetchStudents();
   }
 
   function Text1010() {
-    return <AdminMeals /> ;
-     
+    return <AdminMeals />;
   }
 
   function Content({ activeIndex, activeTab, show }) {
@@ -688,7 +677,7 @@ fetchStudents();
         <Text99 />,
         <Text99999 />,
         <Text11 />,
-       <Text1010 />,
+        <Text1010 />,
         <Text14 />,
         <Text999 />,
         "الفئات",
@@ -712,9 +701,15 @@ fetchStudents();
               <button>{tab.titel}</button>
             </li>
           ))}
-          <button className="button"  style={{ backgroundColor: "red", color: "white" }}  onClick={logout}> logout</button>
+          <button
+            className="button"
+            style={{ backgroundColor: "red", color: "white" }}
+            onClick={logout}
+          >
+            {" "}
+            logout
+          </button>
         </ul>
-        
       </nav>
       <div id="contentDiv">
         {buttonSets[activeTab].map((btn, index) => (
