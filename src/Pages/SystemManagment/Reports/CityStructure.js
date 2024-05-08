@@ -1,11 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-import Alert from "react-bootstrap/Alert";
 
 const CityStructure = () => {
   const [cityData, setCityData] = useState([]);
-  const [city, setCity] = useState([]);
 
   useEffect(() => {
     fetchCityStructure();
@@ -13,10 +11,9 @@ const CityStructure = () => {
 
   const fetchCityStructure = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/Structure`);
-      setCityData(response.data.data.BuildingWithTotalRoomsCount); // Set the fetched data to state
-      setCity(response.data.data.city);
-      console.log(response);
+      const response = await axios.get("http://localhost:5000/Structure");
+      setCityData(response.data.data);
+      console.log("city data is",cityData);
     } catch (error) {
       console.log(error);
     }
@@ -28,32 +25,31 @@ const CityStructure = () => {
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
+            <th>اسم المدينة</th>
             <th>اسم المبنى</th>
             <th>النوع</th>
-            <th>نوع المدينة</th>
-            <th>المبنى</th>
-            <th>الغرف الإدارية</th>
-            <th>القاعات الرياضية</th>
-            <th>قاعة الانترنت</th>
+            <th>عدد الغرف الإدارية</th>
+            <th>عدد القاعات الرياضية</th>
+            <th>عدد قاعات الانترنت</th>
             <th>عدد الطلاب</th>
             <th>عدد الغرف الكلي</th>
           </tr>
         </thead>
         <tbody>
           {cityData &&
-            cityData.map((building, index) => (
-              <tr key={index}>
-                <td>{building.BuildingName}</td>
-                <td>{building.BuildingGender}</td>
-                <td>{building.cityGender}</td>
-                <td> {city[index]?.Name || ""} </td>{" "}
-                <td> {city[index]?.AdministrativeRooms || ""} </td>{" "}
-                <td> {city[index]?.sportsHall || ""} </td>{" "}
-                <td> {city[index]?.InternetHall || ""} </td>{" "}
-                {/* Use optional chaining and provide a default value */}
-                <td>{building.totalOccupantsCount}</td>
-                <td>{building.totalRoomsCount}</td>
-              </tr>
+            cityData.map((city, index) => (
+              city.Buildings.map((building, index) => (
+                <tr key={index}>
+                  <td>{city.CityName}</td>
+                  <td>{building.BuildingName}</td>
+                  <td>{building.BuildingGender}</td>
+                  <td>{building.AdministrativeRooms}</td>
+                  <td>{building.sportsHall}</td>
+                  <td>{building.InternetHall}</td>
+                  <td>{building.TotalOccupantsCount}</td>
+                  <td>{building.TotalRoomsCount}</td>
+                </tr>
+              ))
             ))}
         </tbody>
       </Table>
