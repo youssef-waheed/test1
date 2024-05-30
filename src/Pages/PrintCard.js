@@ -12,14 +12,25 @@ const PrintCard = () => {
     fetchData();
   }, []);
 
+  
+
   const fetchData = async () => {
     try {
       const response = await axios.get('http://localhost:5000/applications/unprintedCardsForMales');
-      setFilteredData(response.data.data.student || []);
+      
+      
+      const studentsWithImages = response.data.data.student.filter(student => {
+        const hasValidImage = student.image && typeof student.image === 'object' && student.image.data && Array.isArray(student.image.data) && student.image.data.length > 0;
+        return hasValidImage;
+      });
+  
+      setFilteredData(studentsWithImages);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
+  
+  
 
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
@@ -53,19 +64,19 @@ const PrintCard = () => {
         ctx.drawImage(cardImage, 0, 0, canvas.width, canvas.height);
 
         // Add student details to the canvas
-        ctx.fillStyle = 'black'; // Text color
+        ctx.fillStyle = '#edc74f'; // Text color // Text color
         ctx.font = '14px Arial'; // Font size and family
-        ctx.fillText(`Name: ${selectedStudent.studentName}`, 20, 150); // Adjust position as needed
-        ctx.fillText(`Year: ${selectedStudent.year}`, 20, 170); // Adjust position as needed
-        ctx.fillText(`Student Code: ${selectedStudent.studentCode}`, 20, 190); // Adjust position as needed
-        // Add other student details as needed
+        ctx.fillText(`Name: ${selectedStudent.studentName}`, 20, 105); // Adjust position as needed
+        ctx.fillText(`Year: ${selectedStudent.year}`, 20, 125); // Adjust position as needed
+        ctx.fillText(`Student Code: ${selectedStudent.studentCode}`, 20, 145); // Adjust position as needed
+        
 
         // Convert buffer data to base64 image
         const imgData = `data:image/png;base64,${arrayBufferToBase64(selectedStudent.image.data)}`;
         const studentImage = new Image();
         studentImage.src = imgData;
         studentImage.onload = () => {
-          ctx.drawImage(studentImage, 250, 100, 100, 100); // Adjust position and size as needed
+          ctx.drawImage(studentImage, 210, 40, 170, 170); // Adjust position and size as needed
 
           // Convert canvas to image and download
           const downloadLink = document.createElement('a');

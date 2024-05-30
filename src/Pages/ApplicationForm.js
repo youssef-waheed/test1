@@ -35,7 +35,7 @@ const App = () => {
   //   setDropdown2Value(event.target.value);
   // };
   const [policy, setPolicy] = useState(false);
-  // const [residence, setResidence] = useState("");
+  const [residence, setResidence] = useState("");
   // const [contextOfInquiry, setContextOfInquiry] = useState("");
   // const [confirmEmail, setConfirmEmail] = useState(false);
   // const [blocked, setBlocked] = useState(false);
@@ -645,8 +645,8 @@ const App = () => {
               label="محل الاقامة 'العنوان بالتفصيل' "
               variant="outlined"
               fullWidth
-              value={detailedAddress}
-              onChange={(e) => setDetailedAddress(e.target.value)}
+              value={residence}
+              onChange={(e) => setResidence(e.target.value)}
             />
           </div>
 
@@ -868,17 +868,20 @@ const App = () => {
               value={housingInLastYears}
               onChange={(e) => setHousingInLastYears(e.target.value)}
             />
-            <p style={{ marginLeft: "10px", marginRight: "100px" }}>
-              نوع السكن
-            </p>
-            <TextField
+           
+
+           <p style={{ marginLeft: "10px", marginRight: "170px" }}>نوع السكن</p>
+            <select
               required
-              label="قديم/مستجد/منقطع"
-              variant="outlined"
-              size="small"
               value={HousingType}
               onChange={(e) => setHousingType(e.target.value)}
-            />
+            >
+              <option value="."> ------ </option>
+              <option value="عادي">عادي</option>
+              <option value="مميز فردي طلبة">مميز فردي طلبة</option>
+              <option value="مميز فردي طالبات">مميز فردي طالبات</option>
+            </select>
+
             <p style={{ marginLeft: "10px", marginRight: "100px" }}> </p>
             <Checkbox
               required
@@ -1080,8 +1083,8 @@ const App = () => {
               label="محل الاقامة 'العنوان بالتفصيل' "
               variant="outlined"
               fullWidth
-              value={detailedAddress}
-              onChange={(e) => setDetailedAddress(e.target.value)}
+              value={residence}
+              onChange={(e) => setResidence(e.target.value)}
             />
           </div>
 
@@ -1328,15 +1331,17 @@ const App = () => {
             />
           </div>
           <div className="input-group">
-            <p style={{ marginLeft: "10px" }}>نوع السكن</p>
-            <TextField
+          <p style={{ marginLeft: "10px", marginRight: "170px" }}>نوع السكن</p>
+            <select
               required
-              label="قديم/مستجد/منقطع"
-              variant="outlined"
-              size="small"
               value={HousingType}
               onChange={(e) => setHousingType(e.target.value)}
-            />
+            >
+              <option value="."> ------ </option>
+              <option value="عادي">عادي</option>
+              <option value="مميز فردي طلبة">مميز فردي طلبة</option>
+              <option value="مميز فردي طالبات">مميز فردي طالبات</option>
+            </select>
             <p style={{ marginLeft: "10px", marginRight: "100px" }}> </p>
             <Checkbox
               required

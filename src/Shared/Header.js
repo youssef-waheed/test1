@@ -137,8 +137,6 @@ const Header = () => {
       "الوجبات",
       "الرسوم",
       "الغرف",
-      "الفئات",
-      "البلاد",
       "المستخدمين",
       "تطبيقات الطلاب",
       "احصائيات عامة",
@@ -189,51 +187,82 @@ const Header = () => {
     fetchStudents();
   };
 
-  const fetchStudents = async () => {
-    //TODO : show only those who are classified
-    const queryString = `?College=${College}&ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&searchQuery=${searchQuery}`;
+  // const fetchStudents = async () => {
+  //   //TODO : show only those who are classified
+  //   const queryString = `?College=${College}&ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&searchQuery=${searchQuery}`;
 
-    if (
-      egyptions ||
-      expartriates ||
-      normalHousing ||
-      specialHousing ||
-      oldStudent ||
-      newStudent ||
-      appliers ||
-      acceptedApplications ||
-      College ||
-      ofYear
-    ) {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/basicData/getBasicDataMales${queryString}`
-        );
-        console.log("QUERY STRING");
-        console.log(queryString);
-        console.log("QUERY STRING");
-        console.log(response);
-        setStudents(response.data.data.students);
-        setFilteredStudents(response.data.data.students);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/basicData/getBasicDataMales`
-        );
-        console.log("QUERY STRING");
-        console.log(queryString);
-        console.log("QUERY STRING");
-        console.log(response);
-        setStudents(response.data.data.students);
-        setFilteredStudents(response.data.data.students);
-      } catch (error) {
-        console.log(error);
-      }
+  //   if (
+  //     egyptions ||
+  //     expartriates ||
+  //     normalHousing ||
+  //     specialHousing ||
+  //     oldStudent ||
+  //     newStudent ||
+  //     appliers ||
+  //     acceptedApplications ||
+  //     College ||
+  //     ofYear
+  //   ) {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://localhost:5000/basicData/getBasicDataMales${queryString}`
+  //       );
+  //       console.log("QUERY STRING");
+  //       console.log(queryString);
+  //       console.log("QUERY STRING");
+  //       console.log(response);
+  //       setStudents(response.data.data.students);
+  //       setFilteredStudents(response.data.data.students);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   } else {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://localhost:5000/basicData/getBasicDataMales`
+  //       );
+  //       console.log("QUERY STRING");
+  //       console.log(queryString);
+  //       console.log("QUERY STRING");
+  //       console.log(response);
+  //       setStudents(response.data.data.students);
+  //       setFilteredStudents(response.data.data.students);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // };
+  // const filterStudents = (query) => {
+  //   const filtered = students.filter(
+  //     (student) =>
+  //       student.studentName.toLowerCase().includes(query.toLowerCase()) ||
+  //       student._id.toLowerCase().includes(query.toLowerCase())
+  //   );
+  //   setFilteredStudents(filtered);
+  // };
+
+  const fetchStudents = async () => {
+    const queryString = `?College=${College}&ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&searchQuery=${searchQuery}`;
+  
+    try {
+      const url = (egyptions || expartriates || normalHousing || specialHousing || oldStudent || newStudent || appliers || acceptedApplications || College || ofYear)
+        ? `http://localhost:5000/basicData/getBasicDataMales${queryString}`
+        : `http://localhost:5000/basicData/getBasicDataMales`;
+  
+      const response = await axios.get(url);
+      console.log("QUERY STRING", queryString);
+      console.log("RESPONSE", response);
+  
+      // Filter students to include only those with isClassified set to true
+      const classifiedStudents = response.data.data.students.filter(student => student.isClassified);
+  
+      setStudents(classifiedStudents);
+      setFilteredStudents(classifiedStudents);
+    } catch (error) {
+      console.log(error);
     }
   };
+  
   const filterStudents = (query) => {
     const filtered = students.filter(
       (student) =>
@@ -242,7 +271,7 @@ const Header = () => {
     );
     setFilteredStudents(filtered);
   };
-
+  
   const handleSearchChange = (e) => {
     const { value } = e.target;
     console.log("Search Query:", value); // Log the current value of the search query
@@ -680,8 +709,6 @@ const Header = () => {
         <Text1010 />,
         <Text14 />,
         <Text999 />,
-        "الفئات",
-        <Text9999 />,
         <Text15 />,
         <AppAdmin />,
         <StatisticsAdminn />,
