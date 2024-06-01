@@ -76,8 +76,8 @@ const ExcludedCountries = (_id) => {
           <tr>
             <th>البلد</th>
             <th>المسافة </th>
-            <th> مستبعده من التنسيق</th>
-            <th>حدف </th>
+            <th> حالة المناطق التابعة</th>
+            {/* <th>حدف </th> */}
           </tr>
         </thead>
         <tbody>
@@ -140,7 +140,7 @@ const ExcludedCountries = (_id) => {
             />
           </div>
           <div className="select1">
-            <Form.Label> مستبعده من التنسيق </Form.Label>
+            <Form.Label>حالة المناطق التابعة </Form.Label>
             <Form.Control
               type="text"
               className="Type"
