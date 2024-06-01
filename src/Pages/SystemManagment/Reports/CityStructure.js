@@ -15,6 +15,7 @@ const CityStructure = () => {
       setCityData(response.data.data);
       console.log("city data is",cityData);
     } catch (error) {
+      
       console.log(error);
     }
   };
