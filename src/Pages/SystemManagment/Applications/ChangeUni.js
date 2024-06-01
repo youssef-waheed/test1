@@ -64,7 +64,7 @@ const ChangeUni = () => {
   
     axios.post(`http://localhost:5000/transferStudent/${selectedStudent._id}`, housingTypeData)
       .then(response => {
-        console.log('Housing type change applied successfully:', response.data);
+        console.log('transferred successfully:', response.data);
         setSelectedStudent(null);
         setTransferReason('');
         fetchStudents();
@@ -79,12 +79,14 @@ const ChangeUni = () => {
     <div>
       <div className="two-column-wrapper">
         <div className="col">
+         ,<h1> سبب النقل</h1>
           <input
             type="text"
-            placeholder="نوع السكن الجديد"
+            placeholder="سبب النقل"
             value={TransferReason}
             onChange={e => setTransferReason(e.target.value)}
           />
+          <p>_______________</p>
           <input
             type="text"
             placeholder="Search by name or national ID"
