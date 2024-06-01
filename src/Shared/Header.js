@@ -162,6 +162,10 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [students, setStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
+  
+  const [FemaleStudents, setFemaleStudents] = useState([]);
+  const [filteredFemaleStudents, setFilteredFemaleStudents] = useState([]);
+
   const [checkboxes, setCheckboxes] = useState(() => {
     const storedCheckboxes = JSON.parse(sessionStorage.getItem("checkboxes"));
     return (
@@ -181,10 +185,12 @@ const Header = () => {
 
   useEffect(() => {
     fetchStudents();
+    fetchFemaleStudents();
   }, [College, ofYear]);
 
   const Refresh = () => {
     fetchStudents();
+    fetchFemaleStudents();
   };
 
   // const fetchStudents = async () => {
@@ -258,6 +264,28 @@ const Header = () => {
   
       setStudents(classifiedStudents);
       setFilteredStudents(classifiedStudents);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchFemaleStudents = async () => {
+    const queryString = `?College=${College}&ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&searchQuery=${searchQuery}`;
+  
+    try {
+      const url = (egyptions || expartriates || normalHousing || specialHousing || oldStudent || newStudent || appliers || acceptedApplications || College || ofYear)
+        ? `http://localhost:5000/basicData/getBasicDataFemales${queryString}`
+        : `http://localhost:5000/basicData/getBasicDataFemales`;
+  
+      const response = await axios.get(url);
+      console.log("QUERY STRING", queryString);
+      console.log("RESPONSE", response);
+  
+      // Filter students to include only those with isClassified set to true
+      const classifiedStudents = response.data.data.students.filter(student => student.isClassified);
+  
+      setFemaleStudents(classifiedStudents);
+      setFilteredFemaleStudents(classifiedStudents);
     } catch (error) {
       console.log(error);
     }
@@ -419,6 +447,104 @@ const Header = () => {
       </Container>
     );
   }
+
+  function FemaleSIdeBar() {
+    return (
+      <Container className="container">
+        <div className="select">
+          <p className="academicyear">العام الاكديمي</p>
+          <Form.Select
+            size="sm"
+            className="selectmenu"
+            onChange={handleYearChange}
+            value={ofYear} // Attach onChange event handler
+          >
+            <option>2025-2026</option>
+            <option>2024-2025</option>
+            <option>2023-2024</option>
+          </Form.Select>
+        </div>
+        <div className="select">
+          <p>الكلية</p>
+          <Form.Select
+            size="sm"
+            className="selectmenu"
+            onChange={handleCollegeChange} // Attach onChange event handler
+            value={College}
+          >
+            {colleges.map((college, index) => (
+              <option key={index} value={college}>
+                {college}
+              </option>
+            ))}
+          </Form.Select>
+        </div>
+        <div className="form">
+          <div className="sidebar-form-container">
+            <div className="sidebar-form">
+              {checkboxes.map((checkbox, index) => (
+                <div key={index} className="checkbox-row">
+                  <Checkbox
+                    label={checkbox.label}
+                    checked={checkbox.checked}
+                    onChange={() => handleCheckboxChange(index)}
+                    className="checkbox"
+                  />
+                </div>
+              ))}
+              <button
+                onClick={Refresh}
+                style={{
+                  backgroundColor: "blue",
+                  color: "white",
+                  padding: "5px 10px",
+                  border: "none",
+                  borderRadius: "5px",
+                  margin: "5px",
+                }}
+              >
+                تحديث البيانات
+              </button>
+              <div style={{ width: "20px" }} className="search-bar">
+                <input
+                  type="text"
+                  placeholder="Search by name or national ID"
+                  value={searchQuery}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                />
+
+                {/* <input
+                  type="text"
+                  placeholder="Search students..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  className="search-input"
+                /> */}
+              </div>
+            </div>
+            <div
+              className="students-list-container"
+              style={{ maxHeight: "200px", overflowY: "auto" }}
+            >
+              <ul>
+                {filteredFemaleStudents.slice(0, 10).map((student, index) => (
+                  <li key={index}>
+                    <button
+                      className="button"
+                      onClick={() => handleStudentClick(student)}
+                    >
+                      {student.studentName}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </Container>
+    );
+  }
+
   function Text() {
     return (
       <div className="two-column-wrapper">
@@ -433,6 +559,23 @@ const Header = () => {
       </div>
     );
   }
+
+
+  function TextFemale() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col">
+          <FemaleSIdeBar />
+        </div>
+        <div className="coll">
+          {selectedStudentData && (
+            <MainInfo studentData={selectedStudentData} />
+          )}
+        </div>
+      </div>
+    );
+  }
+
   function Text2() {
     return (
       <div className="two-column-wrapper">
@@ -445,11 +588,39 @@ const Header = () => {
       </div>
     );
   }
+
+  function Text2Female() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col">
+          <FemaleSIdeBar />
+        </div>
+        <div className="coll">
+          <Living studentData={selectedStudentData} />
+        </div>
+      </div>
+    );
+  }
+
   function Text3() {
     return (
       <div className="two-column-wrapper">
         <div className="col">
           <SIdeBar />
+        </div>
+        <div className="coll">
+          <Explusion _id={studentId} />
+        </div>
+      </div>
+    );
+  }
+
+
+  function Text3Female() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col">
+          <FemaleSIdeBar />
         </div>
         <div className="coll">
           <Explusion _id={studentId} />
@@ -470,6 +641,21 @@ const Header = () => {
       </div>
     );
   }
+
+  function Text4Female() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col">
+          <FemaleSIdeBar />
+        </div>
+        <div className="coll">
+          <Penalties _id={studentId} studentData={selectedStudentData} />
+        </div>
+      </div>
+    );
+  }
+
+
   function Text5() {
     return (
       <div className="two-column-wrapper">
@@ -485,6 +671,26 @@ const Header = () => {
       </div>
     );
   }
+
+
+  function Text5Female() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col">
+          <FemaleSIdeBar />
+        </div>
+        <div className="coll">
+          <AbsenceandPermits
+            _id={studentId}
+            studentData={selectedStudentData}
+          />
+        </div>
+      </div>
+    );
+  }
+
+
+
   function Text6() {
     return (
       <div className="two-column-wrapper">
@@ -497,6 +703,21 @@ const Header = () => {
       </div>
     );
   }
+
+  function Text6Female() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col">
+          <FemaleSIdeBar />
+        </div>
+        <div className="coll">
+          <Fees _id={studentId} />{" "}
+        </div>
+      </div>
+    );
+  }
+
+
   function Text7() {
     return (
       <div className="two-column-wrapper">
@@ -509,6 +730,22 @@ const Header = () => {
       </div>
     );
   }
+
+
+  function Text7Female() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col">
+          <FemaleSIdeBar />
+        </div>
+        <div className="coll">
+          <StatementCase _id={studentId} />
+        </div>
+      </div>
+    );
+  }
+
+
   function Text8() {
     return (
       <div className="two-column-wrapper">
@@ -521,6 +758,21 @@ const Header = () => {
       </div>
     );
   }
+
+
+  function Text8Female() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col">
+          <FemaleSIdeBar />
+        </div>
+        <div className="coll">
+          <BlockMeals _id={studentId} />
+        </div>
+      </div>
+    );
+  }
+
   function Text9() {
     return (
       <div className="two-column-wrapper">
@@ -533,6 +785,22 @@ const Header = () => {
       </div>
     );
   }
+
+
+  function Text9Female() {
+    return (
+      <div className="two-column-wrapper">
+        <div className="col">
+          <FemaleSIdeBar />
+        </div>
+        <div className="coll">
+          <FeeStatement _id={studentId} />
+        </div>
+      </div>
+    );
+  }
+
+
   function Text10() {
     return (
       <div className="two-column-wrapper">
@@ -687,15 +955,15 @@ const Header = () => {
         <Stat />,
       ],
       [
-        <Text />,
-        <Text2 />,
-        <Text3 />,
-        <Text4 />,
-        <Text5 />,
-        <Text6 />,
-        <Text7 />,
-        <Text8 />,
-        <Text9 />,
+        <TextFemale />,
+        <Text2Female />,
+        <Text3Female />,
+        <Text4Female />,
+        <Text5Female />,
+        <Text6Female />,
+        <Text7Female />,
+        <Text8Female />,
+        <Text9Female />,
         <Text13 />,
         "تقارير",
         "احصائيات",

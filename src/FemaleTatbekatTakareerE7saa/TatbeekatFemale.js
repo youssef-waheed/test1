@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Review from "./ReviewFemale";
+import ClassificationGeneral from "./ClassificationFemal";
 
 const Page1 = () => (
   <div>
@@ -10,7 +11,8 @@ const Page1 = () => (
 
 const Page2 = () => (
   <div>
-    <h2>Page 2</h2>
+    <h2>تنسيق طالبات</h2>
+    <ClassificationGeneral />
   </div>
 );
 

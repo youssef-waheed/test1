@@ -23,16 +23,7 @@ const MainInfo = ({ studentData }) => {
   return (
     <div className="table-container">
       <div className="table">
-        {/* {movies.results.map((movie) => (
-              <div className="col-3 card-movie-container" key={movie.id}>
-                <MoviesCard
-                  name={movie.name}
-                  description={movie.description}
-                  image={movie.image_url}
-                  id={movie.id}
-                />
-              </div>
-            ))} */}
+       
 
         {studentData.image && (
           <img
