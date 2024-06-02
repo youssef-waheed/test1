@@ -15,12 +15,12 @@ const ApplicationDates = () => {
     try {
       const response = await axios.get(
         "http://localhost:5000/generalTiming/getAllDate",
-        // {
-        //   headers: {
-        //     authorization: `Bearer__${auth.token}`,
-        //     "Content-Type": "application/json",
-        //   },
-        // }
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       setDates(response.data.data.date);
     } catch (error) {
