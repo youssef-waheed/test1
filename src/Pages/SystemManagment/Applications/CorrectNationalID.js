@@ -4,6 +4,9 @@ import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
 
+import { getAuthUser } from "../../../helper/storage";
+const auth = getAuthUser();
+
 const CorrectNationalID = ({ nationalID }) => {
   const [students, setStudents] = useState([]);
   const [selectedStudentData, setSelectedStudentData] = useState(null);
@@ -12,19 +15,52 @@ const CorrectNationalID = ({ nationalID }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetchStudents(); 
+    fetchStudents();
   }, []);
 
   const fetchStudents = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/basicData/getBasicDataMales`
+        `http://localhost:5000/basicData/getBasicDataMales`,
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
-      const filteredStudents = response.data.data.students.filter(student => student.isHoused === true);
+      const filteredStudents = response.data.data.students.filter(
+        (student) => student.isHoused === true
+      );
       setStudents(filteredStudents);
     } catch (error) {
       console.log(error);
       setError("Failed to fetch student data");
+    }
+  };
+  const incremented = async () => {
+    try {
+      const inc = await axios.put(
+        `http://localhost:5000/logs/increment/${auth.log.adminID}`,
+        {
+          type: "update",
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createLogs = async () => {
+    try {
+      const logs = await axios.post("http://localhost:5000/logs/createLogs", {
+        adminID: auth.log.adminID,
+        adminUserName: auth.log.adminUserName,
+        action: "تعديل  ",
+        objectName: `للطالب ${students.studentName},برقم الطالب ${students.nationalID}`,
+      });
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -42,13 +78,19 @@ const CorrectNationalID = ({ nationalID }) => {
       const response = await axios.put(
         `http://localhost:5000/changeInfo/${selectedStudentData.nationalID}`,
         {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        },
+        {
           ofYear: selectedStudentData.ofYear,
           newNationalID: updateID,
         }
       );
-  
+
       const updatedStudent = response.data.data.changedData;
-  
+
       // Update the student in the local state
       setStudents((prevStudents) =>
         prevStudents.map((student) =>
@@ -57,8 +99,10 @@ const CorrectNationalID = ({ nationalID }) => {
             : student
         )
       );
-  
+
       // Reset the input field after successful update
+      createLogs();
+      incremented();
       setUpdateID("");
       setSelectedStudentData(null);
       setError(null);
@@ -72,23 +116,34 @@ const CorrectNationalID = ({ nationalID }) => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredStudents = students.filter(student =>
-    student.studentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.nationalID.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredStudents = students.filter(
+    (student) =>
+      student.studentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.nationalID.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="two-column-wrapper">
       <div className="col">
-        <div className="students-list-container" style={{ maxHeight: "200px", overflowY: "auto" }}>
+        <div
+          className="students-list-container"
+          style={{ maxHeight: "200px", overflowY: "auto" }}
+        >
           <Form.Group controlId="search">
-           
-            <Form.Control type="text" placeholder="البحث" onChange={handleSearch} />
+            <Form.Control
+              type="text"
+              placeholder="البحث"
+              onChange={handleSearch}
+            />
           </Form.Group>
           <ul>
             {filteredStudents.slice(0, 10).map((student, index) => (
               <li key={index}>
-                <button className="button" onClick={() => handleStudentClick(student)}>
+                <button
+                  style={{ backgroundColor: "blue" }}
+                  className="button"
+                  onClick={() => handleStudentClick(student)}
+                >
                   {student.studentName}
                 </button>
               </li>
@@ -122,23 +177,45 @@ const CorrectNationalID = ({ nationalID }) => {
             <Form>
               <Form.Group controlId="newNationalID">
                 <Form.Label>الرقم القومي الجديد</Form.Label>
-                <Form.Control type="text" name="newNationalID" value={updateID} onChange={handleInputChange} />
+                <Form.Control
+                  type="text"
+                  name="newNationalID"
+                  value={updateID}
+                  onChange={handleInputChange}
+                />
               </Form.Group>
-              <button type="button" onClick={updateNationalID} style={{ backgroundColor: "blue" }}>
-                تحديث الرقم القومي
-              </button>
+              {auth &&
+                (auth.athurity === "الكل" || auth.athurity === "تعديل") && (
+                  <button
+                    type="button"
+                    onClick={updateNationalID}
+                    style={{ backgroundColor: "blue" }}
+                  >
+                    تحديث الرقم القومي
+                  </button>
+                )}
             </Form>
           </>
         ) : (
           <div className="warning">
-            <Alert variant="danger" style={{ textAlign: "center", fontSize: "22px", fontWeight: "bold" }}>
+            <Alert
+              variant="danger"
+              style={{
+                textAlign: "center",
+                fontSize: "22px",
+                fontWeight: "bold",
+              }}
+            >
               لم يتم اختيار طالب بعد
             </Alert>
           </div>
         )}
         {error && (
           <div className="error">
-            <Alert variant="danger" style={{ textAlign: "center", fontSize: "18px" }}>
+            <Alert
+              variant="danger"
+              style={{ textAlign: "center", fontSize: "18px" }}
+            >
               {error}
             </Alert>
           </div>

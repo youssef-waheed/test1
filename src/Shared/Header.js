@@ -243,26 +243,38 @@ const Header = () => {
 
   const fetchStudents = async () => {
     const queryString = `?College=${College}&ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&searchQuery=${searchQuery}`;
-  
+
     try {
-      const url = (egyptions || expartriates || normalHousing || specialHousing || oldStudent || newStudent || appliers || acceptedApplications || College || ofYear)
-        ? `http://localhost:5000/basicData/getBasicDataMales${queryString}`
-        : `http://localhost:5000/basicData/getBasicDataMales`;
-  
+      const url =
+        egyptions ||
+        expartriates ||
+        normalHousing ||
+        specialHousing ||
+        oldStudent ||
+        newStudent ||
+        appliers ||
+        acceptedApplications ||
+        College ||
+        ofYear
+          ? `http://localhost:5000/basicData/getBasicDataMales${queryString}`
+          : `http://localhost:5000/basicData/getBasicDataMales`;
+
       const response = await axios.get(url);
       console.log("QUERY STRING", queryString);
       console.log("RESPONSE", response);
-  
+
       // Filter students to include only those with isClassified set to true
-      const classifiedStudents = response.data.data.students.filter(student => student.isClassified);
-  
+      const classifiedStudents = response.data.data.students.filter(
+        (student) => student.isClassified
+      );
+
       setStudents(classifiedStudents);
       setFilteredStudents(classifiedStudents);
     } catch (error) {
       console.log(error);
     }
   };
-  
+
   const filterStudents = (query) => {
     const filtered = students.filter(
       (student) =>
@@ -271,7 +283,7 @@ const Header = () => {
     );
     setFilteredStudents(filtered);
   };
-  
+
   const handleSearchChange = (e) => {
     const { value } = e.target;
     console.log("Search Query:", value); // Log the current value of the search query
@@ -367,7 +379,7 @@ const Header = () => {
                   />
                 </div>
               ))}
-              <button
+              {/* <button
                 onClick={Refresh}
                 style={{
                   backgroundColor: "blue",
@@ -379,7 +391,7 @@ const Header = () => {
                 }}
               >
                 تحديث البيانات
-              </button>
+              </button> */}
               <div style={{ width: "20px" }} className="search-bar">
                 <input
                   type="text"
