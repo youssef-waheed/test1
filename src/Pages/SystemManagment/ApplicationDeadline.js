@@ -10,24 +10,24 @@ const ApplicationDeadline = () => {
   const [editDate, setEditDate] = useState({
     to: "",
     from: "",
-    ofYear: "",
+  
     forWho: "",
   });
   const [addDate, setAddDate] = useState({
     to: "",
     from: "",
-    ofYear: "",
+  
     forWho: "",
   });
   const [deleteDate, setDeleteDate] = useState({
     to: "",
     from: "",
   });
-  const [year, setYear] = useState(""); // State to store ofYear
+
 
   useEffect(() => {
     fetchDates();
-    fetchYear(); // Fetch ofYear when component mounts
+    
   }, []);
 
   const fetchDates = async () => {
@@ -59,7 +59,7 @@ const ApplicationDeadline = () => {
           },
         }
       );
-      setYear(response.data.year); // Set the year state with the fetched value
+    
     } catch (error) {
       console.log(error);
     }
@@ -93,8 +93,8 @@ const ApplicationDeadline = () => {
 
   const handleEdit = (index) => {
     setEditIndex(index);
-    const { to, from, ofYear, forWho } = students[index];
-    setEditDate({ to, from, ofYear, forWho });
+    const { to, from, forWho } = students[index];
+    setEditDate({ to, from,  forWho });
   };
 
   const handleChange = (e) => {
@@ -126,7 +126,7 @@ const ApplicationDeadline = () => {
       createLogs();
       incremented();
       setEditIndex(-1);
-      setEditDate({ to: "", from: "", ofYear: "", forWho: "" });
+      setEditDate({ to: "", from: "",  forWho: "" });
       window.location.reload();
     } catch (error) {
       console.log(error);
@@ -140,7 +140,7 @@ const ApplicationDeadline = () => {
         {
           to: addDate.to,
           from: addDate.from,
-          ofYear: addDate.ofYear,
+       
           forWho: addDate.forWho,
         },
         {
@@ -156,7 +156,7 @@ const ApplicationDeadline = () => {
       setAddDate({
         to: "",
         from: "",
-        ofYear: "",
+   
         forWho: "",
       });
     } catch (error) {
@@ -185,17 +185,17 @@ const ApplicationDeadline = () => {
 
   const handleCancel = () => {
     setEditIndex(-1);
-    setEditDate({ to: "", from: "", ofYear: "", forWho: "" });
+    setEditDate({ to: "", from: "",  forWho: "" });
   };
 
   return (
     <div>
       <h1>مواعيد التقديم</h1>
-      <h2>Year: {year}</h2> {/* Display the ofYear at the top */}
+      <h2>السنة الدراسية: {new Date().getFullYear()}-{new Date().getFullYear()-1}</h2> {/* Display the ofYear at the top */}
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
-            <th></th>
+            <th ></th>
             <th>من</th>
             <th>إلى</th>
           </tr>
@@ -208,6 +208,7 @@ const ApplicationDeadline = () => {
                 <td>
                   {editIndex === index ? (
                     <textarea
+                    
                       name="from"
                       value={editDate.from}
                       onChange={handleChange}
@@ -273,6 +274,7 @@ const ApplicationDeadline = () => {
           <tr>
             <td>
               <input
+         placeholder="نوع الطلاب"
                 type="text"
                 name="forWho"
                 value={addDate.forWho}
