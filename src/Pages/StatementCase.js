@@ -5,14 +5,15 @@ import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import "../Style/StatementCase.css";
 import { getAuthUser } from "../helper/storage";
+
 const auth = getAuthUser();
-var userData;
+let userData;
+
 const StatementCase = ({ _id }) => {
   const [loading, setLoading] = useState(false);
   const [statementSituation, setStatementSituation] = useState([]);
   const [permission, setPermission] = useState([]);
   const [building, setBuilding] = useState([]);
-  // const [userData, setUserData] = useState([]);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -20,17 +21,12 @@ const StatementCase = ({ _id }) => {
       fetchStatementCase(_id);
     }
   }, [_id]);
-  // console.log('===============dddddddddddddd=====================');
-  // console.log(_id);
-  // console.log('===========dddddddddd=========================');
 
   const incremented = async () => {
     try {
-      const inc = await axios.put(
+      await axios.put(
         `http://localhost:5000/logs/increment/${auth.log.adminID}`,
-        {
-          type: "get",
-        }
+        { type: "get" }
       );
     } catch (error) {
       console.log(error);
@@ -39,7 +35,7 @@ const StatementCase = ({ _id }) => {
 
   const createLogs = async () => {
     try {
-      const logs = await axios.post("http://localhost:5000/logs/createLogs", {
+      await axios.post("http://localhost:5000/logs/createLogs", {
         adminID: auth.log.adminID,
         adminUserName: auth.log.adminUserName,
         action: "عرض بيان الحالة",
@@ -54,27 +50,19 @@ const StatementCase = ({ _id }) => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:5000/StatementOfTheSituation/` + _id
+        `http://localhost:5000/StatementOfTheSituation/${_id}`
       );
 
-      console.log("REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEES");
-      console.log(response);
-      console.log("REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEES");
-
-      setStatementSituation([response.data.data.student]); // Ensure statementSituation is an array
-      // setUserData(response.data.data.student)
+      setStatementSituation([response.data.data.student] || []);
       userData = response.data.data.student;
-      console.log("====================================");
-      console.log(userData);
-      console.log("====================================");
-
-      setPermission(response.data.data.permissionsWithDuration);
-      setBuilding(response.data.data.building);
+      setPermission(response.data.data.permissionsWithDuration || []);
+      setBuilding(response.data.data.building || []);
       setLoading(false);
       incremented();
       createLogs();
     } catch (error) {
       console.log(error);
+      setError(true);
       setLoading(false);
     }
   };
@@ -122,30 +110,29 @@ const StatementCase = ({ _id }) => {
               <th> رقم الملف</th>
               <th> اسم ولى الأمر </th>
               <th>الرقم القومى لولى الأمر</th>
-
-              {/* Add more table headers as needed */}
             </tr>
           </thead>
           <tbody>
-            {statementSituation.map((student, index) => (
-              <tr key={index}>
-                <td>{student.studentName}</td>
-                <td>{student.nationalID}</td>
-                <td>{student.gender}</td>
-                <td>{student.birthDate}</td>
-                <td>{student.religion}</td>
-                <td>{student.email}</td>
-                <td>{student.College}</td>
-                <td>{student.year}</td>
-                <td>{student.studentCode}</td>
-                <td>{student.gradeOfLastYear}</td>
-                <td>{student.detailedAddress}</td>
-                <td>{student.studentCode}</td>
-                <td>{student.fatherName}</td>
-                <td>{student.fatherNationalId}</td>
-                {/* Add more table data cells as needed */}
-              </tr>
-            ))}
+            {statementSituation.length > 0 &&
+              statementSituation.map((student, index) => (
+                <tr key={index}>
+                  <td>{student.studentName}</td>
+                  <td>{student.nationalID}</td>
+                  <td>{student.gender}</td>
+                 
+                  <td>{ new Date(student.birthDate).toLocaleDateString()}</td>
+                  <td>{student.religion}</td>
+                  <td>{student.email}</td>
+                  <td>{student.College}</td>
+                  <td>{student.year}</td>
+                  <td>{student.studentCode}</td>
+                  <td>{student.gradeOfLastYear}</td>
+                  <td>{student.detailedAddress}</td>
+                  <td>{student.studentCode}</td>
+                  <td>{student.fatherName}</td>
+                  <td>{student.fatherNationalId}</td>
+                </tr>
+              ))}
           </tbody>
         </Table>
       </div>
@@ -173,22 +160,23 @@ const StatementCase = ({ _id }) => {
             </tr>
           </thead>
           <tbody>
-            {permission.map((permissionItem, index) => (
-              <tr key={index}>
-                <td> {permissionItem.TypeOfAbsence} </td>
-                <td>
-                  {" "}
-                  {new Date(permissionItem.dateFrom).toLocaleDateString()}{" "}
-                </td>
-                <td>
-                  {" "}
-                  {new Date(permissionItem.dateFrom).toLocaleDateString()}{" "}
-                </td>
-                <td> {permissionItem.date} </td>
-                <td> {permissionItem.originalDurationInDays} </td>
-                <td> {permissionItem.durationWithoutFriday} </td>
-              </tr>
-            ))}
+            {permission.length > 0 &&
+              permission.map((permissionItem, index) => (
+                <tr key={index}>
+                  <td> {permissionItem.TypeOfAbsence} </td>
+                  <td>
+                    {" "}
+                    {new Date(permissionItem.dateFrom).toLocaleDateString()}{" "}
+                  </td>
+                  <td>
+                    {" "}
+                    {new Date(permissionItem.dateFrom).toLocaleDateString()}{" "}
+                  </td>
+                  <td> {permissionItem.date} </td>
+                  <td> {permissionItem.originalDurationInDays} </td>
+                  <td> {permissionItem.durationWithoutFriday} </td>
+                </tr>
+              ))}
           </tbody>
         </Table>
       </div>
@@ -213,19 +201,21 @@ const StatementCase = ({ _id }) => {
             </tr>
           </thead>
           <tbody>
-            {building.map((buildingItem, index) => (
-              <tr key={index}>
-                <td> {buildingItem.Name} </td>
-                {statementSituation.map((student, index) => (
-                  <tr key={index}>
-                    <td>
-                      {" "}
-                      {new Date(student.housingDate).toLocaleDateString()}{" "}
-                    </td>
-                  </tr>
-                ))}
-              </tr>
-            ))}
+            {building.length > 0 &&
+              building.map((buildingItem, index) => (
+                <tr key={index}>
+                  <td> {buildingItem.Name} </td>
+                  {statementSituation.length > 0 &&
+                    statementSituation.map((student, index) => (
+                      <tr key={index}>
+                        <td>
+                          {" "}
+                          {new Date(student.housingDate).toLocaleDateString()}{" "}
+                        </td>
+                      </tr>
+                    ))}
+                </tr>
+              ))}
           </tbody>
         </Table>
       </div>

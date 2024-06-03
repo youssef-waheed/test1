@@ -79,12 +79,14 @@ const ChangeHousingType = () => {
     <div>
       <div className="two-column-wrapper">
         <div className="col">
+          <h1> نوع السكن الجديد</h1>
           <input
             type="text"
             placeholder="نوع السكن الجديد"
             value={newHousingType}
             onChange={e => setNewHousingType(e.target.value)}
           />
+          <p>_________</p>
           <input
             type="text"
             placeholder="Search by name or national ID"
