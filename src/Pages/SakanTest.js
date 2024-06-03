@@ -9,7 +9,8 @@ const MultilevelDropdown = ({
   onSelectCity,
   onSelectBuilding,
   onSelectFloor,
-  onSelectRoom
+  onSelectRoom,
+  housingType, // Add housingType prop
 }) => {
   const [cities, setCities] = useState([]);
   const [buildings, setBuildings] = useState([]);
@@ -73,11 +74,24 @@ const MultilevelDropdown = ({
   const filterRoomsByFloor = (floorId) => {
     axios.get('http://localhost:5000/rooms')
       .then(response => {
-        const filteredRooms = response.data.data.room.filter(room => room.FloorId._id === floorId);
-        setRooms(filteredRooms);
+        console.log("Fetched rooms data:", response.data);
+        if (response.data && response.data.data && Array.isArray(response.data.data.room)) {
+          const allRooms = response.data.data.room;
+          const filteredRooms = allRooms.filter(room => 
+            room.FloorId && 
+            room.FloorId._id === floorId && 
+            (room.roomType === housingType || 
+             (housingType.includes("مميز") && room.roomType.includes("مميز")) ||
+             (housingType.includes("عادي") && room.roomType.includes("عادي")))
+          );
+          console.log("Filtered rooms data:", filteredRooms);
+          setRooms(filteredRooms);
+        } else {
+          console.error("Rooms data is not an array:", response.data);
+        }
       })
       .catch(error => {
-        console.error("Error filtering rooms:", error);
+        console.error("Error fetching rooms:", error);
       });
   };
 
