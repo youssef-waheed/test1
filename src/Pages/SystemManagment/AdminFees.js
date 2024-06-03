@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { getAuthUser } from "../../helper/storage";
 import Form from "react-bootstrap/Form";
-
+var id;
 var feeType_id;
 const auth = getAuthUser();
 
@@ -159,6 +159,20 @@ const AdminFees = ({ _id }) => {
       fetchFeeTypes();
       setShowEditForm(false);
     } catch (error) {
+      console.log(error);
+    }
+  };
+  const deleteFeeType = async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/fees/deleteFeeType/${selectedFee._id}`
+      );
+      id = selectedFee._id;
+      console.log(response);
+    } catch (error) {
+      console.log("DEKDEKDELE");
+      console.log(_id);
+      console.log("DEKDEKDELE");
       console.log(error);
     }
   };
@@ -528,6 +542,17 @@ const AdminFees = ({ _id }) => {
             >
               تعديل
             </button>
+            <button
+              style={{
+                marginRight: "20px",
+                color: "white",
+                fontWeight: "bold",
+                backgroundColor: "red",
+              }}
+              onClick={deleteFeeType}
+            >
+              حذف
+            </button>
           </div>
         )}
         {showEditForm && (
@@ -741,13 +766,21 @@ const AdminFees = ({ _id }) => {
           <tbody>{renderFeeOptions()}</tbody>
 
           <button
-            style={{ backgroundColor: "green", color: "white" }}
+            style={{ backgroundColor: "white", color: "white" }}
             onClick={toggleEditMode}
           >
             {editMode && (
-              <button onClick={handleEditFeeOption}>حفظ التعديلات</button>
+              <button
+                style={{ backgroundColor: "blue", color: "white" }}
+                onClick={handleEditFeeOption}
+              >
+                حفظ التعديلات
+              </button>
             )}
-            <button onClick={toggleEditMode}>
+            <button
+              style={{ backgroundColor: "blue", color: "white" }}
+              onClick={toggleEditMode}
+            >
               {editMode ? "إنهاء التعديل" : "تعديل"}
             </button>
           </button>

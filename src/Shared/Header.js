@@ -741,11 +741,15 @@ const Header = () => {
             </li>
           ))}
           <button
-            className="button"
-            style={{ backgroundColor: "red", color: "white" }}
+            style={{
+              backgroundColor: "red",
+              width: " 80px",
+              height: "40px",
+              color: "white",
+              border: "",
+            }}
             onClick={logout}
           >
-            {" "}
             logout
           </button>
         </ul>

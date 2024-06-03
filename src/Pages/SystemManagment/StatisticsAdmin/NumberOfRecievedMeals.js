@@ -3,12 +3,14 @@ import axios from "axios";
 import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
+import Button from "react-bootstrap/Button";
 
 const NumberOfRecievedMeals = () => {
   const [ofYear, setOfYear] = useState("");
-  const [students, setStudents] = useState([]);
+  const [receivedMeals, setReceivedMeals] = useState([]);
   const [selectedMeals, setSelectedMeals] = useState("");
-  const mealsType = ["فطار", "غداء", "عشاء"];
+  const [file, setFile] = useState(null);
+  const mealsType = ["استلام فطار", "استلام غداء", "استلام عشاء"];
 
   useEffect(() => {
     fetchNumberOfMeals();
@@ -21,20 +23,52 @@ const NumberOfRecievedMeals = () => {
         const response = await axios.get(
           `http://localhost:5000/statistics/numberOfReceivedMeals${queryString}`
         );
+        setReceivedMeals(response.data.numberOfReceivedMeals || {});
         console.log(response);
       } catch (error) {
         console.log(error);
       }
     }
   };
-  function handleYearChange(event) {
-    const selectedYear = event.target.value;
-    setOfYear(selectedYear);
-  }
-  function handleMealType(event) {
-    const mealsType = event.target.value;
-    setSelectedMeals(mealsType);
-  }
+
+  const handleYearChange = (event) => {
+    setOfYear(event.target.value);
+  };
+
+  const handleMealType = (event) => {
+    setSelectedMeals(event.target.value);
+  };
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (file) {
+      const formData = new FormData();
+      formData.append("receivedMeals", file);
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/v1/received-meal/receive-meals",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        // Handle response after successful upload
+        console.log(response.data);
+        // Optionally, refetch the meal data
+        fetchNumberOfMeals();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <div className="two-column-wrapper">
       <div className="col">
@@ -44,10 +78,9 @@ const NumberOfRecievedMeals = () => {
             size="sm"
             className="selectmenu"
             onChange={handleYearChange}
-            value={ofYear} // Attach onChange event handler
+            value={ofYear}
           >
             <option>اختر العام الاكديمي</option>
-
             <option>2025-2026</option>
             <option>2024-2025</option>
             <option>2023-2024</option>
@@ -59,7 +92,6 @@ const NumberOfRecievedMeals = () => {
             style={{ width: "150px" }}
             size="sm"
             className="Type"
-            m-5
             onChange={handleMealType}
             value={selectedMeals}
           >
@@ -71,53 +103,52 @@ const NumberOfRecievedMeals = () => {
             ))}
           </Form.Select>
         </div>
-        {/* <div className="penalty-date">
-      <p style={{ fontWeight: "bold" }}> من تاريخ</p>
-      <input type="date" onChange={handleStartDay} value={startDay} />
-    </div>
-    <div className="cancellation-date">
-      <p style={{ fontWeight: "bold" }}> الى تاريخ</p>
-      <input
-        type="date"
-        onChange={handleCancelationDate}
-        value={cancellationDate}
-      />
-    </div> */}
-        <div className="names"></div>
+        <div className="upload">
+          <form onSubmit={handleSubmit}>
+            <Form.Group controlId="formFile" className="mb-3">
+              <Form.Label>Upload Excel File</Form.Label>
+              <Form.Control type="file" onChange={handleFileChange} />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Upload
+            </Button>
+          </form>
+        </div>
       </div>
       <div className="coll">
         <Table striped bordered hover size="sm">
           <thead>
             <tr>
-              <th> المبنى</th>
-              <th> </th>
+              <th>المبنى</th>
+              <th>عدد الوجبات المستلمة</th>
             </tr>
           </thead>
           <tbody>
-            {Array.isArray(students) &&
-              students.map((student, index) => (
+            {Object.entries(receivedMeals).length > 0 ? (
+              Object.entries(receivedMeals).map(([building, count], index) => (
                 <tr key={index}>
-                  <td>{student.studentName}</td>
-                  <td>{student.nationalID}</td>
-                  <td>{student.College}</td>
+                  <td>{building}</td>
+                  <td>{count}</td>
                 </tr>
-              ))}
+              ))
+            ) : (
+              <tr>
+                <td colSpan="2">
+                  <Alert
+                    variant="danger"
+                    style={{
+                      textAlign: "center",
+                      fontSize: "22px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    لا يوجد بيانات
+                  </Alert>
+                </td>
+              </tr>
+            )}
           </tbody>
         </Table>
-        {students.length === 0 && (
-          <div className="warning">
-            <Alert
-              variant="danger"
-              style={{
-                textAlign: "center",
-                fontSize: "22px",
-                fontWeight: "bold",
-              }}
-            >
-              لا يوجد بيانات لهذا الطالب/طالبة{" "}
-            </Alert>
-          </div>
-        )}
       </div>
     </div>
   );
