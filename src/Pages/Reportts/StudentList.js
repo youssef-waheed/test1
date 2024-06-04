@@ -5,7 +5,8 @@ import Table from "react-bootstrap/Table";
 const StudentList = () => {
   const [ofYear, setOfYear] = useState("");
   const [students, setStudents] = useState([]);
-  const [selectedFilter, setSelectedFilter] = useState("pendingApplications");
+  // const [selectedFilter, setSelectedFilter] = useState("pendingApplications");
+  const [College, setCollege] = useState(""); // State for storing the selected college
 
   const [checkboxes, setCheckboxes] = useState(() => {
     const storedCheckboxes = JSON.parse(sessionStorage.getItem("checkboxes"));
@@ -20,7 +21,6 @@ const StudentList = () => {
         { label: "سكن عادى", checked: false },
         { label: "سكن مميز", checked: false },
         { label: "ذوى احتياجات خاصة", checked: false },
-        { label: "إخلاء  ", checked: false },
       ]
     );
   });
@@ -31,13 +31,41 @@ const StudentList = () => {
   var oldStudent;
   var newStudent;
   var isEvacuated;
+  var appliyers;
+  var accepted;
+  const colleges = [
+    "كلية الفنون الجميلة",
+    "كلية الهندسة (حلوان)",
+    "كلية الهندسة (المطرية)",
+    "كلية التجارة وإدارة الأعمال (حلوان)",
+    "كلية التجارة وإدارة الأعمال (الزمالك)",
+    "كلية الحاسبات والمعلومات",
+    "كلية السياحة والفنادق",
+    "كلية الفنون التطبيقية",
+    "كلية التكنولوجيا والتعليم",
+    "كلية الاقتصاد المنزلي",
+    "كلية التربية الفنية",
+    "كلية التربية الموسيقية",
+    "كلية التربية الرياضية (بنين) بالهرم",
+    "كلية التربية الرياضية (بنات) بالجزيرة",
+    "كلية الحقوق",
+    "كلية الآداب",
+    "كلية التربية",
+    "كلية الخدمة الاجتماعية",
+    "كلية الصيدلة",
+    "كلية العلوم",
+    "كلية التمريض",
+    "كلية الطب",
+    "المعهد القومي للملكية الفكرية",
+    "معهد التمريض",
+  ];
 
   useEffect(() => {
     fetchStudentList();
-  }, [ofYear, selectedFilter]);
+  }, [ofYear, College]);
 
   const fetchStudentList = async () => {
-    const queryString = `?ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&isEvacuated=${isEvacuated}`;
+    const queryString = `?College=${College}&ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliyers=${appliyers}&accepted=${accepted}`;
     if (
       egyptions ||
       expartriates ||
@@ -46,6 +74,9 @@ const StudentList = () => {
       oldStudent ||
       newStudent ||
       isEvacuated ||
+      appliyers ||
+      accepted ||
+      College ||
       ofYear
     ) {
       try {
@@ -63,7 +94,6 @@ const StudentList = () => {
           `http://localhost:5000/reports/studentListsMales`
         );
         setStudents(response.data.data.users);
-
         console.log(response);
       } catch (error) {
         console.log(error);
@@ -82,12 +112,12 @@ const StudentList = () => {
 
     egyptions = selectedLabel === "مصرى";
     expartriates = selectedLabel === "وافد";
-
     oldStudent = selectedLabel === "قدامى";
     newStudent = selectedLabel === "جدد";
     normalHousing = selectedLabel === "سكن عادى";
     specialHousing = selectedLabel === "سكن مميز";
-    isEvacuated = selectedLabel === "إخلاء";
+    appliyers = selectedLabel === "متقدمين";
+    accepted = selectedLabel === "مقبولين";
 
     fetchStudentList();
   };
@@ -96,6 +126,11 @@ const StudentList = () => {
     setOfYear(selectedYear);
 
     setOfYear(selectedYear, () => fetchStudentList());
+  }
+  function handleCollegeChange(event) {
+    const selectedCollege = event.target.value;
+    setCollege(selectedCollege, () => fetchStudentList());
+    fetchStudentList();
   }
   return (
     <div>
@@ -113,6 +148,22 @@ const StudentList = () => {
               <option>2025-2026</option>
               <option>2024-2025</option>
               <option>2023-2024</option>
+            </Form.Select>
+          </div>
+          <div className="select">
+            <p>الكلية</p>
+            <Form.Select
+              size="sm"
+              className="selectmenu"
+              onChange={handleCollegeChange} // Attach onChange event handler
+              value={College}
+            >
+              <option>اخترالكلية</option>
+              {colleges.map((college, index) => (
+                <option key={index} value={college}>
+                  {college}
+                </option>
+              ))}
             </Form.Select>
           </div>
           {checkboxes.map((checkbox, index) => (

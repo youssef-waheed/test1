@@ -1,36 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../Style/MainInfo.css";
 import Table from "react-bootstrap/Table";
 import Spinner from "react-bootstrap/Spinner";
-import Alert from "react-bootstrap/Alert";
+
+const arrayBufferToBase64 = (buffer) => {
+  let binary = "";
+  const bytes = new Uint8Array(buffer);
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return window.btoa(binary);
+};
 
 const MainInfo = ({ studentData }) => {
   const [error, setError] = useState(false);
+  const [studentImage, setStudentImage] = useState(null);
+
+  useEffect(() => {
+    if (studentData && studentData.image && studentData.image.data) {
+      try {
+        const base64String = arrayBufferToBase64(studentData.image.data);
+        setStudentImage(`data:image/png;base64,${base64String}`);
+      } catch (e) {
+        console.error("Error converting image data:", e);
+      }
+    }
+  }, [studentData]);
 
   if (!studentData) {
     return (
       <div className="table-container">
         <Spinner animation="border" role="status">
           <span className="visually-hidden">Loading...</span>
-        </Spinner>{" "}
+        </Spinner>
       </div>
     );
   }
-  console.log("IMAGEEEEEEEEEEEEEEEEEEEEEEEEEEEEe");
-  console.log(studentData.image);
-  console.log("IMAGEEEEEEEEEEEEEEEEEEEEEEEEEEEEe");
 
   return (
     <div className="table-container">
       <div className="table">
-       
-
-        {studentData.image && (
+        {studentImage ? (
           <img
-            src="../../../"
+            src={studentImage}
             alt="Student Image"
-            style={{ width: "100px", height: "auto" }}
+            style={{ width: "200px", height: "200px" }}
           />
+        ) : (
+          <p>No image available</p>
         )}
         <Table striped bordered hover size="sm">
           <thead>
@@ -40,7 +58,6 @@ const MainInfo = ({ studentData }) => {
             </tr>
           </thead>
           <tbody>
-            <tr></tr>
             <tr>
               <th>الرقم القومى</th>
               <td>{studentData.nationalID}</td>
@@ -137,18 +154,10 @@ const MainInfo = ({ studentData }) => {
               <th>الموبايل</th>
               <td>{studentData.phoneNumber}</td>
             </tr>
-            {/* <tr>
-              <th>عدد جرعات اللقاح</th>
-              <td>{studentData.phoneNumber}</td>
-            </tr> */}
             <tr>
               <th>ذوي احتياجات خاصة</th>
               <td>{studentData.withSpecialNeeds}</td>
             </tr>
-            {/* <tr>
-              <th>القاعدة المقبول بها</th>
-              <td>{studentData.phoneNumber}</td>
-            </tr> */}
             <tr>
               <th>معفى من المصروفات</th>
               <td>{studentData.phoneNumber}</td>
@@ -157,12 +166,12 @@ const MainInfo = ({ studentData }) => {
         </Table>
       </div>
 
-      {/* {error && (
+      {error && (
         <div
           className="warning"
           style={{ marginTop: "20px", textAlign: "center" }}
         >
-          <Alert variant="danger">خطا: لا يوجد بيانات لهذا الطالب/طالبة</Alert>
+          {/* <Alert variant="danger">خطا: لا يوجد بيانات لهذا الطالب/طالبة</Alert> */}
         </div>
       )}
       {error && (
@@ -170,9 +179,9 @@ const MainInfo = ({ studentData }) => {
           className="warning"
           style={{ marginTop: "20px", textAlign: "center" }}
         >
-          <Alert variant="danger">Error: Failed to upload student photo</Alert>
+          {/* <Alert variant="danger">Error: Failed to upload student photo</Alert> */}
         </div>
-      )} */}
+      )}
     </div>
   );
 };
