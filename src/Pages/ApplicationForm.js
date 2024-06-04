@@ -95,6 +95,62 @@ const App = () => {
   const [IssuingAuthority, setIssuingAuthority] = useState("");
   const [nationality, setNationality] = useState("");
   const [displayDiv, setDisplayDiv] = useState(false);
+  const colleges = [
+    "كلية الفنون الجميلة",
+    "كلية الهندسة (حلوان)",
+    "كلية الهندسة (المطرية)",
+    "كلية التجارة وإدارة الأعمال (حلوان)",
+    "كلية التجارة وإدارة الأعمال (الزمالك)",
+    "كلية الحاسبات والمعلومات",
+    "كلية السياحة والفنادق",
+    "كلية الفنون التطبيقية",
+    "كلية التكنولوجيا والتعليم",
+    "كلية الاقتصاد المنزلي",
+    "كلية التربية الفنية",
+    "كلية التربية الموسيقية",
+    "كلية التربية الرياضية (بنين) بالهرم",
+    "كلية التربية الرياضية (بنات) بالجزيرة",
+    "كلية الحقوق",
+    "كلية الآداب",
+    "كلية التربية",
+    "كلية الخدمة الاجتماعية",
+    "كلية الصيدلة",
+    "كلية العلوم",
+    "كلية التمريض",
+    "كلية الطب",
+    "المعهد القومي للملكية الفكرية",
+    "معهد التمريض",
+  ];
+
+  const governorates = [
+    "أسوان",
+    "أسيوط",
+    "الإسكندرية",
+    "الإسماعيلية",
+    "الأقصر",
+    "البحر الأحمر",
+    "البحيرة",
+    "الجيزة",
+    "الدقهلية",
+    "السويس",
+    "الشرقية",
+    "الغربية",
+    "الفيوم",
+    "القاهرة",
+    "القليوبية",
+    "المنوفية",
+    "المنيا",
+    "الوادي الجديد",
+    "بني سويف",
+    "بورسعيد",
+    "جنوب سيناء",
+    "دمياط",
+    "سوهاج",
+    "شمال سيناء",
+    "قنا",
+    "كفر الشيخ",
+    "مرسى مطروح"
+  ];
 
   const handleButtonClick = () => {
     setDisplayDiv(!displayDiv);
@@ -131,7 +187,7 @@ const App = () => {
       placeOfBirth,
       gender,
       religion,
-      detailedAddress,
+      residence,
       email,
       landLinePhone,
       phoneNumber,
@@ -166,7 +222,7 @@ const App = () => {
       placeOfBirth,
       gender,
       religion,
-      detailedAddress,
+      residence,
       email,
       landLinePhone,
       phoneNumber,
@@ -199,7 +255,7 @@ const App = () => {
       placeOfBirth,
       gender,
       religion,
-      detailedAddress,
+      residence,
       email,
       landLinePhone,
       phoneNumber,
@@ -224,7 +280,7 @@ const App = () => {
       placeOfBirth,
       gender,
       religion,
-      detailedAddress,
+      residence,
       email,
       landLinePhone,
       phoneNumber,
@@ -249,7 +305,7 @@ const App = () => {
         !studentCode ||
        
         !policy ||
-        !detailedAddress ||
+        !residence ||
         !email ||
         
         !college ||
@@ -297,7 +353,7 @@ const App = () => {
         !studentCode ||
        
         !policy ||
-        !detailedAddress ||
+        !residence ||
         !email ||
         
         !college ||
@@ -342,7 +398,7 @@ const App = () => {
         !studentCode ||
        
         !policy ||
-        !detailedAddress ||
+        !residence ||
         !email ||
         
         !college ||
@@ -423,7 +479,7 @@ const App = () => {
         !studentCode ||
        
         !policy ||
-        !detailedAddress ||
+        !residence ||
         !email ||
         
         !college ||
@@ -645,10 +701,27 @@ const App = () => {
               label="محل الاقامة 'العنوان بالتفصيل' "
               variant="outlined"
               fullWidth
-              value={residence}
-              onChange={(e) => setResidence(e.target.value)}
+              value={detailedAddress}
+              onChange={(e) => setDetailedAddress(e.target.value)}
             />
           </div>
+
+          <div className="input-group">
+          <p style={{ marginLeft: "10px", marginRight: "170px" }}>المحافظة</p>
+
+          <select
+        size="sm"
+        className="selectmenu"
+        value={residence}
+        onChange={(e) => setResidence(e.target.value)}
+      >
+        {governorates.map((gov, index) => (
+          <option key={index} value={gov}>
+            {gov}
+          </option>
+        ))}
+      </select>
+      </div>
 
           <div className="input-group">
             <TextField
@@ -800,14 +873,22 @@ const App = () => {
 
           <div className="input-group">
             <p style={{ marginLeft: "10px" }}>الكلية</p>
-            <TextField
-              required
-              label="الكلية "
-              variant="outlined"
-              size="small"
-              value={college}
-              onChange={(e) => setCollege(e.target.value)}
-            />
+           
+          <select
+            size="sm"
+            className="selectmenu"
+            value={college}
+            onChange={(e) => setCollege(e.target.value)}
+
+          >
+            {colleges.map((college, index) => (
+              <option key={index} value={college}>
+                {college}
+              </option>
+            ))}
+          </select>
+        
+
             <p style={{ marginLeft: "10px", marginRight: "170px" }}>الفرقة</p>
             <TextField
               required
@@ -1077,16 +1158,34 @@ const App = () => {
             </select>
           </div>
 
-          <div className="input-group">
+              <div className="input-group">
             <TextField
               required
               label="محل الاقامة 'العنوان بالتفصيل' "
               variant="outlined"
               fullWidth
-              value={residence}
-              onChange={(e) => setResidence(e.target.value)}
+              value={detailedAddress}
+              onChange={(e) => setDetailedAddress(e.target.value)}
             />
           </div>
+
+          <div className="input-group">
+          <p style={{ marginLeft: "10px", marginRight: "170px" }}>المحافظة</p>
+
+          <select
+        size="sm"
+        className="selectmenu"
+        value={residence}
+        onChange={(e) => setResidence(e.target.value)}
+      >
+        {governorates.map((gov, index) => (
+          <option key={index} value={gov}>
+            {gov}
+          </option>
+        ))}
+      </select>
+      </div>
+      
 
           <div className="input-group">
             <TextField
@@ -1238,14 +1337,20 @@ const App = () => {
 
           <div className="input-group">
             <p style={{ marginLeft: "10px" }}>الكلية</p>
-            <TextField
-              required
-              label="الكلية "
-              variant="outlined"
-              size="small"
-              value={college}
-              onChange={(e) => setCollege(e.target.value)}
-            />
+           
+          <select
+            size="sm"
+            className="selectmenu"
+            value={college}
+            onChange={(e) => setCollege(e.target.value)}
+
+          >
+            {colleges.map((college, index) => (
+              <option key={index} value={college}>
+                {college}
+              </option>
+            ))}
+          </select>
             <p style={{ marginLeft: "10px", marginRight: "170px" }}>الفرقة</p>
             <TextField
               required
