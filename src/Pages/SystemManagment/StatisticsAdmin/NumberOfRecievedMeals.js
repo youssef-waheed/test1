@@ -8,17 +8,18 @@ import Button from "react-bootstrap/Button";
 const NumberOfRecievedMeals = () => {
   const [ofYear, setOfYear] = useState("");
   const [receivedMeals, setReceivedMeals] = useState([]);
-  const [selectedMeals, setSelectedMeals] = useState("");
-  const [file, setFile] = useState(null);
-  const mealsType = ["استلام فطار", "استلام غداء", "استلام عشاء"];
+  const [ofWhichMeal, setOfWhichMeal] = useState("");
+  // const [file, setFile] = useState(null);
+  const mealsType = ["فطار", "غداء", "عشاء"];
+  const [dateOfReceivingMeals, setDateOfReceivingMeals] = useState("");
 
   useEffect(() => {
     fetchNumberOfMeals();
-  }, [ofYear, selectedMeals]);
+  }, [ofYear, ofWhichMeal, dateOfReceivingMeals]);
 
   const fetchNumberOfMeals = async () => {
-    const queryString = `?ofYear=${ofYear}&selectedMeals=${selectedMeals}`;
-    if (ofYear || selectedMeals) {
+    const queryString = `?ofYear=${ofYear}&ofWhichMeal=${ofWhichMeal}&dateOfReceivingMeals=${dateOfReceivingMeals}`;
+    if (ofYear || setOfWhichMeal) {
       try {
         const response = await axios.get(
           `http://localhost:5000/statistics/numberOfReceivedMeals${queryString}`
@@ -36,38 +37,33 @@ const NumberOfRecievedMeals = () => {
   };
 
   const handleMealType = (event) => {
-    setSelectedMeals(event.target.value);
+    setOfWhichMeal(event.target.value);
   };
 
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    setFile(selectedFile);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (file) {
-      const formData = new FormData();
-      formData.append("receivedMeals", file);
-      try {
-        const response = await axios.post(
-          "http://localhost:5000/v1/received-meal/receive-meals",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        // Handle response after successful upload
-        console.log(response.data);
-        // Optionally, refetch the meal data
-        fetchNumberOfMeals();
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (file) {
+  //     const formData = new FormData();
+  //     formData.append("receivedMeals", file);
+  //     try {
+  //       const response = await axios.post(
+  //         "http://localhost:5000/v1/received-meal/receive-meals",
+  //         formData,
+  //         {
+  //           headers: {
+  //             "Content-Type": "multipart/form-data",
+  //           },
+  //         }
+  //       );
+  //       // Handle response after successful upload
+  //       console.log(response.data);
+  //       // Optionally, refetch the meal data
+  //       fetchNumberOfMeals();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // };
 
   return (
     <div className="two-column-wrapper">
@@ -93,7 +89,7 @@ const NumberOfRecievedMeals = () => {
             size="sm"
             className="Type"
             onChange={handleMealType}
-            value={selectedMeals}
+            value={ofWhichMeal}
           >
             <option>اختر نوع الوجبة...</option>
             {mealsType.map((meal, index) => (
@@ -103,17 +99,14 @@ const NumberOfRecievedMeals = () => {
             ))}
           </Form.Select>
         </div>
-        <div className="upload">
-          <form onSubmit={handleSubmit}>
-            <Form.Group controlId="formFile" className="mb-3">
-              <Form.Label>Upload Excel File</Form.Label>
-              <Form.Control type="file" onChange={handleFileChange} />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Upload
-            </Button>
-          </form>
-        </div>
+        <label htmlFor="dateOfReceivingMeals">Date of Receiving Meals:</label>
+        <input
+          type="date"
+          id="dateOfReceivingMeals"
+          name="dateOfReceivingMeals"
+          value={dateOfReceivingMeals}
+          onChange={(e) => setDateOfReceivingMeals(e.target.value)}
+        />
       </div>
       <div className="coll">
         <Table striped bordered hover size="sm">

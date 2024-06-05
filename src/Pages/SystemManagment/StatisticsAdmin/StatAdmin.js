@@ -4,6 +4,7 @@ import ActiveAdmin from "./ActiveAdmin";
 import NumberOfStudentsBasedOnHousing from "./NumberOfStudentsBasedOnHousing";
 import NumberOfRecievedMeals from "./NumberOfRecievedMeals";
 import TakeMeal from "./TakeMeal";
+import MealPreparation from "../../MealPreparation";
 
 const Page1 = () => (
   <div>
@@ -27,6 +28,12 @@ const Page4 = () => (
   <div>
     <h2> عدد الوجبات المستلمة </h2>
     <NumberOfRecievedMeals />
+  </div>
+);
+const Page5 = () => (
+  <div>
+    <h2> تجهيز وجبات </h2>
+    <MealPreparation />
   </div>
 );
 
@@ -56,6 +63,7 @@ const StatAdmin = () => {
     { text: "احصائية استلام الوجبات", page: <Page2 /> },
     { text: " اعداد الطلاب حسب نوع السكن  ", page: <Page3 /> },
     { text: " عدد الوجبات المستلمة    ", page: <Page4 /> },
+    { text: " تجهيز وجبات      ", page: <Page5 /> },
   ];
 
   const handleClick = (page) => {
