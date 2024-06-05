@@ -1019,7 +1019,11 @@ const Header = () => {
               <button>{tab.titel}</button>
             </li>
           ))}
-          <button
+
+
+<button type="button" class="btn btn-outline-danger btn-sm" data-mdb-ripple-init data-mdb-ripple-color="dark"  onClick={logout}>تسجيل الخروج</button>
+
+          {/* <button
             style={{
               backgroundColor: "red",
               width: " 80px",
@@ -1030,7 +1034,7 @@ const Header = () => {
             onClick={logout}
           >
             logout
-          </button>
+          </button> */}
         </ul>
       </nav>
       <div id="contentDiv">
