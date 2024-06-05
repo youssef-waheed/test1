@@ -30,7 +30,8 @@ const AbsenceandPermits = ({ _id, studentData }) => {
 
   const fetchAbsenceAndPermits = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/absence/${_id}`, {
+      const response = await axios.get(`http://localhost:5000/absence/${_id}`
+      , {
         headers: {
           authorization: `Bearer__${auth.token}`,
           "Content-Type": "application/json",
