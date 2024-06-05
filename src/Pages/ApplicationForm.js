@@ -698,7 +698,7 @@ const App = () => {
           <div className="input-group">
             <TextField
               required
-              label="محل الاقامة 'العنوان بالتفصيل' "
+              label="محل الاقامة 'دولة محافظة مدينة'"
               variant="outlined"
               fullWidth
               value={detailedAddress}
@@ -737,7 +737,7 @@ const App = () => {
           <div className="input-group">
             <p style={{ marginLeft: "10px" }}>التليفون الارضي</p>
             <TextField
-              required
+              // required
               label="الرقم "
               variant="outlined"
               size="small"
@@ -748,7 +748,7 @@ const App = () => {
               الهاتف المحمول
             </p>
             <TextField
-              required
+              // required
               label="الرقم"
               variant="outlined"
               size="small"
@@ -759,7 +759,7 @@ const App = () => {
           {checkbox1Checked && (
             <div className="input-group">
               <TextField
-                required
+                // required
                 label="اسم الاب رباعي"
                 variant="outlined"
                 fullWidth
@@ -774,7 +774,7 @@ const App = () => {
               <p style={{ marginLeft: "10px" }}>الرقم القومي للاب</p>
 
               <TextField
-                required
+                // required
                 label="الرقم القومي"
                 variant="outlined"
                 size="small"
@@ -785,7 +785,7 @@ const App = () => {
                 وظيفة الاب
               </p>
               <TextField
-                required
+                // required
                 label="الوظيفة "
                 variant="outlined"
                 size="small"
@@ -796,7 +796,7 @@ const App = () => {
                 تليفون الاب
               </p>
               <TextField
-                required
+                // required
                 label=" الرقم"
                 variant="outlined"
                 size="small"
@@ -809,7 +809,7 @@ const App = () => {
           {checkbox1Checked && (
             <div className="input-group">
               <TextField
-                required
+                // required
                 label="اسم ولي الامر رباعي"
                 variant="outlined"
                 fullWidth
@@ -818,7 +818,7 @@ const App = () => {
               />
               <p style={{ marginLeft: "10px" }}>رقم ولي الامر</p>
               <TextField
-                required
+                // required
                 label="الرقم "
                 variant="outlined"
                 size="small"
@@ -832,7 +832,7 @@ const App = () => {
             <div className="input-group">
               <p style={{ marginLeft: "10px" }}>رقم القومي لولي الامر</p>
               <TextField
-                required
+                // required
                 label="الرقم "
                 variant="outlined"
                 size="small"
@@ -843,7 +843,7 @@ const App = () => {
                 صلة ولي الامر
               </p>
               <TextField
-                required
+                // required
                 label="الصلة"
                 variant="outlined"
                 size="small"
@@ -857,7 +857,7 @@ const App = () => {
             <div className="input-group">
               <p style={{ marginLeft: "10px" }}>حالة تخص الوالدين</p>
               <select
-                required
+                // required
                 value={AsituationRelatedToTheParents}
                 onChange={(e) =>
                   setAsituationRelatedToTheParents(e.target.value)
@@ -965,7 +965,7 @@ const App = () => {
 
             <p style={{ marginLeft: "10px", marginRight: "100px" }}> </p>
             <Checkbox
-              required
+              // required
               label="سكن بدون تغدية"
               checked={HousingWithoutFood}
               onChange={() => setHousingWithoutFood(!HousingWithoutFood)}
@@ -974,7 +974,7 @@ const App = () => {
           {checkbox1Checked && (
             <div className="input-group">
               <Checkbox
-                required
+                // required
                 style={{ marginLeft: "100px", marginRight: "170px" }}
                 label="الاسرة بالخارج"
                 checked={ThefamilyIsOutside}
@@ -982,7 +982,7 @@ const App = () => {
               />{" "}
               <p style={{ marginLeft: "10px", marginRight: "170px" }} />
               <Checkbox
-                required
+                // required
                 style={{ marginLeft: "100px", marginRight: "170px" }}
                 label="ذوي احتياجات خاصة"
                 checked={withSpecialNeeds}
@@ -1161,7 +1161,7 @@ const App = () => {
               <div className="input-group">
             <TextField
               required
-              label="محل الاقامة 'العنوان بالتفصيل' "
+               label="محل الاقامة 'دولة محافظة مدينة'"
               variant="outlined"
               fullWidth
               value={detailedAddress}
@@ -1201,7 +1201,7 @@ const App = () => {
           <div className="input-group">
             <p style={{ marginLeft: "10px" }}>التليفون الارضي</p>
             <TextField
-              required
+              // required
               label="الرقم "
               variant="outlined"
               size="small"
@@ -1212,7 +1212,7 @@ const App = () => {
               الهاتف المحمول
             </p>
             <TextField
-              required
+              // required
               label="الرقم"
               variant="outlined"
               size="small"
@@ -1223,7 +1223,7 @@ const App = () => {
           {checkbox1Checked && (
             <div className="input-group">
               <TextField
-                required
+                // required
                 label="اسم الاب رباعي"
                 variant="outlined"
                 fullWidth
@@ -1238,7 +1238,7 @@ const App = () => {
               <p style={{ marginLeft: "10px" }}>الرقم القومي للاب</p>
 
               <TextField
-                required
+                // required
                 label="الرقم القومي"
                 variant="outlined"
                 size="small"
@@ -1249,7 +1249,7 @@ const App = () => {
                 وظيفة الاب
               </p>
               <TextField
-                required
+                // required
                 label="الوظيفة "
                 variant="outlined"
                 size="small"
@@ -1260,7 +1260,7 @@ const App = () => {
                 تليفون الاب
               </p>
               <TextField
-                required
+                // required
                 label=" الرقم"
                 variant="outlined"
                 size="small"
@@ -1273,7 +1273,7 @@ const App = () => {
           {checkbox1Checked && (
             <div className="input-group">
               <TextField
-                required
+                // required
                 label="اسم ولي الامر رباعي"
                 variant="outlined"
                 fullWidth
@@ -1282,7 +1282,7 @@ const App = () => {
               />
               <p style={{ marginLeft: "10px" }}>رقم ولي الامر</p>
               <TextField
-                required
+                // required
                 label="الرقم "
                 variant="outlined"
                 size="small"
@@ -1296,7 +1296,7 @@ const App = () => {
             <div className="input-group">
               <p style={{ marginLeft: "10px" }}>رقم القومي لولي الامر</p>
               <TextField
-                required
+                // required
                 label="الرقم "
                 variant="outlined"
                 size="small"
@@ -1307,7 +1307,7 @@ const App = () => {
                 صلة ولي الامر
               </p>
               <TextField
-                required
+                // required
                 label="الصلة"
                 variant="outlined"
                 size="small"
@@ -1321,7 +1321,7 @@ const App = () => {
             <div className="input-group">
               <p style={{ marginLeft: "10px" }}>حالة تخص الوالدين</p>
               <select
-                required
+                // required
                 value={AsituationRelatedToTheParents}
                 onChange={(e) =>
                   setAsituationRelatedToTheParents(e.target.value)
@@ -1399,7 +1399,7 @@ const App = () => {
                 {" "}
                 <p style={{ marginLeft: "10px", marginRight: "170px" }} />
                 <Checkbox
-                  required
+                  // required
                   label="الثانوية العامة من الخارج"
                   checked={HighSchoolFromAbroad}
                   onChange={() =>
@@ -1449,7 +1449,7 @@ const App = () => {
             </select>
             <p style={{ marginLeft: "10px", marginRight: "100px" }}> </p>
             <Checkbox
-              required
+              // required
               label="سكن بدون تغدية"
               checked={HousingWithoutFood}
               onChange={() => setHousingWithoutFood(!HousingWithoutFood)}
@@ -1458,7 +1458,7 @@ const App = () => {
           {checkbox1Checked && (
             <div className="input-group">
               <Checkbox
-                required
+                // required
                 style={{ marginLeft: "100px", marginRight: "170px" }}
                 label="الاسرة بالخارج"
                 checked={ThefamilyIsOutside}
@@ -1466,7 +1466,7 @@ const App = () => {
               />{" "}
               <p style={{ marginLeft: "10px", marginRight: "170px" }} />
               <Checkbox
-                required
+                // required
                 style={{ marginLeft: "100px", marginRight: "170px" }}
                 label="ذوي احتياجات خاصة"
                 checked={withSpecialNeeds}

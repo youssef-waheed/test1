@@ -39,7 +39,8 @@ import BlockMeals from "../Pages/BlockMeals";
 import Users from "../Pages/Users";
 import AdminMeals from "../Pages/SystemManagment/AdminMeals";
 
-import { removeAuthUser } from "../helper/storage";
+import { removeAuthUser,getAuthUser } from "../helper/storage";
+const auth= getAuthUser()
 const logout = () => {
   removeAuthUser();
   window.location.href = "/";
@@ -285,13 +286,20 @@ const Header = () => {
 
   const fetchFemaleStudents = async () => {
     const queryString = `?College=${College}&ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&searchQuery=${searchQuery}`;
-  
+  console.log('============TOOOOOOOOOOOOOOKEN========================');
+  console.log(auth.token);
+  console.log('====================================');
     try {
       const url = (egyptions || expartriates || normalHousing || specialHousing || oldStudent || newStudent || appliers || acceptedApplications || College || ofYear)
         ? `http://localhost:5000/basicData/getBasicDataFemales${queryString}`
         : `http://localhost:5000/basicData/getBasicDataFemales`;
   
-      const response = await axios.get(url);
+      const response = await axios.get(url,{
+        headers:{
+          authorization: `Bearer__${auth.token}`,
+          "Content-Type": "application/json",
+        }
+      });
       console.log("QUERY STRING", queryString);
       console.log("RESPONSE", response);
   
