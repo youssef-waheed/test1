@@ -310,7 +310,9 @@ const App = () => {
         !email ||
         
         !college ||
-        !year 
+        !year ||
+        !phoneNumber ||
+        !fatherPhone
         
        
       ) {
@@ -358,7 +360,9 @@ const App = () => {
         !email ||
         
         !college ||
-        !year 
+        !year ||
+        !phoneNumber ||
+        !fatherPhone
       ) {
         setErrorMessage("يرجى ملء جميع الحقول الإلزامية");
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -403,7 +407,9 @@ const App = () => {
         !email ||
         
         !college ||
-        !year 
+        !year ||
+        !phoneNumber ||
+        !fatherPhone
       ) {
         setErrorMessage("يرجى ملء جميع الحقول الإلزامية");
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -484,7 +490,9 @@ const App = () => {
         !email ||
         
         !college ||
-        !year 
+        !year ||
+        !phoneNumber ||
+        !fatherPhone
       ) {
         setErrorMessage(
           <span style={{ color: 'red', fontSize: '1.2rem' }}>يرجى ملء جميع الحقول الإلزامية</span>);
@@ -744,7 +752,7 @@ const App = () => {
               الهاتف المحمول
             </p>
             <TextField
-              // required
+               required
               label="الرقم"
               variant="outlined"
               size="small"
@@ -792,7 +800,7 @@ const App = () => {
                 تليفون الاب
               </p>
               <TextField
-                // required
+                 required
                 label=" الرقم"
                 variant="outlined"
                 size="small"
