@@ -66,11 +66,11 @@ function FileUpload() {
             <div>
               <label htmlFor="ofWhichMeal">Meal Type:</label>
               <select id="ofWhichMeal" name="ofWhichMeal" value={ofWhichMeal} onChange={(e) => setOfWhichMeal(e.target.value)}>
-                <option value="breakfast">Breakfast</option>
-                <option value="lunch">Lunch</option>
-                <option value="dinner">Dinner</option>
-                <option value="Iftar">Iftar</option>
-                <option value="sohoor">سحور</option>
+  {/* <option value="breakfast">Breakfast</option> */}
+  <option value="lunch">حجز غداء</option>
+                <option value="dinner">حجز عشاء</option>
+                <option value="Iftar">حجز فطار</option>
+                <option value="sohoor">حجز سحور</option>
               </select>
             </div>
             <div>
