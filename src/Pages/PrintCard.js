@@ -18,17 +18,18 @@ const PrintCard = () => {
     try {
       const response = await axios.get('http://localhost:5000/applications/unprintedCardsForMales');
       
-      
       const studentsWithImages = response.data.data.student.filter(student => {
         const hasValidImage = student.image && typeof student.image === 'object' && student.image.data && Array.isArray(student.image.data) && student.image.data.length > 0;
-        return hasValidImage;
+        const isHoused = student.isHoused === true;
+        return hasValidImage && isHoused;
       });
   
       setFilteredData(studentsWithImages);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  };
+};
+
   
   
 
@@ -120,9 +121,8 @@ const PrintCard = () => {
       <div className="coll">
         <ul>
           <li>الاسماء المعروضة هي الطلاب الساكنين و لهم صور و لم يتم طباعة بطاقتهم</li>
-          <li>اختار الاسماء المراد طباعتها</li>
-          <li>راجع شكل البطاقة و اضغط طباعة</li>
-          <li>بعد التاكد من طباعة البطاقات اضغط اخفاء</li>
+          <li>اختار الاسم المراد طباعته</li>
+          <li>راجع البيانات المعروضة و اضغط طباعة</li>
           <li>__________________________________________________</li>
         </ul>
         {selectedStudent && (
@@ -137,7 +137,7 @@ const PrintCard = () => {
               </div>
              {selectedStudent.image && <img src={`data:image/png;base64,${arrayBufferToBase64(selectedStudent.image.data)}`} alt="Student" className="student-image" />}
             </div>
-            <button onClick={handleDownloadImage}>Download Image</button>
+            <button onClick={handleDownloadImage}>طباعة</button>
           </div>
         )}
       </div>
