@@ -3,7 +3,9 @@ import Review from "./ReviewFemale";
 import ClassificationGeneral from "./ClassificationFemal";
 import Permission from "./MassPermissionFemale";
 import AcceptSpecialCases from "./SpecialCasesFemale";
-
+import BookMeal from "./BookMeal";
+import UploadPhoto from "../Pages/UploadPhoto";
+import MassPenalty from "./MassPenalty";
 
 const Page1 = () => (
   <div>
@@ -36,21 +38,21 @@ const Page4 = () => (
 const Page5 = () => (
   <div>
     <h2>حجز وجبات (اكسل)</h2>
-    <Permission />
+    <BookMeal />
   </div>
 );
 
 const Page6 = () => (
   <div>
     <h2>رفع الصور    </h2>
-    <Permission />
+    <UploadPhoto />
   </div>
 );
 
 const Page7 = () => (
   <div>
     <h2>جزاء جماعي</h2>
-    <Permission />
+    <MassPenalty />
   </div>
 );
 

@@ -669,14 +669,19 @@ const App = () => {
 <p style={{ marginLeft: "10px", marginRight: "170px" }}>
               محل الميلاد
             </p>
-            <TextField
-              required
-              label="محل الميلاد"
-              variant="outlined"
-              size="small"
-              value={placeOfBirth}
-              onChange={(e) => setPlaceOfBirth(e.target.value)}
-            />
+            
+          <select
+        size="sm"
+        className="selectmenu"
+        value={placeOfBirth}
+        onChange={(e) => setPlaceOfBirth(e.target.value)}
+      >
+        {governorates.map((gov, index) => (
+          <option key={index} value={gov}>
+            {gov}
+          </option>
+        ))}
+      </select>
           </div>
 
           <div className="input-group">
