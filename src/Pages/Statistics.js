@@ -54,8 +54,7 @@ const Statistics = () => {
     { text: "اعداد المقيمين", page: <Page2 /> },
     { text: "احصائيات البطاقات المطبوعة ", page: <Page3 /> },
     { text: "اعداد جميع الطلاب ", page: <Page5 /> },
-    { text: "تجهيز الوجبات  ", page: <Page4 /> },
-    { text: "احصائية استلام الوجبات " },
+    // { text: "تجهيز الوجبات  ", page: <Page4 /> },
 
     { text: "   " },
     { text: "   " },

@@ -140,6 +140,23 @@ const Fees = ({ _id }) => {
     }
   };
 
+  const deleteFees = async (_id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/fees/deletFeeForStudent/${_id}`,
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      createLogs();
+      incremented();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div>
       <div>
@@ -305,6 +322,12 @@ const Fees = ({ _id }) => {
           <tr></tr>
         </tbody>
       </Table>
+      <button
+        style={{ backgroundColor: "red" }}
+        onClick={() => deleteFees(_id)}
+      >
+        حذف
+      </button>
       {/* <div className="warning">
         <>
           {["danger"].map((variant) => (
