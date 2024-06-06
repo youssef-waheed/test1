@@ -86,7 +86,7 @@ const PrintCard = () => {
 
             const qrImage = new Image();
             qrImage.src = url;
-            qrImage.onload = () => {
+            qrImage.onload = async () => {
               ctx.drawImage(qrImage, 20, 150, 90, 90); 
 
               // Convert to image and download
@@ -94,6 +94,14 @@ const PrintCard = () => {
               downloadLink.href = canvas.toDataURL('image/png');
               downloadLink.download = 'student_card.png';
               downloadLink.click();
+
+              // Update card status
+              try {
+                const updateResponse = await axios.put(`http://localhost:5000/applications/updateCards/${selectedStudent._id}`);
+                console.log('Card status updated:', updateResponse.data);
+              } catch (updateError) {
+                console.error('Error updating card status:', updateError);
+              }
             };
           });
         };
