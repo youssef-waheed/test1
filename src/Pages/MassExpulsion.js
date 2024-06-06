@@ -112,7 +112,9 @@ const MassExpulsion = () => {
           </li>
         ))}
       </ul>
-      <button onClick={applyExpulsion}>تسجيل الاخلاء</button>
+      <button 
+          style={{ backgroundColor: "green",color:"white", borderRadius:"5px" }}
+      onClick={applyExpulsion}>تسجيل الاخلاء</button>
         </div>
 
         <div className="coll">

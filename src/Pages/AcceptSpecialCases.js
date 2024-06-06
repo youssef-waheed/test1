@@ -122,10 +122,10 @@ const AcceptSpecialCases = () => {
             <UserDetails user={selectedCase} />
             <div>
               <button
-                style={{ backgroundColor: "green", fontWeight: "bold" }}
+                style={{ backgroundColor: "green", }}
                 onClick={() => acceptApplication(selectedCase._id)}
               >
-                Approve
+                قبول
               </button>
             </div>
           </>

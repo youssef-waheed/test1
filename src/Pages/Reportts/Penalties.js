@@ -113,7 +113,7 @@ const Penalties = () => {
             <thead>
               <tr>
                 <th>اسم الطالب</th>
-                <th>كود الطالب </th>
+                {/* <th>كود الطالب </th> */}
                 <th>نوع الجزاء </th>
                 <th> سبب الجزاء </th>
               </tr>
@@ -122,7 +122,7 @@ const Penalties = () => {
               {penalties.map((pen, index) => (
                 <tr key={index}>
                   <td>{pen.studentName}</td>
-                  <td>{pen.studentId}</td>
+                  {/* <td>{pen.studentId}</td> */}
                   <td>{pen.penaltyKind}</td>
                   <td>{pen.reason}</td>
                 </tr>

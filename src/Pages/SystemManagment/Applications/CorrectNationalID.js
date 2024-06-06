@@ -140,7 +140,7 @@ const CorrectNationalID = ({ nationalID }) => {
             {filteredStudents.slice(0, 10).map((student, index) => (
               <li key={index}>
                 <button
-                  style={{ backgroundColor: "blue" }}
+                  // style={{ backgroundColor: "blue" }}
                   className="button"
                   onClick={() => handleStudentClick(student)}
                 >

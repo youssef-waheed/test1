@@ -211,7 +211,10 @@ const ClassificationGeneral = () => {
 
                         </form>
 
-                        <button onClick={addRule}>Add Rule</button>
+                        <button
+          style={{ backgroundColor: "green",color:"white", borderRadius:"5px" }}
+                        
+                        onClick={addRule}>اضافة قاعدة تنسيق</button>
                     </div>
                 </section>
             </div>
@@ -221,7 +224,7 @@ const ClassificationGeneral = () => {
 
                     {selectedRule && (
                         <div>
-                            <h2>الترتيب ب</h2>
+                            <h2>الترتيب</h2>
                             <div>
                                 {Object.entries(selectedRule)
                                     // Filter out properties that don't have a rank (number) and exclude '__v' property
@@ -246,7 +249,9 @@ const ClassificationGeneral = () => {
 
 
                             <div>
-                                <button onClick={() => classifyStudents(selectedRule._id)}>ترتيب</button>
+                                <button
+                                      style={{ backgroundColor: "green", }}
+                                onClick={() => classifyStudents(selectedRule._id)}>ترتيب</button>
                             </div>
 
 

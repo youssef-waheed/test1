@@ -152,7 +152,10 @@ const MassPenalty = ({ onSelect }) => {
               </li>
             ))}
           </ul>
-          <button onClick={handleApplyPermissions}>تسجيل الجزاء</button>
+          <button
+          style={{ backgroundColor: "green",color:"white", borderRadius:"5px" }}
+          
+          onClick={handleApplyPermissions}>تسجيل الجزاء</button>
         </div>
         <div className="coll">
             <ul>

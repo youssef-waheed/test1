@@ -17,9 +17,13 @@ const PrintAcceptanceNotification = () => {
     try {
       const response = await axios.post("http://localhost:5000/AcceptanceNotification/print", {
         ofYear: ofYear,
-        HousingType: normalHouse ? "عادى" : specialHouse ? "مميز" : ""
+        HousingType: normalHouse ? "عادي" : specialHouse ? "مميز فردى طلبة" : ""
       });
+      console.log('=======REEEEEEEEEEEESSSSSSSSS=============================');
+      console.log(response);
+      console.log('====================================');
 
+      
       if (response.data && response.data.responseArray) {
         setNotificationData(response.data.responseArray);
       } else {
@@ -92,7 +96,13 @@ const PrintAcceptanceNotification = () => {
         <input type="checkbox" checked={specialHouse} onChange={(e) => setSpecialHouse(e.target.checked)} />
         <label>سكن مميز</label>
 
-        <button onClick={handlePrint}>طباعة</button>
+        <button
+        
+        style={{ backgroundColor: "green",color:"white", borderRadius:"5px" }}
+        
+        onClick={handlePrint}>طباعة</button>
+        <br></br>
+        <br></br>
 
 
         {notificationData.length === 0 ? (

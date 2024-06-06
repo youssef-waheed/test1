@@ -153,7 +153,10 @@ const fetchStudents = async () => {
               </li>
             ))}
           </ul>
-          <button onClick={handleApplyPermissions}>تسجيل التصريح</button>
+          <button
+          style={{ backgroundColor: "green",color:"white", borderRadius:"5px" }}
+          
+          onClick={handleApplyPermissions}>تسجيل التصريح</button>
         </div>
         <div className="coll">
             <ul>

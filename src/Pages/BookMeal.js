@@ -59,6 +59,7 @@ function FileUpload() {
           {errorMessage && <p>{errorMessage}</p>}
           <form onSubmit={handleSubmit}>
             <div>
+
               <label htmlFor="avatar">Select Excel file:</label>
               <input
                 type="file"
@@ -76,10 +77,12 @@ function FileUpload() {
                 value={ofYear}
                 onChange={(e) => setOfYear(e.target.value)}
               >
+
                 {generateYearOptions()}
               </select>
             </div>
             <div>
+
               <label htmlFor="ofWhichMeal">Meal Type:</label>
               <select
                 id="ofWhichMeal"
@@ -105,10 +108,16 @@ function FileUpload() {
                 value={dateOfReceivingMeals}
                 onChange={(e) => setDateOfReceivingMeals(e.target.value)}
               />
+
             </div>
-            <button type="submit">Upload</button>
+            <br></br>
+            <button
+            style={{ backgroundColor: "green", color:"white", borderRadius:"5px"}}
+            
+            type="submit">رفع</button>
           </form>
         </div>
+
         <div className="coll">
           <p>يجب التاكد من تاريخ تسليم الوجبات</p>
           <p>يجب اختيار الوجبة الجاري تسليمها</p>
@@ -122,6 +131,7 @@ function FileUpload() {
             بعد رفع الملف يتم الضغط علي زر Upload ثم يظهر تقرير بعدد الطلاب
             المستحقين للوجبة و قد تم تسجيل استلامهم للوجبة و يظهر تقرير بالاخطاء
           </p>
+
         </div>
       </div>
     </div>
