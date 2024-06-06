@@ -76,11 +76,22 @@ const Building = ({ onSelectBuilding, selectedCity }) => {
         <h2>مباني الذكور</h2>
         <ul className="building-list">
           {maleBuildings.map(building => (
-            <li key={building._id}>
-              <div onClick={() => onSelectBuilding(building._id)}>{building.Name}</div>
+            <li
+            
+              style={{background:"#EAEAEA"}}
+            
+            key={building._id}>
+              <div 
+              onClick={() => onSelectBuilding(building._id)}>{building.Name}</div>
               <div>
-                <button onClick={() => setEditBuildingId(building._id)}>Edit</button>
-                <button onClick={() => deleteBuilding(building._id)}>Delete</button>
+                <button
+              style={{background:"blue"}}
+                
+                onClick={() => setEditBuildingId(building._id)}>تعديل</button>
+                <button
+              style={{background:"red"}}
+                
+                onClick={() => deleteBuilding(building._id)}>حذف</button>
               </div>
             </li>
           ))}
@@ -90,11 +101,19 @@ const Building = ({ onSelectBuilding, selectedCity }) => {
         <h2>مباني الاناث</h2>
         <ul className="building-list">
           {femaleBuildings.map(building => (
-            <li key={building._id}>
+            <li
+            style={{background:"#EAEAEA"}}
+            key={building._id}>
               <div onClick={() => onSelectBuilding(building._id)}>{building.Name}</div>
               <div>
-                <button onClick={() => setEditBuildingId(building._id)}>Edit</button>
-                <button onClick={() => deleteBuilding(building._id)}>Delete</button>
+                <button
+              style={{background:"blue"}}
+                
+                onClick={() => setEditBuildingId(building._id)}>تعديل</button>
+                <button
+              style={{background:"red"}}
+                
+                onClick={() => deleteBuilding(building._id)}>حذف</button>
               </div>
             </li>
           ))}
@@ -113,7 +132,10 @@ const Building = ({ onSelectBuilding, selectedCity }) => {
           <option value="ذكر">ذكر</option>
           <option value="انثي">انثي</option>
         </select>
-        <button onClick={addBuilding}>Add Building</button>
+        <button 
+              style={{background:"green"}}
+        
+        onClick={addBuilding}>اضافة مبني</button>
       </div>
       {editBuildingId && (
         <div className="edit-building">

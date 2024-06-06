@@ -54,38 +54,43 @@ function FileUpload() {
           {errorMessage && <p>{errorMessage}</p>}
           <form onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="avatar">Select Excel file:</label>
+            <label htmlFor="avatar">قم بأختيار ملف أكسيل:</label>
               <input type="file" id="avatar" name="avatar" accept=".xlsx" onChange={handleFileChange} />
             </div>
             <div>
-              <label htmlFor="ofYear">Year Range:</label>
+            <label htmlFor="ofYear">عن سنة:</label>
               <select id="ofYear" name="ofYear" value={ofYear} onChange={(e) => setOfYear(e.target.value)}>
                 {generateYearOptions()}
               </select>
             </div>
             <div>
-              <label htmlFor="ofWhichMeal">Meal Type:</label>
+            <label htmlFor="ofWhichMeal">نوع الوجبة:</label>
               <select id="ofWhichMeal" name="ofWhichMeal" value={ofWhichMeal} onChange={(e) => setOfWhichMeal(e.target.value)}>
   {/* <option value="breakfast">Breakfast</option> */}
-  <option value="lunch">حجز غداء</option>
-                <option value="dinner">حجز عشاء</option>
-                <option value="Iftar">حجز فطار</option>
-                <option value="sohoor">حجز سحور</option>
+  <option value="lunch">غداء</option>
+                <option value="dinner">عشاء</option>
+                <option value="Iftar">فطار</option>
+                <option value="sohoor">سحور</option>
               </select>
             </div>
             <div>
-              <label htmlFor="dateOfReceivingMeals">Date of Receiving Meals:</label>
+              <label htmlFor="dateOfReceivingMeals">تاريخ استلام الوجبة:</label>
               <input type="date" id="dateOfReceivingMeals" name="dateOfReceivingMeals" value={dateOfReceivingMeals} onChange={(e) => setDateOfReceivingMeals(e.target.value)} />
             </div>
-            <button type="submit">Upload</button>
+
+            <br></br>
+            <button
+            style={{ backgroundColor: "green", color:"white", borderRadius:"5px"}}
+            
+            type="submit">رفع</button>
           </form>
         </div>
         <div className='coll'> 
           <p>يجب التاكد من تاريخ تسليم الوجبات</p>
           <p>يجب اختيار الوجبة الجاري تسليمها</p>
           <p>الامتداد المسموح به هو xlsx</p>
-          <p>يجب ان يحتوي الملف علي الارقام القومية للطلاب في اول عمود في اول صفحة من الملف</p>
-          <p> بعد رفع الملف يتم الضغط علي زر Upload ثم يظهر تقرير بعدد الطلاب المستحقين للوجبة و قد تم تسجيل استلامهم للوجبة و يظهر تقرير بالاخطاء</p>
+          {/* <p>يجب ان يحتوي الملف علي الارقام القومية للطلاب في اول عمود في اول صفحة من الملف</p> */}
+          {/* <p> بعد رفع الملف يتم الضغط علي زر Upload ثم يظهر تقرير بعدد الطلاب المستحقين للوجبة و قد تم تسجيل استلامهم للوجبة و يظهر تقرير بالاخطاء</p> */}
         </div>
       </div>
     </div>

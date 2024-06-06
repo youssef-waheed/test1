@@ -119,7 +119,9 @@ const ChangeHousingType = () => {
               <p><strong>  نوع السكن : </strong> {selectedStudent.HousingType}</p>
               {/* Add more details as needed */}
 
-              <button onClick={applyHousingTypeChange}>Apply Housing Type Change</button>
+              <button 
+              style={{ backgroundColor: "green", }}
+              onClick={applyHousingTypeChange}>تغيير نوع السكن</button>
 
             </div>
             

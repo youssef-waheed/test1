@@ -307,7 +307,9 @@ const normalizedFilter = filter.toLowerCase().trim();
       </div>
     </div>
   )}
-   <button onClick={addSocialResearchCase}>Add Social Research Case</button>
+   <button 
+       style={{ backgroundColor: "green", }}
+   onClick={addSocialResearchCase}>اضافة حالة بحث اجتماعي</button>
 </div>
     </div>
   );

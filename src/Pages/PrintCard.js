@@ -137,7 +137,9 @@ const PrintCard = () => {
               </div>
              {selectedStudent.image && <img src={`data:image/png;base64,${arrayBufferToBase64(selectedStudent.image.data)}`} alt="Student" className="student-image" />}
             </div>
-            <button onClick={handleDownloadImage}>Download Image</button>
+            <button
+            style={{ backgroundColor: "green", }}
+            onClick={handleDownloadImage}>طباعة</button>
           </div>
         )}
       </div>
