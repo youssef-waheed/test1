@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import "../Style/AcceptSpecialCases.css";
-import UserDetails from "./UserDetails";
+import UserDetails from "../Pages/UserDetails";
 import Form from "react-bootstrap/Form";
 
 const AcceptSpecialCases = () => {
@@ -49,7 +49,7 @@ const AcceptSpecialCases = () => {
   const filteredCases = specialCases.filter((specialCase) => {
     return (
       (ofYear === "" || specialCase.ofYear === ofYear) && 
-      ( specialCase.gender === "ذكر") &&
+      ( specialCase.gender === "أنثي" || specialCase.gender === "انثي" || specialCase.gender === "انثى"|| specialCase.gender === "أنثى" ) &&
       (specialCase.studentName.includes(filter) || 
         specialCase.nationalID.includes(filter)) 
     );
