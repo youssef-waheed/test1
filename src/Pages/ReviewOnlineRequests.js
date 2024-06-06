@@ -193,15 +193,20 @@ const YourComponent = () => {
           <>
             <UserDetails user={selectedApplication} />
             <div>
+            {/* <button type="button" class="btn btn-success" data-mdb-ripple-init onClick={() => acceptApplication(selectedApplication._id)}>Approve</button> */}
+
               <button
+              style={{ backgroundColor: "green", }}
+
                 onClick={() => acceptApplication(selectedApplication._id)}
               >
-                Approve
+                قبول
               </button>
               <button
+              style={{ backgroundColor: "red", }}
                 onClick={() => rejectApplication(selectedApplication._id)}
               >
-                Reject
+                رفض
               </button>
             </div>
           </>

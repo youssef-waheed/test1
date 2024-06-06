@@ -196,7 +196,7 @@ const YourComponent = () => {
               <button
                 onClick={() => acceptApplication(selectedApplication._id)}
               >
-                Approve
+                قبول
               </button>
               <button
                 onClick={() => rejectApplication(selectedApplication._id)}

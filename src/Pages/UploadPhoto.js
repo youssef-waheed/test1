@@ -37,7 +37,11 @@ const UploadPhoto = () => {
     <div className="two-column-wrapper">
       <div className="col">
         <input type="file" onChange={handleFileChange} multiple />
-        <button onClick={handleUpload}>Upload</button>
+        <button
+        
+        style={{ backgroundColor: "green",color:"white", borderRadius:"5px" }}
+        
+        onClick={handleUpload}>رفع</button>
         <div className="preview-container">
           {selectedFiles.map((file, index) => (
             <div key={index} className="preview">
@@ -48,9 +52,9 @@ const UploadPhoto = () => {
       </div>
       <div className="coll">
         <ul>
-          <li>رفع مجموعة صور الطلاب في ملف مضغوط</li>
+          {/* <li>رفع مجموعة صور الطلاب في ملف مضغوط</li> */}
           <li>يجب ان يكون اسم الصورة هو الرقم القومي</li>
-          <li>يجب ان تكون ابعاد الصورة 76*88 و اي اختلاف سيؤثر علي الصورة في الكارنيه</li>
+          {/* <li>يجب ان تكون ابعاد الصورة 76*88 و اي اختلاف سيؤثر علي الصورة في الكارنيه</li> */}
         </ul>
       </div>
     </div>

@@ -58,20 +58,39 @@ const City = ({ onSelectCity }) => {
   };
 
   return (
-    <div className="city-container">
+    <div 
+    
+    className="city-container">
       <h2>المدن الجامعية</h2>
       {error && <div className="error-message">{error}</div>} 
-      <ul className="city-list">
+      <ul
+      
+      
+      className="city-list">
         {cities.map(city => (
-          <li key={city._id}>
+          <li
+          
+          
+          key={city._id}>
             <button
+            style={{ background: "#EAEAEA",
+              color:"black"
+             }}
+
               onClick={() => onSelectCity(city._id)}
               className="city-button"
             >
               {city.Name}
-              <div className="action-buttons">
-                <button onClick={() => setEditCityId(city._id)}>Edit</button>
-                <button onClick={() => deleteCity(city._id)}>Delete</button>
+              <div
+              
+              className="action-buttons">
+                <button 
+                style={{background:"blue"}}
+                onClick={() => setEditCityId(city._id)}>تعديل</button>
+                <button
+                style={{background:"red"}}
+                
+                onClick={() => deleteCity(city._id)}>حذف</button>
               </div>
             </button>
             {editCityId === city._id && (
@@ -96,7 +115,10 @@ const City = ({ onSelectCity }) => {
           onChange={e => setNewCityName(e.target.value)}
           placeholder="اسم المدينة"
         />
-        <button onClick={addCity}>Add City</button>
+        <button 
+                style={{background:"green"}}
+        
+        onClick={addCity}>اضافة مدينة</button>
       </div>
     </div>
   );
