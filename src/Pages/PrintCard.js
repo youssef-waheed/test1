@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import QRCode from 'qrcode';
+import utf8 from 'utf8';
+import { Base64 } from 'js-base64';
 import frontCardImage from './1.png';
 import './PrintCard.css';
 
@@ -11,8 +14,6 @@ const PrintCard = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
-  
 
   const fetchData = async () => {
     try {
@@ -28,10 +29,7 @@ const PrintCard = () => {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-};
-
-  
-  
+  };
 
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
@@ -54,36 +52,50 @@ const PrintCard = () => {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
 
-      // Set canvas dimensions to match the card image
-      canvas.width = 400; // Adjust width as needed
-      canvas.height = 250; // Adjust height as needed
+      // card dimensions 
+      canvas.width = 400; 
+      canvas.height = 250; 
 
-      // Load the card image
+      // card image
       const cardImage = new Image();
       cardImage.src = frontCardImage;
       cardImage.onload = () => {
         ctx.drawImage(cardImage, 0, 0, canvas.width, canvas.height);
 
-        // Add student details to the canvas
-        ctx.fillStyle = '#edc74f'; // Text color // Text color
-        ctx.font = '14px Arial'; // Font size and family
-        ctx.fillText(`Name: ${selectedStudent.studentName}`, 20, 105); // Adjust position as needed
-        ctx.fillText(`Year: ${selectedStudent.year}`, 20, 125); // Adjust position as needed
-        ctx.fillText(`Student Code: ${selectedStudent.studentCode}`, 20, 145); // Adjust position as needed
-        
+        // student details 
+        ctx.fillStyle = '#edc74f';
+        ctx.font = '14px Arial'; 
+        ctx.fillText(`Name: ${selectedStudent.studentName}`, 20, 105); 
+        ctx.fillText(`Year: ${selectedStudent.year}`, 20, 125); 
+        ctx.fillText(`Student Code: ${selectedStudent.studentCode}`, 20, 145); 
 
-        // Convert buffer data to base64 image
+        // image
         const imgData = `data:image/png;base64,${arrayBufferToBase64(selectedStudent.image.data)}`;
         const studentImage = new Image();
         studentImage.src = imgData;
         studentImage.onload = () => {
-          ctx.drawImage(studentImage, 210, 40, 170, 170); // Adjust position and size as needed
+          ctx.drawImage(studentImage, 210, 40, 170, 170); 
 
-          // Convert canvas to image and download
-          const downloadLink = document.createElement('a');
-          downloadLink.href = canvas.toDataURL('image/png');
-          downloadLink.download = 'student_card.png';
-          downloadLink.click();
+          // QR code generation
+          const qrValue = `${selectedStudent.studentName},${selectedStudent.buildingName},${selectedStudent.floorName},${selectedStudent.roomName}`;
+          QRCode.toDataURL(qrValue, { errorCorrectionLevel: 'H', width: 100, margin: 0 }, (err, url) => {
+            if (err) {
+              console.error('Error generating QR code:', err);
+              return;
+            }
+
+            const qrImage = new Image();
+            qrImage.src = url;
+            qrImage.onload = () => {
+              ctx.drawImage(qrImage, 20, 150, 90, 90); 
+
+              // Convert to image and download
+              const downloadLink = document.createElement('a');
+              downloadLink.href = canvas.toDataURL('image/png');
+              downloadLink.download = 'student_card.png';
+              downloadLink.click();
+            };
+          });
         };
       };
     } else {
@@ -133,11 +145,11 @@ const PrintCard = () => {
                 <p>Name: {selectedStudent.studentName}</p>
                 <p>Year: {selectedStudent.year}</p>
                 <p>Student Code: {selectedStudent.studentCode}</p>
-                {/* Add other student details */}
+               
               </div>
-             {selectedStudent.image && <img src={`data:image/png;base64,${arrayBufferToBase64(selectedStudent.image.data)}`} alt="Student" className="student-image" />}
+              {selectedStudent.image && <img src={`data:image/png;base64,${arrayBufferToBase64(selectedStudent.image.data)}`} alt="Student" className="student-image" />}
             </div>
-            <button onClick={handleDownloadImage}>طباعة</button>
+            <button onClick={handleDownloadImage} style={{ color: 'black' }}>طباعة</button>
           </div>
         )}
       </div>
