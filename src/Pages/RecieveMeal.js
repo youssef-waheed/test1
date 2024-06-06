@@ -60,7 +60,8 @@ function FileUpload() {
           <form onSubmit={handleSubmit}>
             <div>
 
-              <label htmlFor="avatar">Select Excel file:</label>
+            <label htmlFor="avatar">قم بأختيار ملف أكسيل:</label>
+
               <input
                 type="file"
                 id="avatar"
@@ -70,7 +71,7 @@ function FileUpload() {
               />
             </div>
             <div>
-              <label htmlFor="ofYear">Year Range:</label>
+            <label htmlFor="ofYear">عن سنة:</label>
               <select
                 id="ofYear"
                 name="ofYear"
@@ -83,7 +84,8 @@ function FileUpload() {
             </div>
             <div>
 
-              <label htmlFor="ofWhichMeal">Meal Type:</label>
+            <label htmlFor="ofWhichMeal">نوع الوجبة:</label>
+
               <select
                 id="ofWhichMeal"
                 name="ofWhichMeal"
@@ -98,9 +100,8 @@ function FileUpload() {
               </select>
             </div>
             <div>
-              <label htmlFor="dateOfReceivingMeals">
-                Date of Receiving Meals:
-              </label>
+            <label htmlFor="dateOfReceivingMeals">تاريخ استلام الوجبة:</label>
+
               <input
                 type="date"
                 id="dateOfReceivingMeals"
