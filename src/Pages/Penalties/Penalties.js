@@ -38,7 +38,7 @@ const Penalties = ({ studentData, _id }) => {
       }
       const response = await axios.get(`http://localhost:5000/penalty/` + _id, {
         headers: {
-          authorization: `Bearer__${auth.token}`,
+          authorization: `Bearer__${auth}`,
           "Content-Type": "application/json",
         },
       });

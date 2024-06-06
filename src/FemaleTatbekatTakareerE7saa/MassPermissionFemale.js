@@ -23,7 +23,7 @@ const StudentComponent = ({ onSelect }) => {
   
 const fetchStudents = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/basicData/getBasicDataMales');
+      const response = await axios.get('http://localhost:5000/basicData/getBasicDataFemales');
       console.log('API Response:', response.data); // Log the API response
   
       const responseData = response.data;
@@ -148,15 +148,12 @@ const fetchStudents = async () => {
                   onChange={() => handleSelectStudent(student._id)}
                 />
                 <div>
-                  <strong>اسم الطالب:</strong> {student.studentName || 'Unknown Name'}<br />
+                  <strong>اسم الطالبة:</strong> {student.studentName || 'Unknown Name'}<br />
                 </div>
               </li>
             ))}
           </ul>
-          <button
-          style={{ backgroundColor: "green",color:"white", borderRadius:"5px" }}
-          
-          onClick={handleApplyPermissions}>تسجيل التصريح</button>
+          <button onClick={handleApplyPermissions}>تسجيل التصريح</button>
         </div>
         <div className="coll">
             <ul>

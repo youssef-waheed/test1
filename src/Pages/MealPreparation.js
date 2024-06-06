@@ -7,6 +7,9 @@ const MealPreparation = () => {
   const [selectedFilter, setSelectedFilter] = useState("pendingApplications");
   const [ofYear, setOfYear] = useState("");
   const [meal, setMeal] = useState("");
+  const [dateOfBookingMeals, setDateOfBookingMeals] = useState("");
+  const [ofWhichMeal, setOfWhichMeal] = useState("");
+  const [students, setStudents] = useState([]);
   const [checkboxes, setCheckboxes] = useState(() => {
     const storedCheckboxes = JSON.parse(sessionStorage.getItem("checkboxes"));
     return (
@@ -16,11 +19,10 @@ const MealPreparation = () => {
       ]
     );
   });
-  var dateOfBookingMeals;
-  var ofWhichMeal;
+
   useEffect(() => {
     fetchMealPreparation();
-  }, [ofYear, meal]);
+  }, [ofYear, ofWhichMeal, dateOfBookingMeals]);
 
   const fetchMealPreparation = async () => {
     const queryString = `?ofYear=${ofYear}&dateOfBookingMeals=${dateOfBookingMeals}&ofWhichMeal=${ofWhichMeal}`;
@@ -28,12 +30,11 @@ const MealPreparation = () => {
       const response = await axios.get(
         `http://localhost:5000/statistics/mealPreparation${queryString}`
       );
-      console.log(response); // Log response data for debugging
-      // TODO: Update state or UI based on the response
+      setStudents(response.data.jsonData || []); // Ensure data is accessed correctly
+      console.log(response);
     } catch (error) {
-      // Log the error for debugging
       console.error("Error fetching meal preparation data:", error);
-      // TODO: Display a user-friendly error message on the UI
+      // Optionally set an error state to display an error message to the user
     }
   };
 
@@ -45,24 +46,17 @@ const MealPreparation = () => {
     );
     setCheckboxes(updatedCheckboxes);
 
-    const selectedLabel = updatedCheckboxes[index].label;
-
-    dateOfBookingMeals = selectedLabel === "اليوم";
-    ofWhichMeal = selectedLabel === "الوجبة";
-
     fetchMealPreparation();
   };
-  function handleYearChange(event) {
-    const selectedYear = event.target.value;
-    setOfYear(selectedYear);
 
-    setOfYear(selectedYear, () => fetchMealPreparation());
-  }
-  function handleMeal(event) {
-    const selectedMeal = event.target.value;
-    setMeal(selectedMeal);
-    setMeal(selectedMeal, () => fetchMealPreparation());
-  }
+  const handleYearChange = (event) => {
+    setOfYear(event.target.value);
+  };
+
+  const handleMeal = (event) => {
+    setMeal(event.target.value);
+  };
+
   return (
     <div>
       <div className="two-column-wrapper">
@@ -73,7 +67,7 @@ const MealPreparation = () => {
               size="sm"
               className="selectmenu"
               onChange={handleYearChange}
-              value={ofYear} // Attach onChange event handler
+              value={ofYear}
             >
               <option>اختر العام الاكديمي</option>
               <option>2025-2026</option>
@@ -81,19 +75,31 @@ const MealPreparation = () => {
               <option>2023-2024</option>
             </Form.Select>
           </div>
-          <div className="select">
-            <p className="academicyear">الوجبة </p>
-            <Form.Select
-              size="sm"
-              className="selectmenu"
-              onChange={handleMeal}
-              value={meal} // Attach onChange event handler
+          <div>
+            <label htmlFor="ofWhichMeal">Meal Type:</label>
+            <select
+              id="ofWhichMeal"
+              name="ofWhichMeal"
+              value={ofWhichMeal}
+              onChange={(e) => setOfWhichMeal(e.target.value)}
             >
-              <option>الوجبة </option>
-              <option>فطار</option>
-              <option>غداء</option>
-              <option>عشاء</option>
-            </Form.Select>
+              <option value="غداء">غداء</option>
+              <option value="عشاء">عشاء</option>
+              <option value="فطار">فطار</option>
+              <option value="سحور">سحور</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="dateOfReceivingMeals">
+              Date of Receiving Meals:
+            </label>
+            <input
+              type="date"
+              id="dateOfReceivingMeals"
+              name="dateOfReceivingMeals"
+              value={dateOfBookingMeals}
+              onChange={(e) => setDateOfBookingMeals(e.target.value)}
+            />
           </div>
         </div>
         <div className="coll">
@@ -102,9 +108,20 @@ const MealPreparation = () => {
               <tr>
                 <th>الكلية</th>
                 <th>أعداد الوجبات</th>
+                <th>الرقم القومي </th>
+                <th>كودالطالب </th>
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+              {students.map((meal, index) => (
+                <tr key={index}>
+                  <td>{meal.buildingNamegender}</td>
+                  <td>{meal.studentName}</td>
+                  <td>{meal.nationalID}</td>
+                  <td>{meal.studentCode}</td>
+                </tr>
+              ))}
+            </tbody>
           </Table>
         </div>
       </div>

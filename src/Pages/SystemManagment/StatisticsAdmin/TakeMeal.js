@@ -6,21 +6,26 @@ import Table from "react-bootstrap/Table";
 const TakeMeal = () => {
   const [ofYear, setOfYear] = useState("");
   const [students, setStudents] = useState([]);
-  const [selectedMeals, setSelectedMeals] = useState("");
+  const [ofWhichMeal, setOfWHichMeal] = useState("");
+  const [dateOfReceivingMeals, setDateOfReceivingMeals] = useState("");
+
   const mealsType = ["فطار", "غداء", "عشاء"];
 
   useEffect(() => {
     fetchTakeMeal();
-  }, [ofYear, selectedMeals]);
+  }, [ofYear, ofWhichMeal, dateOfReceivingMeals]);
 
   const fetchTakeMeal = async () => {
-    const queryString = `?ofYear=${ofYear}&selectedMeals=${selectedMeals}`;
+    const queryString = `?ofYear=${ofYear}&ofWhichMeal=${ofWhichMeal}&dateOfReceivingMeals=${dateOfReceivingMeals}`;
 
     try {
       const response = await axios.get(
         ` http://localhost:5000/statistics/MealTaking${queryString}`
       );
       setStudents(response.data.jsonData);
+      console.log("====================================");
+      console.log(ofWhichMeal);
+      console.log("====================================");
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -35,7 +40,7 @@ const TakeMeal = () => {
   }
   function handleMealType(event) {
     const mealsType = event.target.value;
-    setSelectedMeals(mealsType);
+    setOfWHichMeal(mealsType);
   }
   return (
     <div>
@@ -63,7 +68,7 @@ const TakeMeal = () => {
               className="Type"
               m-5
               onChange={handleMealType}
-              value={selectedMeals}
+              value={ofWhichMeal}
             >
               <option>اختر نوع الوجبة...</option>
               {mealsType.map((meal, index) => (
@@ -73,6 +78,14 @@ const TakeMeal = () => {
               ))}
             </Form.Select>
           </div>
+          <label htmlFor="dateOfReceivingMeals">Date of Receiving Meals:</label>
+          <input
+            type="date"
+            id="dateOfReceivingMeals"
+            name="dateOfReceivingMeals"
+            value={dateOfReceivingMeals}
+            onChange={(e) => setDateOfReceivingMeals(e.target.value)}
+          />
         </div>
         <div className="coll">
           <Table striped bordered hover size="sm">
@@ -87,7 +100,7 @@ const TakeMeal = () => {
             <tbody>
               {students.map((meal, index) => (
                 <tr key={index}>
-                  <td> {meal.buildingName} </td>
+                  <td> {meal.buildingNamegender} </td>
                   <td> {meal.studentName} </td>
                   <td> {meal.nationalID} </td>
                   <td> {meal.studentCode} </td>

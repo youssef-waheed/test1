@@ -123,6 +123,7 @@ const App = () => {
   ];
 
   const governorates = [
+    "الخارج",
     "أسوان",
     "أسيوط",
     "الإسكندرية",
@@ -309,7 +310,9 @@ const App = () => {
         !email ||
         
         !college ||
-        !year 
+        !year ||
+        !phoneNumber ||
+        !fatherPhone
         
        
       ) {
@@ -357,7 +360,9 @@ const App = () => {
         !email ||
         
         !college ||
-        !year 
+        !year ||
+        !phoneNumber ||
+        !fatherPhone
       ) {
         setErrorMessage("يرجى ملء جميع الحقول الإلزامية");
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -402,7 +407,9 @@ const App = () => {
         !email ||
         
         !college ||
-        !year 
+        !year ||
+        !phoneNumber ||
+        !fatherPhone
       ) {
         setErrorMessage("يرجى ملء جميع الحقول الإلزامية");
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -483,7 +490,9 @@ const App = () => {
         !email ||
         
         !college ||
-        !year 
+        !year ||
+        !phoneNumber ||
+        !fatherPhone
       ) {
         setErrorMessage(
           <span style={{ color: 'red', fontSize: '1.2rem' }}>يرجى ملء جميع الحقول الإلزامية</span>);
@@ -657,7 +666,7 @@ const App = () => {
               }}
             />
 
-            <p style={{ marginLeft: "10px", marginRight: "170px" }}>
+<p style={{ marginLeft: "10px", marginRight: "170px" }}>
               محل الميلاد
             </p>
             <TextField
@@ -698,29 +707,24 @@ const App = () => {
           <div className="input-group">
             <TextField
               required
-              label="محل الاقامة 'دولة محافظة مدينة'"
+               label="محل الاقامة 'الدولة المحافظة المدينة'"
+              variant="outlined"
+              fullWidth
+              value={residence}
+              onChange={(e) => setResidence(e.target.value)}
+            />
+          </div>
+
+          <div className="input-group">
+          <TextField
+              required
+               label="العنوان بالتفصيل"
               variant="outlined"
               fullWidth
               value={detailedAddress}
               onChange={(e) => setDetailedAddress(e.target.value)}
             />
-          </div>
 
-          <div className="input-group">
-          <p style={{ marginLeft: "10px", marginRight: "170px" }}>المحافظة</p>
-
-          <select
-        size="sm"
-        className="selectmenu"
-        value={residence}
-        onChange={(e) => setResidence(e.target.value)}
-      >
-        {governorates.map((gov, index) => (
-          <option key={index} value={gov}>
-            {gov}
-          </option>
-        ))}
-      </select>
       </div>
 
           <div className="input-group">
@@ -748,7 +752,7 @@ const App = () => {
               الهاتف المحمول
             </p>
             <TextField
-              // required
+               required
               label="الرقم"
               variant="outlined"
               size="small"
@@ -796,7 +800,7 @@ const App = () => {
                 تليفون الاب
               </p>
               <TextField
-                // required
+                 required
                 label=" الرقم"
                 variant="outlined"
                 size="small"
@@ -1123,14 +1127,20 @@ const App = () => {
             <p style={{ marginLeft: "10px", marginRight: "170px" }}>
               محل الميلاد
             </p>
-            <TextField
-              required
-              label="محل الميلاد"
-              variant="outlined"
-              size="small"
-              value={placeOfBirth}
-              onChange={(e) => setPlaceOfBirth(e.target.value)}
-            />
+            
+          <select
+        size="sm"
+        className="selectmenu"
+        value={placeOfBirth}
+        onChange={(e) => setPlaceOfBirth(e.target.value)}
+      >
+        {governorates.map((gov, index) => (
+          <option key={index} value={gov}>
+            {gov}
+          </option>
+        ))}
+      </select>
+           
           </div>
 
           <div className="input-group">
@@ -1161,29 +1171,24 @@ const App = () => {
               <div className="input-group">
             <TextField
               required
-               label="محل الاقامة 'دولة محافظة مدينة'"
+               label="محل الاقامة 'الدولة المحافظة المدينة'"
+              variant="outlined"
+              fullWidth
+              value={residence}
+              onChange={(e) => setResidence(e.target.value)}
+            />
+          </div>
+
+          <div className="input-group">
+          <TextField
+              required
+               label="العنوان بالتفصيل"
               variant="outlined"
               fullWidth
               value={detailedAddress}
               onChange={(e) => setDetailedAddress(e.target.value)}
             />
-          </div>
 
-          <div className="input-group">
-          <p style={{ marginLeft: "10px", marginRight: "170px" }}>المحافظة</p>
-
-          <select
-        size="sm"
-        className="selectmenu"
-        value={residence}
-        onChange={(e) => setResidence(e.target.value)}
-      >
-        {governorates.map((gov, index) => (
-          <option key={index} value={gov}>
-            {gov}
-          </option>
-        ))}
-      </select>
       </div>
       
 

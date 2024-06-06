@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Review from "./ReviewFemale";
 import ClassificationGeneral from "./ClassificationFemal";
+import Permission from "./MassPermissionFemale";
+import AcceptSpecialCases from "./SpecialCasesFemale";
+
 
 const Page1 = () => (
   <div>
@@ -18,9 +21,82 @@ const Page2 = () => (
 
 const Page3 = () => (
   <div>
-    <h2>Page 3</h2>
+    <h2>تصريح جماعي</h2>
+    <Permission />
   </div>
 );
+
+const Page4 = () => (
+  <div>
+    <h2>قبول حالات خاصة</h2>
+    <AcceptSpecialCases />
+  </div>
+);
+
+const Page5 = () => (
+  <div>
+    <h2>حجز وجبات (اكسل)</h2>
+    <Permission />
+  </div>
+);
+
+const Page6 = () => (
+  <div>
+    <h2>رفع الصور    </h2>
+    <Permission />
+  </div>
+);
+
+const Page7 = () => (
+  <div>
+    <h2>جزاء جماعي</h2>
+    <Permission />
+  </div>
+);
+
+const Page8 = () => (
+  <div>
+    <h2>طباعة البطاقات    </h2>
+    <Permission />
+  </div>
+);
+
+const Page9 = () => (
+  <div>
+    <h2>تغيير نوع السكن    </h2>
+    <Permission />
+  </div>
+);
+
+const Page10 = () => (
+  <div>
+    <h2>طباعة اخطار القبول    </h2>
+    <Permission />
+  </div>
+);
+
+const Page11 = () => (
+  <div>
+    <h2>استلام الوجبات(اكسل)    </h2>
+    <Permission />
+  </div>
+);
+
+const Page12 = () => (
+  <div>
+     <h2>حالات البحث الاجتماعي</h2>
+    
+    <Permission />
+  </div>
+);
+
+const Page13 = () => (
+  <div>
+   <h2>اخلاء جماعي</h2>
+    <Permission />
+  </div>
+);
+
 
 const ButtonDisplay = ({ buttons, handleClick }) => (
   <div>
@@ -39,18 +115,17 @@ const App = () => {
   const buttons = [
     { text: "مراجعة طلبات الانترنت", page: <Page1 /> },
     { text: "تنسيق", page: <Page2 /> },
-    { text: "سحب الصور", page: <Page3 /> },
     { text: "تصريح جماعي", page: <Page3 /> },
-    { text: "قبول حالات خاصة", page: <Page3 /> },
-    { text: "حجز وجبات (اكسل)", page: <Page3 /> },
-    { text: "رفع الصور", page: <Page3 /> },
-    { text: "جزاء جماعي", page: <Page3 /> },
-    { text: "طباعة البطاقات", page: <Page3 /> },
-    { text: "تغيير نوع السكن", page: <Page3 /> },
-    { text: "طباعة اخطار القبول", page: <Page3 /> },
-    { text: "استلام الوجبات(اكسل)", page: <Page3 /> },
-    { text: "حالات البحث الاجتماعي", page: <Page3 /> },
-    { text: "اخلاء جماعي", page: <Page3 /> },
+    { text: "قبول حالات خاصة", page: <Page4 /> },
+    { text: "حجز وجبات (اكسل)", page: <Page5 /> },
+    { text: "رفع الصور", page: <Page6 /> },
+    { text: "جزاء جماعي", page: <Page7 /> },
+    { text: "طباعة البطاقات", page: <Page8 /> },
+    { text: "تغيير نوع السكن", page: <Page9 /> },
+    { text: "طباعة اخطار القبول", page: <Page10 /> },
+    { text: "استلام الوجبات(اكسل)", page: <Page11 /> },
+    { text: "حالات البحث الاجتماعي", page: <Page12 /> },
+    { text: "اخلاء جماعي", page: <Page13 /> },
   ];
 
   const handleClick = (page) => {
