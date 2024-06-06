@@ -6,6 +6,12 @@ import AcceptSpecialCases from "./SpecialCasesFemale";
 import BookMeal from "./BookMeal";
 import UploadPhoto from "../Pages/UploadPhoto";
 import MassPenalty from "./MassPenalty";
+import PrintCard from "./CardPrinting";
+import ChangeHousingType from "./ChangeHousingType";
+import PrintAcceptanceNotification from "../Pages/PrintAcceptanceNotification";
+import RecieveMeals from "./RecieveMeals";
+import SocialResearch from "./SocialResearchFemale";
+import MassExpulsion from "./MassExpulsion";
 
 const Page1 = () => (
   <div>
@@ -59,28 +65,28 @@ const Page7 = () => (
 const Page8 = () => (
   <div>
     <h2>طباعة البطاقات    </h2>
-    <Permission />
+    <PrintCard />
   </div>
 );
 
 const Page9 = () => (
   <div>
     <h2>تغيير نوع السكن    </h2>
-    <Permission />
+    <ChangeHousingType />
   </div>
 );
 
 const Page10 = () => (
   <div>
     <h2>طباعة اخطار القبول    </h2>
-    <Permission />
+    <PrintAcceptanceNotification />
   </div>
 );
 
 const Page11 = () => (
   <div>
     <h2>استلام الوجبات(اكسل)    </h2>
-    <Permission />
+    <RecieveMeals />
   </div>
 );
 
@@ -88,14 +94,14 @@ const Page12 = () => (
   <div>
      <h2>حالات البحث الاجتماعي</h2>
     
-    <Permission />
+    <SocialResearch />
   </div>
 );
 
 const Page13 = () => (
   <div>
    <h2>اخلاء جماعي</h2>
-    <Permission />
+    <MassExpulsion />
   </div>
 );
 
