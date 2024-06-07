@@ -113,46 +113,46 @@ const NumberOfStudentsBasedOnHousing = () => {
               <thead>
                 <tr>
                   <td>النوع</td>
-                  <th>سكن مميز فردى طلبة</th>
-                  <th>سكن مميز فردى طالبات</th>
+                  <th>سكن مميز فردي طلبة</th>
+                  <th>سكن مميز فردي طالبات</th>
                   <th>عادي</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>ساكن</td>
-                  <td>{studentsData["سكن مميز فردى طلبة"]?.isHoused}</td>
-                  <td>{studentsData["سكن مميز فردى طالبات"]?.isHoused}</td>
+                  <td>{studentsData["سكن مميز فردي طلبة"]?.isHoused}</td>
+                  <td>{studentsData["سكن مميز فردي طالبات"]?.isHoused}</td>
                   <td>{studentsData["عادي"]?.isHoused}</td>
                 </tr>
                 <tr>
                   <td>اخلاء</td>
-                  <td>{studentsData["سكن مميز فردى طلبة"]?.isEvacuated}</td>
-                  <td>{studentsData["سكن مميز فردى طالبات"]?.isEvacuated}</td>
+                  <td>{studentsData["سكن مميز فردي طلبة"]?.isEvacuated}</td>
+                  <td>{studentsData["سكن مميز فردي طالبات"]?.isEvacuated}</td>
                   <td>{studentsData["عادي"]?.isEvacuated}</td>
                 </tr>
                 <tr>
                   <td>قيد الانتظار</td>
-                  <td>{studentsData["سكن مميز فردى طلبة"]?.pending}</td>
-                  <td>{studentsData["سكن مميز فردى طالبات"]?.pending}</td>
+                  <td>{studentsData["سكن مميز فردي طلبة"]?.pending}</td>
+                  <td>{studentsData["سكن مميز فردي طالبات"]?.pending}</td>
                   <td>{studentsData["عادي"]?.pending}</td>
                 </tr>
                 <tr>
                   <td>مرفوض</td>
-                  <td>{studentsData["سكن مميز فردى طلبة"]?.rejected}</td>
-                  <td>{studentsData["سكن مميز فردى طالبات"]?.rejected}</td>
+                  <td>{studentsData["سكن مميز فردي طلبة"]?.rejected}</td>
+                  <td>{studentsData["سكن مميز فردي طالبات"]?.rejected}</td>
                   <td>{studentsData["عادي"]?.rejected}</td>
                 </tr>
                 <tr>
                   <td>في انتظار التصنيف</td>
-                  <td>{studentsData["سكن مميز فردى طلبة"]?.waitingForClassification}</td>
-                  <td>{studentsData["سكن مميز فردى طالبات"]?.waitingForClassification}</td>
+                  <td>{studentsData["سكن مميز فردي طلبة"]?.waitingForClassification}</td>
+                  <td>{studentsData["سكن مميز فردي طالبات"]?.waitingForClassification}</td>
                   <td>{studentsData["عادي"]?.waitingForClassification}</td>
                 </tr>
                 <tr>
                   <td>فى انتظار التسكين</td>
-                  <td>{studentsData["سكن مميز فردى طلبة"]?.waitingForHousing}</td>
-                  <td>{studentsData["سكن مميز فردى طالبات"]?.waitingForHousing}</td>
+                  <td>{studentsData["سكن مميز فردي طلبة"]?.waitingForHousing}</td>
+                  <td>{studentsData["سكن مميز فردي طالبات"]?.waitingForHousing}</td>
                   <td>{studentsData["عادي"]?.waitingForHousing}</td>
                 </tr>
               </tbody>
