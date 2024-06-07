@@ -73,16 +73,14 @@ const CorrectNationalID = ({ nationalID }) => {
     setUpdateID(e.target.value);
   };
 
+  console.log('====================================');
+  console.log(selectedStudentData.nationalID);
+  console.log('====================================');
   const updateNationalID = async () => {
     try {
       const response = await axios.put(
         `http://localhost:5000/changeInfo/${selectedStudentData.nationalID}`,
-        {
-          headers: {
-            authorization: `Bearer__${auth.token}`,
-            "Content-Type": "application/json",
-          },
-        },
+  
         {
           ofYear: selectedStudentData.ofYear,
           newNationalID: updateID,

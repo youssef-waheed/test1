@@ -129,8 +129,14 @@ const Room = ({ floorId, onSelectRoom }) => {
               <td>{room.numOfBeds}</td>
               <td>
                 {/* <button onClick={() => handleRoomClick(room._id)}>Select</button> */}
-                <button onClick={() => setEditRoomId(room._id)}>Edit</button>
-                <button onClick={() => deleteRoom(room._id)}>Delete</button>
+                <button 
+              style={{background:"blue"}}
+                
+                onClick={() => setEditRoomId(room._id)}>تعديل</button>
+                <button
+              style={{background:"red"}}
+                
+                onClick={() => deleteRoom(room._id)}>حذف</button>
               </td>
             </tr>
           ))}
@@ -162,7 +168,10 @@ const Room = ({ floorId, onSelectRoom }) => {
           onChange={e => setNewNumOfBeds(e.target.value)}
           placeholder="عدد الاسرة"
         />
-        <button onClick={addRoom}>Add Room</button>
+        <button 
+              style={{background:"green"}}
+
+        onClick={addRoom}>اضافة غرفة</button>
       </div>
       {editRoomId && (
         <div className="edit-room">
