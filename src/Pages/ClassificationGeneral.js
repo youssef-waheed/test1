@@ -262,8 +262,7 @@ const ClassificationGeneral = () => {
                             <ul>
                                 {maleClassifiedStudents.map(student => (
                                     <li key={student.id}>
-                                        {/* Render details of classified male students */}
-                                        <span>{student.name}</span>
+                                        <span>{student.studentName}</span>
                                     </li>
                                 ))}
                             </ul>

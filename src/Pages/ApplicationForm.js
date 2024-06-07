@@ -94,6 +94,7 @@ const App = () => {
   const [PassportNumber, setPassportNumber] = useState("");
   const [IssuingAuthority, setIssuingAuthority] = useState("");
   const [nationality, setNationality] = useState("");
+  const [ofYear, setOfYear] = useState('');
   const [displayDiv, setDisplayDiv] = useState(false);
   const colleges = [
     "كلية الفنون الجميلة",
@@ -172,10 +173,21 @@ const App = () => {
   const handleCheckbox7Change = () => {
     setCheckbox7Checked(!checkbox7Checked);
   };
+  const generateYearOptions = () => {
+    const currentYear = new Date().getFullYear();
+    const years = [];
+    for (let i = currentYear - 6; i <= currentYear; i++) {
+        years.push(i);
+    }
+    return years.map((year) => (
+        <option key={year} value={`${year}-${year + 1}`}>{`${year}-${year + 1}`}</option>
+    ));
+};
 
   const handleSubmit = async () => {
 
     const NEformData = {
+      ofYear,
       policy,
       egyptions: true,
       oldStudent: false,
@@ -211,6 +223,7 @@ const App = () => {
      
     };
     const OEformData = {
+      ofYear,
       policy,
       egyptions: true,
       oldStudent: true,
@@ -245,6 +258,7 @@ const App = () => {
       
     };
     const NNEformData = {
+      ofYear,
       policy,
       egyptions: false,
       oldStudent: false,
@@ -270,6 +284,7 @@ const App = () => {
       nationality,
     };
     const ONEformData = {
+      ofYear,
       policy,
       egyptions: false,
       oldStudent: true,
@@ -303,6 +318,7 @@ const App = () => {
       // setNewExpartriates(false);
       if (
 
+        ! ofYear ||
         !studentCode ||
        
         !policy ||
@@ -354,7 +370,8 @@ const App = () => {
       // setNewExpartriates(false);
       if (
         !studentCode ||
-       
+        ! ofYear ||
+
         !policy ||
         !residence ||
         !email ||
@@ -401,7 +418,8 @@ const App = () => {
       // setNewEgyption(false);
       if (
         !studentCode ||
-       
+        ! ofYear ||
+
         !policy ||
         !residence ||
         !email ||
@@ -484,7 +502,8 @@ const App = () => {
       // setNewExpartriates(false);
       if (
         !studentCode ||
-       
+        ! ofYear ||
+
         !policy ||
         !residence ||
         !email ||
@@ -897,6 +916,10 @@ const App = () => {
             ))}
           </select>
         
+          <p style={{ marginLeft: "10px", marginRight: "170px" }}>العام الاكاديمي </p>
+                <select id="ofYear" name="ofYear" value={ofYear} onChange={(e) => setOfYear(e.target.value)}>
+                    {generateYearOptions()}
+                </select>
 
             <p style={{ marginLeft: "10px", marginRight: "170px" }}>الفرقة</p>
             <TextField
@@ -925,7 +948,7 @@ const App = () => {
               <option value="ناجح">ناجح </option>
               <option value="جيد">جيد </option>
               <option value="جيد جدا">جيد جدا</option>
-              <option value="ممتاز">ممتاز </option>
+              <option value="امتياز">امتياز </option>
               <option value="منقول بمادة">منقول بمادة</option>
               <option value="منقول بمادتين">منقول بمادتين</option>
               <option value="راسب">راسب </option>
@@ -1361,6 +1384,11 @@ const App = () => {
               </option>
             ))}
           </select>
+          <p style={{ marginLeft: "10px", marginRight: "170px" }}>العام الاكاديمي </p>
+                <select id="ofYear" name="ofYear" value={ofYear} onChange={(e) => setOfYear(e.target.value)}>
+                    {generateYearOptions()}
+                </select>
+
             <p style={{ marginLeft: "10px", marginRight: "170px" }}>الفرقة</p>
             <TextField
               required
