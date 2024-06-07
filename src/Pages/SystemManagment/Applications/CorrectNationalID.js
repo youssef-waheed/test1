@@ -73,9 +73,7 @@ const CorrectNationalID = ({ nationalID }) => {
     setUpdateID(e.target.value);
   };
 
-  console.log('====================================');
-  console.log(selectedStudentData.nationalID);
-  console.log('====================================');
+  
   const updateNationalID = async () => {
     try {
       const response = await axios.put(
