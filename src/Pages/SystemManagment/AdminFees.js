@@ -273,26 +273,26 @@ const AdminFees = ({ _id }) => {
       });
   };
 
-  const renderFeeOptions = () => {
-    return feeOptions.map((option, index) => (
-      <tr key={index}>
-        <td>
-          {editMode ? (
-            <Form.Control
-              type="text"
-              value={editedFeeOption.startingDay || option.startingDay}
-              onChange={(e) =>
-                handleFeeOptionChange("startingDay", e.target.value)
-              }
-            />
-          ) : (
-            option.startingDay
-          )}
-        </td>
-        {/* Other fields rendered similarly */}
-      </tr>
-    ));
-  };
+  // const renderFeeOptions = () => {
+  //   return feeOptions.map((option, index) => (
+  //     <tr key={index}>
+  //       <td>
+  //         {editMode ? (
+  //           <Form.Control
+  //             type="text"
+  //             value={editedFeeOption.startingDay || option.startingDay}
+  //             onChange={(e) =>
+  //               handleFeeOptionChange("startingDay", e.target.value)
+  //             }
+  //           />
+  //         ) : (
+  //           option.startingDay
+  //         )}
+  //       </td>
+  //       {/* Other fields rendered similarly */}
+  //     </tr>
+  //   ));
+  // };
   const toggleEditMode = () => {
     setEditMode(!editMode);
   };
@@ -763,9 +763,19 @@ const AdminFees = ({ _id }) => {
               <th> طعاام </th>
             </tr>
           </thead>
-          <tbody>{renderFeeOptions()}</tbody>
+          <tbody>
+            {feeOptions.map((fee, index) => (
+              <tr key={index}>
+                <td>{fee.startingDay}</td>
+                <td>{fee.delayWithFoodTillDay}</td>
+                <td>{fee.delayWithoutFoodTillDay}</td>
+                <td>{fee.rehousingWithFineTillDay}</td>
+                <td>{fee.createdOrEditedBy}</td>
+              </tr>
+            ))}
+          </tbody>
 
-          <button
+          {/* <button
             style={{ backgroundColor: "white", color: "white" }}
             onClick={toggleEditMode}
           >
@@ -783,7 +793,7 @@ const AdminFees = ({ _id }) => {
             >
               {editMode ? "إنهاء التعديل" : "تعديل"}
             </button>
-          </button>
+          </button> */}
         </Table>
         {showAddFeeOptionForm && (
           <form onSubmit={addFeeOptionType}>
@@ -890,7 +900,7 @@ const AdminFees = ({ _id }) => {
             >
               إضافة
             </button>
-            <button
+            {/* <button
               style={{
                 backgroundColor: "blue",
                 fontSize: "22px",
@@ -902,7 +912,7 @@ const AdminFees = ({ _id }) => {
               onClick={handleEditFeeOptionClick} // Show add form
             >
               تعديل
-            </button>
+            </button> */}
           </form>
         )}
       </div>

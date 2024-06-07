@@ -4,11 +4,11 @@ import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import { Checkbox } from "@material-ui/core";
 
-const NumOfStudents = () => {
+const NumberOfAllStudentsFemale = () => {
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState("pendingApplications");
   const [ofYear, setOfYear] = useState("");
-  const [students, setStudents] = useState({}); // Initialize as an empty object
+  const [students, setStudents] = useState("");
 
   const [checkboxes, setCheckboxes] = useState(() => {
     const storedCheckboxes = JSON.parse(sessionStorage.getItem("checkboxes"));
@@ -26,40 +26,45 @@ const NumOfStudents = () => {
       ]
     );
   });
-
-  // Declare variables as state to trigger re-render
-  const [egyptions, setEgyptions] = useState(false);
-  const [expartriates, setExpartriates] = useState(false);
-  const [normalHousing, setNormalHousing] = useState(false);
-  const [specialHousing, setSpecialHousing] = useState(false);
-  const [oldStudent, setOldStudent] = useState(false);
-  const [newStudent, setNewStudent] = useState(false);
-  const [withSpecialNeeds, setWithSpecialNeeds] = useState(false);
-
+  var egyptions;
+  var expartriates;
+  var normalHousing;
+  var specialHousing;
+  var oldStudent;
+  var newStudent;
+  var withSpecialNeeds;
   useEffect(() => {
     fetchAllStudents();
-  }, [
-    ofYear,
-    selectedFilter,
-    egyptions,
-    expartriates,
-    normalHousing,
-    specialHousing,
-    oldStudent,
-    newStudent,
-    withSpecialNeeds,
-  ]); // Ensure to refetch when the filters change
+  }, [ofYear, selectedFilter]); // Ensure to refetch when the filters change
 
   const fetchAllStudents = async () => {
     const queryString = `?ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&withSpecialNeeds=${withSpecialNeeds}`;
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/statistics/getNumberOfAllStudentsMale${queryString}`
-      );
-      console.log(response);
-      setStudents(response.data.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
+    if (
+      egyptions ||
+      expartriates ||
+      normalHousing ||
+      specialHousing ||
+      oldStudent ||
+      newStudent ||
+      withSpecialNeeds ||
+      ofYear
+    ) {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/statistics/getNumberOfAllStudentsFemale${queryString}`
+        );
+        setStudents(response.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    } else {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/statistics/getNumberOfAllStudentsFemale`
+        );
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -73,20 +78,26 @@ const NumOfStudents = () => {
 
     const selectedLabel = updatedCheckboxes[index].label;
 
-    setEgyptions(selectedLabel === "مصرى");
-    setExpartriates(selectedLabel === "وافد");
-    setOldStudent(selectedLabel === "قدامى");
-    setNewStudent(selectedLabel === "جدد");
-    setNormalHousing(selectedLabel === "سكن عادى");
-    setSpecialHousing(selectedLabel === "سكن مميز");
-    setWithSpecialNeeds(selectedLabel === "ذوى احتياجات خاصة");
+    egyptions = selectedLabel === "مصرى";
+    expartriates = selectedLabel === "وافد";
+
+    oldStudent = selectedLabel === "قدامى";
+    newStudent = selectedLabel === "جدد";
+    normalHousing = selectedLabel === "سكن عادى";
+    specialHousing = selectedLabel === "سكن مميز";
+    withSpecialNeeds = selectedLabel === "ذوى احتياجات خاصة";
+
+    fetchAllStudents();
   };
 
-  const handleYearChange = (event) => {
+  function handleYearChange(event) {
     const selectedYear = event.target.value;
     setOfYear(selectedYear);
-  };
-
+    console.log("====================================");
+    console.log(selectedYear);
+    setOfYear(selectedYear, () => fetchAllStudents());
+    console.log("===================================="); // Update the ofYear state with the selected value
+  }
   const showDetails = (application) => {
     setSelectedApplication(application);
   };
@@ -100,9 +111,10 @@ const NumOfStudents = () => {
             size="sm"
             className="selectmenu"
             onChange={handleYearChange}
-            value={ofYear}
+            value={ofYear} // Attach onChange event handler
           >
             <option>اختر العام الاكديمي</option>
+
             <option>2025-2026</option>
             <option>2024-2025</option>
             <option>2023-2024</option>
@@ -122,6 +134,7 @@ const NumOfStudents = () => {
             </label>
           </div>
         ))}
+
         <div className="names"></div>
       </div>
       <div className="coll">
@@ -140,24 +153,18 @@ const NumOfStudents = () => {
             </tr>
           </thead>
           <tbody>
-            {students && Object.keys(students).length > 0 ? (
-              Object.keys(students).map((collegeName, index) => (
-                <tr key={index}>
-                  <td>{collegeName}</td>
-                  <td>{students[collegeName].rejected}</td>
-                  <td>{students[collegeName].waitingForClassification}</td>
-                  <td>{students[collegeName].pending}</td>
-                  <td>{students[collegeName].isHoused}</td>
-                  <td>{students[collegeName].isClassified}</td>
-                  <td>{students[collegeName].isEvacuated}</td>
-                  <td>{students[collegeName].all}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="8">No data available</td>
+            {Object.keys(students).map((collegeName, index) => (
+              <tr key={index}>
+                <td>{collegeName}</td>
+                <td>{students[collegeName].rejected}</td>
+                <td>{students[collegeName].waitingForClassification}</td>
+                <td>{students[collegeName].pending}</td>
+                <td>{students[collegeName].isHoused}</td>
+                <td>{students[collegeName].isClassified}</td>
+                <td>{students[collegeName].isEvacuated}</td>
+                <td>{students[collegeName].all}</td>
               </tr>
-            )}
+            ))}
           </tbody>
         </Table>
       </div>
@@ -165,4 +172,4 @@ const NumOfStudents = () => {
   );
 };
 
-export default NumOfStudents;
+export default NumberOfAllStudentsFemale;

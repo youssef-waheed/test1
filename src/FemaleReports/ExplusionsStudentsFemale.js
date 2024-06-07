@@ -4,7 +4,7 @@ import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
 
-const ExpulsionStudents = () => {
+const ExpulsionStudentsFemale = () => {
   const [ofYear, setOfYear] = useState("");
   const [students, setStudents] = useState([]);
   const [studentCount, setStudentCount] = useState(0);
@@ -17,7 +17,7 @@ const ExpulsionStudents = () => {
     const queryString = ofYear ? `?ofYear=${ofYear}` : "";
     try {
       const response = await axios.get(
-        `http://localhost:5000/reports/expulsionStudentsFemale${queryString}`
+        `http://localhost:5000/reports/expulsionStudentsMale${queryString}`
       );
       console.log(response);
       const { data } = response.data;
@@ -100,4 +100,4 @@ const ExpulsionStudents = () => {
   );
 };
 
-export default ExpulsionStudents;
+export default ExpulsionStudentsFemale;

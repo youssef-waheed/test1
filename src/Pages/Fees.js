@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import { getAuthUser } from "../helper/storage";
 const auth = getAuthUser();
-
+var _id;
 const Fees = ({ _id }) => {
   const [isDivVisible, setIsDivVisible] = useState(false);
   const [feesData, setFeesData] = useState([]);
@@ -40,7 +40,7 @@ const Fees = ({ _id }) => {
   const fetchFeeStatment = async (_id) => {
     try {
       const response = await axios.get(
-        ` http://localhost:5000/fees/feeStatement/${_id}`,
+        `http://localhost:5000/fees/feeStatement/${_id}`,
         {
           headers: {
             authorization: `Bearer__${auth.token}`,
@@ -48,6 +48,9 @@ const Fees = ({ _id }) => {
           },
         }
       );
+      console.log("====================================");
+      console.log(_id);
+      console.log("====================================");
       setFeesData(response.data.data.feesData);
       setuserData(response.data.data.userData);
     } catch (error) {
@@ -102,7 +105,7 @@ const Fees = ({ _id }) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        ` http://localhost:5000/fees/addFeesForStudents`,
+        `http://localhost:5000/fees/addFeesForStudents`,
         {
           id: _id,
           kind: fee.kind,
@@ -141,9 +144,10 @@ const Fees = ({ _id }) => {
   };
 
   const deleteFees = async (_id) => {
+    console.log(`Deleting fee with ID: ${_id}`);
     try {
       const response = await axios.delete(
-        `http://localhost:5000/fees/deletFeeForStudent/${_id}`,
+        `http://localhost:5000/fees/deleteFeeForStudent/${_id}`, // Corrected URL
         {
           headers: {
             authorization: `Bearer__${auth.token}`,
@@ -151,12 +155,16 @@ const Fees = ({ _id }) => {
           },
         }
       );
+
+      console.log("Delete response:", response.data);
       createLogs();
       incremented();
+      fetchFeeStatment(_id);
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <div>
       <div>
@@ -187,7 +195,9 @@ const Fees = ({ _id }) => {
               >
                 <option>اختر النوع...</option>
                 {feeTypes.map((type, index) => (
-                  <option key={index}>{type.feeType}</option>
+                  <option key={index} value={type.feeType}>
+                    {type.feeType}
+                  </option>
                 ))}
               </Form.Select>
             </div>
@@ -203,9 +213,8 @@ const Fees = ({ _id }) => {
                   setFee({ ...fee, paymentType: e.target.value });
                 }}
               >
-                {/* {" "} */}
-                <option>شهري</option>
-                <option>سنوي</option>
+                <option value="شهري">شهري</option>
+                <option value="سنوي">سنوي</option>
               </Form.Select>
             </div>
             <div className="select1">
@@ -217,22 +226,7 @@ const Fees = ({ _id }) => {
                 onChange={(e) => {
                   setFee({ ...fee, ofMonth: e.target.value });
                 }}
-              >
-                {" "}
-                <option>اختر الشهر... </option>
-                <option>يناير </option>
-                <option> فبراير</option>
-                <option> مارس</option>
-                <option> ابريل</option>
-                <option> مايو</option>
-                <option> يونيو</option>
-                <option> يوليو</option>
-                <option> أغسطس</option>
-                <option> سبتمبر</option>
-                <option> أكتوبر</option>
-                <option>نوفمبر </option>
-                <option>ديسمبر </option>
-              </Form.Select>
+              ></Form.Select>
               <Form.Select
                 size="sm"
                 className="Type"
@@ -241,11 +235,10 @@ const Fees = ({ _id }) => {
                   setFee({ ...fee, ofYear: e.target.value });
                 }}
               >
-                {" "}
-                <option>2023 </option>
-                <option>2024 </option>
-                <option>2025 </option>
-                <option>2026 </option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
               </Form.Select>
             </div>
             <div className="select1">
@@ -290,8 +283,8 @@ const Fees = ({ _id }) => {
                 }}
               >
                 <option>اختر نوع السداد </option>
-                <option>يسدده الطالب</option>
-                <option>تسدده الطالبة</option>
+                <option value="يسدده الطالب">يسدده الطالب</option>
+                <option value="تسدده الطالبة">تسدده الطالبة</option>
               </Form.Select>
             </div>
             <button
@@ -302,46 +295,34 @@ const Fees = ({ _id }) => {
             </button>
           </div>
         )}
-      </div>{" "}
+      </div>
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
             <th>الرسوم</th>
             <th>عن شهر</th>
             <th>المبلغ </th>
+            <th>الإجراءات</th>
           </tr>
         </thead>
         <tbody>
           {feesData.map((fee, index) => (
             <tr key={index}>
-              <td> {fee.kind} </td>
-              <td> {fee.paymentDate} </td>
-              <td> {fee.paymentValue} </td>
+              <td>{fee.kind}</td>
+              <td>{fee.paymentDate}</td>
+              <td>{fee.paymentValue}</td>
+              <td>
+                <button
+                  style={{ backgroundColor: "red", color: "white" }}
+                  onClick={() => deleteFees(fee._id)}
+                >
+                  حذف
+                </button>
+              </td>
             </tr>
           ))}
-          <tr></tr>
         </tbody>
       </Table>
-      <button
-        style={{ backgroundColor: "red" }}
-        onClick={() => deleteFees(_id)}
-      >
-        حذف
-      </button>
-      {/* <div className="warning">
-        <>
-          {["danger"].map((variant) => (
-            <Alert
-              key={variant}
-              variant={variant}
-              style={{ textAlign: "center" }}
-            >
-              This is a {variant} alert—check it out!
-            </Alert>
-          ))}
-        </>
-        
-      </div> */}
       {feesData.length === 0 && (
         <div className="warning">
           <Alert
