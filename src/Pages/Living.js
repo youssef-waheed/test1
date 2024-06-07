@@ -223,6 +223,10 @@ const Living = ({ studentData }) => {
               <td>{studentData.buildingName}</td>
             </tr>
             <tr>
+              <th>كود الغرفة</th>
+              <td>{studentData.roomId}</td>
+            </tr>
+            <tr>
               <th>الغرفة</th>
               <td>{studentData.roomName}</td>
             </tr>

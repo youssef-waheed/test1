@@ -38,9 +38,11 @@ import Explusion from "../Pages/Explusion";
 import BlockMeals from "../Pages/BlockMeals";
 import Users from "../Pages/Users";
 import AdminMeals from "../Pages/SystemManagment/AdminMeals";
+import StatFemale from "../FemaleStatisitcs/StatFemale";
 
-import { removeAuthUser,getAuthUser } from "../helper/storage";
-const auth= getAuthUser()
+import { removeAuthUser, getAuthUser } from "../helper/storage";
+import RepFemales from "../FemaleReports/RepFemales";
+const auth = getAuthUser();
 const logout = () => {
   removeAuthUser();
   window.location.href = "/";
@@ -163,7 +165,7 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [students, setStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
-  
+
   const [FemaleStudents, setFemaleStudents] = useState([]);
   const [filteredFemaleStudents, setFilteredFemaleStudents] = useState([]);
 
@@ -282,37 +284,48 @@ const Header = () => {
     }
   };
 
-
-
   const fetchFemaleStudents = async () => {
     const queryString = `?College=${College}&ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&searchQuery=${searchQuery}`;
-  console.log('============TOOOOOOOOOOOOOOKEN========================');
-  console.log(auth.token);
-  console.log('====================================');
+
+    console.log("============TOOOOOOOOOOOOOOKEN========================");
+    console.log(auth.token);
+    console.log("====================================");
+
     try {
-      const url = (egyptions || expartriates || normalHousing || specialHousing || oldStudent || newStudent || appliers || acceptedApplications || College || ofYear)
-        ? `http://localhost:5000/basicData/getBasicDataFemales${queryString}`
-        : `http://localhost:5000/basicData/getBasicDataFemales`;
-  
-      const response = await axios.get(url,{
-        headers:{
+      const url =
+        egyptions ||
+        expartriates ||
+        normalHousing ||
+        specialHousing ||
+        oldStudent ||
+        newStudent ||
+        appliers ||
+        acceptedApplications ||
+        College ||
+        ofYear
+          ? `http://localhost:5000/basicData/getBasicDataFemales${queryString}`
+          : `http://localhost:5000/basicData/getBasicDataFemales`;
+
+      const response = await axios.get(url, {
+        headers: {
           authorization: `Bearer__${auth.token}`,
           "Content-Type": "application/json",
-        }
+        },
       });
       console.log("QUERY STRING", queryString);
       console.log("RESPONSE", response);
-  
+
       // Filter students to include only those with isClassified set to true
-      const classifiedStudents = response.data.data.students.filter(student => student.isClassified);
-  
+      const classifiedStudents = response.data.data.students.filter(
+        (student) => student.isClassified
+      );
+
       setFemaleStudents(classifiedStudents);
       setFilteredFemaleStudents(classifiedStudents);
     } catch (error) {
       console.log(error);
     }
   };
-  
 
   const filterStudents = (query) => {
     const filtered = students.filter(
@@ -583,7 +596,6 @@ const Header = () => {
     );
   }
 
-
   function TextFemale() {
     return (
       <div className="two-column-wrapper">
@@ -638,7 +650,6 @@ const Header = () => {
     );
   }
 
-
   function Text3Female() {
     return (
       <div className="two-column-wrapper">
@@ -678,7 +689,6 @@ const Header = () => {
     );
   }
 
-
   function Text5() {
     return (
       <div className="two-column-wrapper">
@@ -695,7 +705,6 @@ const Header = () => {
     );
   }
 
-
   function Text5Female() {
     return (
       <div className="two-column-wrapper">
@@ -711,8 +720,6 @@ const Header = () => {
       </div>
     );
   }
-
-
 
   function Text6() {
     return (
@@ -740,7 +747,6 @@ const Header = () => {
     );
   }
 
-
   function Text7() {
     return (
       <div className="two-column-wrapper">
@@ -753,7 +759,6 @@ const Header = () => {
       </div>
     );
   }
-
 
   function Text7Female() {
     return (
@@ -768,7 +773,6 @@ const Header = () => {
     );
   }
 
-
   function Text8() {
     return (
       <div className="two-column-wrapper">
@@ -781,7 +785,6 @@ const Header = () => {
       </div>
     );
   }
-
 
   function Text8Female() {
     return (
@@ -809,7 +812,6 @@ const Header = () => {
     );
   }
 
-
   function Text9Female() {
     return (
       <div className="two-column-wrapper">
@@ -822,7 +824,6 @@ const Header = () => {
       </div>
     );
   }
-
 
   function Text10() {
     return (
@@ -988,8 +989,8 @@ const Header = () => {
         <Text8Female />,
         <Text9Female />,
         <Text13 />,
-        "تقارير",
-        "احصائيات",
+        <RepFemales />,
+        <StatFemale />,
       ],
 
       [
@@ -1020,8 +1021,15 @@ const Header = () => {
             </li>
           ))}
 
-
-<button type="button" class="btn btn-outline-danger btn-sm" data-mdb-ripple-init data-mdb-ripple-color="dark"  onClick={logout}>تسجيل الخروج</button>
+          <button
+            type="button"
+            class="btn btn-outline-danger btn-sm"
+            data-mdb-ripple-init
+            data-mdb-ripple-color="dark"
+            onClick={logout}
+          >
+            تسجيل الخروج
+          </button>
 
           {/* <button
             style={{

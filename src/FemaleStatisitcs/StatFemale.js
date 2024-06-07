@@ -1,39 +1,36 @@
 import React, { useState } from "react";
-import "./Tatbeekat.css";
-import NumOfStudents from "./NumOfStudents";
-import NumOfResident from "./NumOfResident";
-import NumOfAppliers from "./NumOfAppliers";
-import NumOfPrintedCards from "./NumOfPrintedCards";
-import MealPreparation from "./MealPreparation";
+import "../Pages/Tatbeekat.css";
+
+import NumOfAppliersFemale from "./NumOfAppliersFemale";
+import NumOfResidentFemale from "./NumOfResidentFemale";
+import NumOfPrintedCardFemale from "./NumOfPrintedCardFemale";
+import NumberOfAllStudentsFemale from "./NumberOfAllStudentsFemale";
+
 // import Review from "./ReviewOnlineRequests";
 // import AcceptSpecialCases from "./AcceptSpecialCases";
 
 const Page1 = () => (
   <div>
-    <NumOfAppliers />
+    <NumOfAppliersFemale />
   </div>
 );
 const Page2 = () => (
   <div>
-    <NumOfResident />
+    <NumOfResidentFemale />
   </div>
 );
 
 const Page3 = () => (
   <div>
-    <NumOfPrintedCards />
+    <NumOfPrintedCardFemale />
   </div>
 );
 const Page5 = () => (
   <div>
-    <NumOfStudents />
+    <NumberOfAllStudentsFemale />
   </div>
 );
-const Page4 = () => (
-  <div>
-    <MealPreparation />
-  </div>
-);
+const Page4 = () => <div></div>;
 
 const ButtonDisplay = ({ buttons, handleClick }) => (
   <div>
@@ -48,14 +45,14 @@ const ButtonDisplay = ({ buttons, handleClick }) => (
   </div>
 );
 
-const Statistics = () => {
+const StatFemale = () => {
   const [currentPage, setCurrentPage] = useState(null);
 
   const buttons = [
     { text: "اعداد المتقدمين ", page: <Page1 /> },
     { text: "اعداد المقيمين", page: <Page2 /> },
     { text: "احصائيات البطاقات المطبوعة ", page: <Page3 /> },
-    { text: "اعداد جميع الطلاب ", page: <Page5 /> },
+    { text: "اعداد جميع الطالبات ", page: <Page5 /> },
     // { text: "تجهيز الوجبات  ", page: <Page4 /> },
 
     { text: "   " },
@@ -88,4 +85,4 @@ const Statistics = () => {
   );
 };
 
-export default Statistics;
+export default StatFemale;
