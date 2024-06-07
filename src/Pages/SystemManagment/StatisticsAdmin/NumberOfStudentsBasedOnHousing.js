@@ -2,16 +2,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
-import Alert from "react-bootstrap/Alert";
 
 const NumberOfStudentsBasedOnHousing = () => {
   const [ofYear, setOfYear] = useState("");
-  const [students, setStudents] = useState([]);
-  const [studentsData, setStudentsData] = useState(null); // State to hold the fetched data
+  const [studentsData, setStudentsData] = useState(null);
 
   useEffect(() => {
     fetchStudentsBasedOnHousing();
   }, [ofYear]);
+
   const [checkboxes, setCheckboxes] = useState(() => {
     const storedCheckboxes = JSON.parse(sessionStorage.getItem("checkboxes"));
     return (
@@ -23,6 +22,7 @@ const NumberOfStudentsBasedOnHousing = () => {
       ]
     );
   });
+
   var egyptions;
   var expartriates;
   var oldStudent;
@@ -35,7 +35,6 @@ const NumberOfStudentsBasedOnHousing = () => {
         const response = await axios.get(
           `http://localhost:5000/statistics/allStudents${queryString}`
         );
-        console.log(response);
         setStudentsData(response.data.data);
       } catch (error) {
         console.log(error);
@@ -46,7 +45,6 @@ const NumberOfStudentsBasedOnHousing = () => {
           `http://localhost:5000/statistics/allStudents`
         );
         setStudentsData(response.data.data);
-        console.log(response);
       } catch (error) {
         console.log(error);
       }
@@ -65,18 +63,17 @@ const NumberOfStudentsBasedOnHousing = () => {
 
     egyptions = selectedLabel === "مصرى";
     expartriates = selectedLabel === "وافد";
-
     oldStudent = selectedLabel === "قدامى";
     newStudent = selectedLabel === "جدد";
 
     fetchStudentsBasedOnHousing();
   };
-  function handleYearChange(event) {
+
+  const handleYearChange = (event) => {
     const selectedYear = event.target.value;
     setOfYear(selectedYear);
+  };
 
-    setOfYear(selectedYear, () => fetchStudentsBasedOnHousing());
-  }
   return (
     <div>
       <div className="two-column-wrapper">
@@ -87,7 +84,7 @@ const NumberOfStudentsBasedOnHousing = () => {
               size="sm"
               className="selectmenu"
               onChange={handleYearChange}
-              value={ofYear} // Attach onChange event handler
+              value={ofYear}
             >
               <option>اختر العام الاكديمي</option>
               <option>2025-2026</option>
@@ -117,77 +114,51 @@ const NumberOfStudentsBasedOnHousing = () => {
                 <tr>
                   <td>النوع</td>
                   <th>سكن مميز فردى طلبة</th>
+                  <th>سكن مميز فردى طالبات</th>
                   <th>عادي</th>
                 </tr>
               </thead>
               <tbody>
-                {studentsData && (
-                  <tr>
-                    <td>ساكن</td>
-                    <td>{studentsData["سكن مميز فردى طلبة"]?.isHoused}</td>
-                    <td>{studentsData["عادى"]?.isHoused}</td>
-                  </tr>
-                )}
-                {studentsData && (
-                  <tr>
-                    <td>اخلاء</td>
-                    <td>{studentsData["سكن مميز فردى طلبة"]?.isEvacuated}</td>
-                    <td>{studentsData["عادى"]?.isEvacuated}</td>
-                  </tr>
-                )}
-                {studentsData && (
-                  <tr>
-                    <td>قيد الانتظار</td>
-                    <td>{studentsData["سكن مميز فردى طلبة"]?.pending}</td>
-                    <td>{studentsData["عادى"]?.pending}</td>
-                  </tr>
-                )}
-                {studentsData && (
-                  <tr>
-                    <td>مرفوض</td>
-                    <td>{studentsData["سكن مميز فردى طلبة"]?.rejected}</td>
-                    <td>{studentsData["عادى"]?.rejected}</td>
-                  </tr>
-                )}
-                {studentsData && (
-                  <tr>
-                    <td>في انتظار التصنيف</td>
-                    <td>
-                      {
-                        studentsData["سكن مميز فردى طلبة"]
-                          ?.waitingForClassification
-                      }
-                    </td>
-                    <td>{studentsData["عادى"]?.waitingForClassification}</td>
-                  </tr>
-                )}
-                {studentsData && (
-                  <tr>
-                    <td>فى انتظار التسكين</td>
-                    <td>
-                      {studentsData["سكن مميز فردى طلبة"]?.waitingForHousing}
-                    </td>
-                    <td>{studentsData["عادى"]?.waitingForHousing}</td>
-                  </tr>
-                )}
+                <tr>
+                  <td>ساكن</td>
+                  <td>{studentsData["سكن مميز فردى طلبة"]?.isHoused}</td>
+                  <td>{studentsData["سكن مميز فردى طالبات"]?.isHoused}</td>
+                  <td>{studentsData["عادي"]?.isHoused}</td>
+                </tr>
+                <tr>
+                  <td>اخلاء</td>
+                  <td>{studentsData["سكن مميز فردى طلبة"]?.isEvacuated}</td>
+                  <td>{studentsData["سكن مميز فردى طالبات"]?.isEvacuated}</td>
+                  <td>{studentsData["عادي"]?.isEvacuated}</td>
+                </tr>
+                <tr>
+                  <td>قيد الانتظار</td>
+                  <td>{studentsData["سكن مميز فردى طلبة"]?.pending}</td>
+                  <td>{studentsData["سكن مميز فردى طالبات"]?.pending}</td>
+                  <td>{studentsData["عادي"]?.pending}</td>
+                </tr>
+                <tr>
+                  <td>مرفوض</td>
+                  <td>{studentsData["سكن مميز فردى طلبة"]?.rejected}</td>
+                  <td>{studentsData["سكن مميز فردى طالبات"]?.rejected}</td>
+                  <td>{studentsData["عادي"]?.rejected}</td>
+                </tr>
+                <tr>
+                  <td>في انتظار التصنيف</td>
+                  <td>{studentsData["سكن مميز فردى طلبة"]?.waitingForClassification}</td>
+                  <td>{studentsData["سكن مميز فردى طالبات"]?.waitingForClassification}</td>
+                  <td>{studentsData["عادي"]?.waitingForClassification}</td>
+                </tr>
+                <tr>
+                  <td>فى انتظار التسكين</td>
+                  <td>{studentsData["سكن مميز فردى طلبة"]?.waitingForHousing}</td>
+                  <td>{studentsData["سكن مميز فردى طالبات"]?.waitingForHousing}</td>
+                  <td>{studentsData["عادي"]?.waitingForHousing}</td>
+                </tr>
               </tbody>
             </Table>
           )}
         </div>
-        {/* {studentsData.length === 0 && (
-          <div className="warning">
-            <Alert
-              variant="danger"
-              style={{
-                textAlign: "center",
-                fontSize: "22px",
-                fontWeight: "bold",
-              }}
-            >
-              لا يوجد بيانات لهذا الطالب/طالبة{" "}
-            </Alert>
-          </div>
-        )} */}
       </div>
     </div>
   );

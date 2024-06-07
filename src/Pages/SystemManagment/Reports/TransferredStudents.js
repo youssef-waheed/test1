@@ -74,15 +74,14 @@ const TransferredStudents = () => {
     <div className="two-column-wrapper">
       <div className="col">
         <div className="select">
-          <p className="academicyear">العام الاكديمي</p>
+          <p className="academicyear">العام الاكاديمي</p>
           <Form.Select
             size="sm"
             className="selectmenu"
             onChange={handleYearChange}
-            value={ofYear} // Attach onChange event handler
+            value={ofYear}
           >
-            <option>اختر العام الاكديمي</option>
-
+            <option>اختر العام الاكاديمي</option>
             <option>2025-2026</option>
             <option>2024-2025</option>
             <option>2023-2024</option>
@@ -108,19 +107,19 @@ const TransferredStudents = () => {
         <Table striped bordered hover size="sm">
           <thead>
             <tr>
-              <th>اسم الطالب </th>
+              <th>اسم الطالب</th>
               <th>الكلية</th>
-              <th>كود الطالب </th>
+              <th>كود الطالب</th>
             </tr>
           </thead>
           <tbody>
-            {/* {students.map((student, index) => (
+            {students.map((student, index) => (
               <tr key={index}>
-                <td> {student.studentName} </td>
-                <td> {student.College} </td>
-                <td> {student.studentCode} </td>
+                <td>{student.studentName}</td>
+                <td>{student.College}</td>
+                <td>{student.studentCode}</td>
               </tr>
-            ))} */}
+            ))}
           </tbody>
         </Table>
         {students.length === 0 && (
@@ -133,7 +132,7 @@ const TransferredStudents = () => {
                 fontWeight: "bold",
               }}
             >
-              لا يوجد بيانات لهذا الطالب/طالبة{" "}
+              لا يوجد بيانات لهذا الطالب/طالبة
             </Alert>
           </div>
         )}
