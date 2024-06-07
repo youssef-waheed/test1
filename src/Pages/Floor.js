@@ -70,7 +70,9 @@ const Floor = ({ buildingId, onSelectFloor }) => {
       <h2>الطوابق</h2>
       <ul className="floor-list">
         {floors.map(floor => (
-          <li key={floor._id} onClick={() => onSelectFloor(floor._id)}>
+          <li
+          style={{background:"#EAEAEA"}}
+          key={floor._id} onClick={() => onSelectFloor(floor._id)}>
             {editFloorId === floor._id ? (
               <div>
                 <input type="text" value={editFloorName} onChange={e => setEditFloorName(e.target.value)} />
@@ -80,8 +82,15 @@ const Floor = ({ buildingId, onSelectFloor }) => {
             ) : (
               <div>
                    {floor.Name}
-                <button onClick={() => setEditFloorId(floor._id)}>Edit</button>
-                <button onClick={() => deleteFloor(floor._id)}>Delete</button>
+                <button
+              style={{background:"blue"}}
+                
+                
+                onClick={() => setEditFloorId(floor._id)}>تعديل</button>
+                <button 
+              style={{background:"red"}}
+                
+                onClick={() => deleteFloor(floor._id)}>حذف</button>
               </div>
             )}
           </li>
@@ -94,7 +103,10 @@ const Floor = ({ buildingId, onSelectFloor }) => {
           onChange={e => setNewFloorName(e.target.value)}
           placeholder="اسم او  رقم الطابق"
         />
-        <button onClick={addFloor}>Add Floor</button>
+        <button 
+              style={{background:"green"}}
+        
+        onClick={addFloor}>اضافة طابق</button>
       </div>
     </div>
   );
