@@ -1,28 +1,25 @@
 import React, { useEffect, useState } from "react";
-import Alert from "react-bootstrap/Alert";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
+import Alert from "react-bootstrap/Alert";
 
-const ExpulsionStudents = () => {
+const FemaleFeesRep = () => {
   const [ofYear, setOfYear] = useState("");
-  const [students, setStudents] = useState([]);
-  const [studentCount, setStudentCount] = useState(0);
+  const [students, setStudents] = useState("");
 
   useEffect(() => {
-    fetchExplusionStudents();
+    FetchFeesReports();
   }, [ofYear]);
 
-  const fetchExplusionStudents = async () => {
-    const queryString = ofYear ? `?ofYear=${ofYear}` : "";
+  const FetchFeesReports = async () => {
+    const queryString = `?ofYear=${ofYear}`;
     try {
       const response = await axios.get(
-        `http://localhost:5000/reports/expulsionStudentsFemale${queryString}`
+        `http://localhost:5000/reports/feesReportFemales${queryString}`
       );
       console.log(response);
-      const { data } = response.data;
-      setStudents(data.student || []); // Ensure students is an array
-      setStudentCount(data.count || 0);
+      setStudents(response.data.data.students || []);
     } catch (error) {
       console.log(error);
     }
@@ -31,8 +28,11 @@ const ExpulsionStudents = () => {
   function handleYearChange(event) {
     const selectedYear = event.target.value;
     setOfYear(selectedYear);
+    console.log("====================================");
+    console.log(selectedYear);
+    setOfYear(selectedYear, () => FetchFeesReports());
+    console.log("===================================="); // Update the ofYear state with the selected value
   }
-
   return (
     <div className="two-column-wrapper">
       <div className="col">
@@ -45,27 +45,29 @@ const ExpulsionStudents = () => {
             value={ofYear} // Attach onChange event handler
           >
             <option>اختر العام الاكديمي</option>
+
             <option>2025-2026</option>
             <option>2024-2025</option>
             <option>2023-2024</option>
           </Form.Select>
         </div>
+
         <div className="names"></div>
       </div>
       <div className="coll">
-        <h1>عدد الطلاب: {studentCount}</h1>
+        <h1>اعداد الطلاب لجامعة حلوان</h1>
         <Table striped bordered hover size="sm">
           <thead>
             <tr>
               <th>الاسم</th>
               <th>الرقم القومي</th>
               <th>الكلية</th>
-              <th>السكن</th>
-              <th>العام الاكاديمي</th>
+              <th>السكن </th>
+              <th>العام الاكاديمي </th>
             </tr>
           </thead>
           <tbody>
-            {students?.length > 0 ? (
+            {Array.isArray(students) &&
               students.map((Fee, index) => (
                 <tr key={index}>
                   <td>{Fee.studentName}</td>
@@ -74,30 +76,26 @@ const ExpulsionStudents = () => {
                   <td>{Fee.HousingType}</td>
                   <td>{Fee.year}</td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5">
-                  <div className="warning">
-                    <Alert
-                      variant="danger"
-                      style={{
-                        textAlign: "center",
-                        fontSize: "22px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      لا يوجد بيانات لهذا الطالب/طالبة
-                    </Alert>
-                  </div>
-                </td>
-              </tr>
-            )}
+              ))}
           </tbody>
         </Table>
+        {students.length === 0 && (
+          <div className="warning">
+            <Alert
+              variant="danger"
+              style={{
+                textAlign: "center",
+                fontSize: "22px",
+                fontWeight: "bold",
+              }}
+            >
+              لا يوجد بيانات لهذا الطالب/طالبة{" "}
+            </Alert>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default ExpulsionStudents;
+export default FemaleFeesRep;
