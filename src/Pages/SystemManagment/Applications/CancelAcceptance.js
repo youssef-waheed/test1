@@ -162,9 +162,10 @@ const YourComponent = () => {
             <div>
               
               <button
+              style={{background:"red", color:"white"}}
                 onClick={() => rejectApplication(selectedApplication._id)}
               >
-                Reject
+                الغاء قبول
               </button>
             </div>
           </>
