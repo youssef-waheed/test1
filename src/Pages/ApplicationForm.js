@@ -76,7 +76,7 @@ const App = () => {
   const [guardianNationalId, setGuardianNationalId] = useState("");
   const [guardianPhone, setGuardianPhone] = useState("");
   const [AsituationRelatedToTheParents, setAsituationRelatedToTheParents] =useState("");
-  const [college, setCollege] = useState("");
+  const [College, setCollege] = useState("");
   const [year, setYear] = useState("");
   const [gradeOfLastYear, setGradeOfLastYear] = useState("");
   const [gradePercentage, setGradePercentage] = useState(null);
@@ -201,7 +201,7 @@ const App = () => {
       guardianNationalId,
       guardianPhone,
       AsituationRelatedToTheParents,
-      college,
+      College,
       year,
       HighSchoolDivision,
       HighSchoolFromAbroad,
@@ -236,7 +236,7 @@ const App = () => {
       guardianNationalId,
       guardianPhone,
       AsituationRelatedToTheParents,
-      college,
+      College,
       year,
       gradeOfLastYear,
       gradePercentage,
@@ -260,7 +260,7 @@ const App = () => {
       email,
       landLinePhone,
       phoneNumber,
-      college,
+      College,
       year,
       HighSchoolDivision,
       HighSchoolGrade,
@@ -285,7 +285,7 @@ const App = () => {
       email,
       landLinePhone,
       phoneNumber,
-      college,
+      College,
       year,
       gradeOfLastYear,
       gradePercentage,
@@ -309,7 +309,7 @@ const App = () => {
         !residence ||
         !email ||
         
-        !college ||
+        !College ||
         !year ||
         !phoneNumber ||
         !fatherPhone
@@ -359,7 +359,7 @@ const App = () => {
         !residence ||
         !email ||
         
-        !college ||
+        !College ||
         !year ||
         !phoneNumber ||
         !fatherPhone
@@ -406,7 +406,7 @@ const App = () => {
         !residence ||
         !email ||
         
-        !college ||
+        !College ||
         !year ||
         !phoneNumber ||
         !fatherPhone
@@ -489,7 +489,7 @@ const App = () => {
         !residence ||
         !email ||
         
-        !college ||
+        !College ||
         !year ||
         !phoneNumber ||
         !fatherPhone
@@ -886,7 +886,7 @@ const App = () => {
           <select
             size="sm"
             className="selectmenu"
-            value={college}
+            value={College}
             onChange={(e) => setCollege(e.target.value)}
 
           >
@@ -1351,7 +1351,7 @@ const App = () => {
           <select
             size="sm"
             className="selectmenu"
-            value={college}
+            value={College}
             onChange={(e) => setCollege(e.target.value)}
 
           >
