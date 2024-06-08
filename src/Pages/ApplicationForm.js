@@ -185,6 +185,7 @@ const App = () => {
 };
 
   const handleSubmit = async () => {
+    const setOfYear = `${new Date().getFullYear()}-${new Date().getFullYear() - 1}`;
 
     const NEformData = {
       ofYear,
@@ -916,10 +917,7 @@ const App = () => {
             ))}
           </select>
         
-          <p style={{ marginLeft: "10px", marginRight: "170px" }}>العام الاكاديمي </p>
-                <select id="ofYear" name="ofYear" value={ofYear} onChange={(e) => setOfYear(e.target.value)}>
-                    {generateYearOptions()}
-                </select>
+          
 
             <p style={{ marginLeft: "10px", marginRight: "170px" }}>الفرقة</p>
             <TextField
@@ -1384,11 +1382,7 @@ const App = () => {
               </option>
             ))}
           </select>
-          <p style={{ marginLeft: "10px", marginRight: "170px" }}>العام الاكاديمي </p>
-                <select id="ofYear" name="ofYear" value={ofYear} onChange={(e) => setOfYear(e.target.value)}>
-                    {generateYearOptions()}
-                </select>
-
+        
             <p style={{ marginLeft: "10px", marginRight: "170px" }}>الفرقة</p>
             <TextField
               required
