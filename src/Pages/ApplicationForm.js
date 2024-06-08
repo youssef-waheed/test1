@@ -94,7 +94,7 @@ const App = () => {
   const [PassportNumber, setPassportNumber] = useState("");
   const [IssuingAuthority, setIssuingAuthority] = useState("");
   const [nationality, setNationality] = useState("");
-  const [ofYear, setOfYear] = useState('');
+  const [ofYear, setOfYear] = useState(`${new Date().getFullYear()}-${new Date().getFullYear() + 1}`);
   const [displayDiv, setDisplayDiv] = useState(false);
   const colleges = [
     "كلية الفنون الجميلة",
