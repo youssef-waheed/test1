@@ -286,9 +286,11 @@ const Header = () => {
 
   const fetchFemaleStudents = async () => {
     const queryString = `?College=${College}&ofYear=${ofYear}&egyptions=${egyptions}&expartriates=${expartriates}&normalHousing=${normalHousing}&specialHousing=${specialHousing}&oldStudent=${oldStudent}&newStudent=${newStudent}&appliers=${appliers}&acceptedApplications=${acceptedApplications}&searchQuery=${searchQuery}`;
+
     console.log("============TOOOOOOOOOOOOOOKEN========================");
     console.log(auth.token);
     console.log("====================================");
+
     try {
       const url =
         egyptions ||
