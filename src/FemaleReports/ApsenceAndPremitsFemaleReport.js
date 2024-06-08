@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
 
-const ApsenceAndPermitsFemaleReport = () => {
+const ApsenceAndPermitsReport = () => {
   const [ofYear, setOfYear] = useState("");
   const [selectedAbsence, setSelectedApsence] = useState("");
   const [Apsence, setApsence] = useState([]);
@@ -18,9 +18,9 @@ const ApsenceAndPermitsFemaleReport = () => {
     const queryString = `?ofYear=${ofYear}&selectedAbsence=${selectedAbsence}&ApsenceDate=${ApsenceDate}&cancellationDate=${cancellationDate}`;
     try {
       const response = await axios.get(
-        `http://localhost:5000/reports/absenceReport${queryString}`
+        `http://localhost:5000/reports/absenceReportFemale${queryString}`
       );
-      setApsence(response.data.data.users);
+      setApsence(response.data.data.users || []);
     } catch (error) {
       console.log(error);
     }
@@ -126,4 +126,4 @@ const ApsenceAndPermitsFemaleReport = () => {
   );
 };
 
-export default ApsenceAndPermitsFemaleReport;
+export default ApsenceAndPermitsReport;

@@ -18,9 +18,9 @@ const ApsenceAndPermitsReport = () => {
     const queryString = `?ofYear=${ofYear}&selectedAbsence=${selectedAbsence}&ApsenceDate=${ApsenceDate}&cancellationDate=${cancellationDate}`;
     try {
       const response = await axios.get(
-        `http://localhost:5000/reports/absenceReport${queryString}`
+        `http://localhost:5000/reports/absenceReportMale${queryString}`
       );
-      setApsence(response.data.data.users);
+      setApsence(response.data.data.users || []);
     } catch (error) {
       console.log(error);
     }
