@@ -4,29 +4,31 @@ import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
 
-const PenaltiesFemale = () => {
+const Penalties = () => {
   const [ofYear, setOfYear] = useState("");
   const [selectedPenalty, setSelectedPenalty] = useState("");
-  const [penalties, setPenalties] = useState([]);
-  const [PenaltyDate, setPenaltyDate] = useState(""); // State for PenaltyDate
-  const [cancellationDate, setCancellationDate] = useState(""); // State for cancellationDate
+  const [penalties, setPenalties] = useState([]); // Ensure penalties is an array
+  const [PenaltyDate, setPenaltyDate] = useState("");
+  const [cancellationDate, setCancellationDate] = useState("");
 
   const penaltyKinds = ["جزاء اداري", "جزاء سلوكي"];
 
   useEffect(() => {
     fetchPenaltiesReport();
-  }, [ofYear, selectedPenalty, PenaltyDate, cancellationDate]); // Update useEffect dependencies
+  }, [ofYear, selectedPenalty, PenaltyDate, cancellationDate]);
 
   const fetchPenaltiesReport = async () => {
     const queryString = `?ofYear=${ofYear}&penaltyKind=${selectedPenalty}&PenaltyDate=${PenaltyDate}&cancellationDate=${cancellationDate}`;
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/reports/penalty${queryString}`
+        `http://localhost:5000/reports/penaltyFemale${queryString}`
       );
-      setPenalties(response.data.data.users); // Update to set penalties state
+      setPenalties(response.data.data.users || []); // Ensure the response sets an array
+      console.log(response);
     } catch (error) {
       console.log(error);
+      setPenalties([]); // Set penalties to an empty array in case of error
     }
   };
 
@@ -40,13 +42,11 @@ const PenaltiesFemale = () => {
     setSelectedPenalty(selectedPenaltyKind);
   }
 
-  // Function to handle Penalty Date change
   function handlePenaltyDateChange(event) {
     const selectedDate = event.target.value;
     setPenaltyDate(selectedDate);
   }
 
-  // Function to handle cancellation Date change
   function handleCancellationDateChange(event) {
     const selectedDate = event.target.value;
     setCancellationDate(selectedDate);
@@ -62,7 +62,7 @@ const PenaltiesFemale = () => {
               size="sm"
               className="selectmenu"
               onChange={handleYearChange}
-              value={ofYear} // Attach onChange event handler
+              value={ofYear}
             >
               <option>اختر العام الاكديمي</option>
               <option>2025-2026</option>
@@ -78,9 +78,8 @@ const PenaltiesFemale = () => {
               className="Type"
               m-5
               onChange={handlePenaltyKind}
-              value={selectedPenalty} // Change penaltyKinds to selectedPenalty
+              value={selectedPenalty}
             >
-              {" "}
               <option>اختر نوع الجزاء...</option>
               {penaltyKinds.map((penalty, index) => (
                 <option key={index} value={penalty}>
@@ -89,7 +88,6 @@ const PenaltiesFemale = () => {
               ))}
             </Form.Select>
           </div>
-          {/* Penalty Date */}
           <div className="penalty-date">
             <p>تاريخ الجزاء</p>
             <input
@@ -98,7 +96,6 @@ const PenaltiesFemale = () => {
               value={PenaltyDate}
             />
           </div>
-          {/* Cancellation Date */}
           <div className="cancellation-date">
             <p>تاريخ الإلغاء</p>
             <input
@@ -113,20 +110,26 @@ const PenaltiesFemale = () => {
             <thead>
               <tr>
                 <th>اسم الطالب</th>
-                {/* <th>كود الطالب </th> */}
-                <th>نوع الجزاء </th>
-                <th> سبب الجزاء </th>
+                <th>نوع الجزاء</th>
+                <th>سبب الجزاء</th>
               </tr>
             </thead>
             <tbody>
-              {penalties.map((pen, index) => (
-                <tr key={index}>
-                  <td>{pen.studentName}</td>
-                  {/* <td>{pen.studentId}</td> */}
-                  <td>{pen.penaltyKind}</td>
-                  <td>{pen.reason}</td>
+              {penalties.length > 0 ? (
+                penalties.map((pen, index) => (
+                  <tr key={index}>
+                    <td>{pen.studentName}</td>
+                    <td>{pen.penaltyKind}</td>
+                    <td>{pen.reason}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  {/* <td colSpan="3" style={{ textAlign: "center" }}>
+                    لا يوجد بيانات لهذا الطالب/طالبة
+                  </td> */}
                 </tr>
-              ))}
+              )}
             </tbody>
           </Table>
           {penalties.length === 0 && (
@@ -139,7 +142,7 @@ const PenaltiesFemale = () => {
                   fontWeight: "bold",
                 }}
               >
-                لا يوجد بيانات لهذا الطالب/طالبة{" "}
+                لا يوجد بيانات
               </Alert>
             </div>
           )}
@@ -149,4 +152,4 @@ const PenaltiesFemale = () => {
   );
 };
 
-export default PenaltiesFemale;
+export default Penalties;

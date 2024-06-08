@@ -15,6 +15,14 @@ const Users = () => {
   });
   const [isEditing, setIsEditing] = useState(false);
   const [tempAdminData, setTempAdminData] = useState(null);
+  const [addAdmin, setAddAdmin] = useState({
+    superAdminNationalId: auth ? auth.nationalID : "", // Read superAdminNationalId from local storage
+    name: "",
+    nationalID: "",
+    password: "",
+    userName: "",
+    athurity: "",
+  });
 
   useEffect(() => {
     fetchAdmins();
@@ -28,8 +36,7 @@ const Users = () => {
           "Content-Type": "application/json",
         },
       });
-      setAdmins(response.data.data.admins);
-      console.log(response);
+      setAdmins(response.data.data.admins || []); // Ensure admins is an array
     } catch (error) {
       console.log(error);
     }
@@ -39,17 +46,15 @@ const Users = () => {
     setSelectedAdmin(admin);
   };
 
-  const renderPassword = (password) => {
-    return "*".repeat(password.length); // Replace password characters with stars
-  };
-
   const handleEditClick = () => {
     setIsEditing(true);
     setTempAdminData({ ...selectedAdmin });
+    setUpdateAdmin({ ...selectedAdmin });
   };
+
   const incremented = async () => {
     try {
-      const inc = await axios.put(
+      await axios.put(
         `http://localhost:5000/logs/increment/${auth.log.adminID}`,
         {
           type: "add",
@@ -62,27 +67,21 @@ const Users = () => {
 
   const createLogs = async () => {
     try {
-      const logs = await axios.post("http://localhost:5000/logs/createLogs", {
+      await axios.post("http://localhost:5000/logs/createLogs", {
         adminID: auth.log.adminID,
         adminUserName: auth.log.adminUserName,
-        action: "تعديل الادمن  ",
-        objectName: `للطالب ${admins.studentName},برقم الطالب ${admins.nationalID}`,
+        action: "تعديل الادمن",
+        objectName: `للطالب ${selectedAdmin.studentName},برقم الطالب ${selectedAdmin.nationalID}`,
       });
     } catch (error) {
       console.log(error);
     }
   };
+
   const handleSaveClick = async () => {
     try {
       const { name, userName, athurity } = updateAdmin;
       const { nationalID } = selectedAdmin;
-
-      console.log("Updating Data: ", {
-        name,
-        userName,
-        athurity,
-        nationalID,
-      });
 
       const response = await axios.put(
         `http://localhost:5000/auth/updateAdmin/${nationalID}`,
@@ -99,8 +98,6 @@ const Users = () => {
         }
       );
 
-      console.log("Admin updated successfully:", response.data);
-
       setUpdateAdmin({
         name: "",
         userName: "",
@@ -109,8 +106,67 @@ const Users = () => {
       createLogs();
       incremented();
       setIsEditing(false);
+      fetchAdmins(); // Refresh the admins list after update
     } catch (error) {
       console.log("Error updating admin:", error);
+    }
+  };
+
+  const handleAddAdmin = async () => {
+    const {
+      superAdminNationalId,
+      name,
+      nationalID,
+      password,
+      userName,
+      athurity,
+    } = addAdmin;
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/auth/signUpAdmin`,
+        {
+          superAdminNationalId,
+          name,
+          nationalID,
+          password,
+          userName,
+          athurity,
+        },
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setAddAdmin({
+        superAdminNationalId: "",
+        name: "",
+        nationalID: "",
+        password: "",
+        userName: "",
+        athurity: "",
+      });
+      fetchAdmins(); // Refresh the admins list after adding
+    } catch (error) {
+      console.log("Error adding admin:", error);
+    }
+  };
+
+  const handleDelete = async (nationalID) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/auth/deleteAdmin/${nationalID}`,
+        {
+          headers: {
+            authorization: `Bearer__${auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      fetchAdmins(); // Refresh the admins list after deletion
+    } catch (error) {
+      console.log("Error deleting admin:", error);
     }
   };
 
@@ -118,11 +174,9 @@ const Users = () => {
     setIsEditing(false);
     setUpdateAdmin({ ...tempAdminData });
   };
-
   return (
     <div className="two-column-wrapper">
       <div className="col">
-        {/* Your select and admins list */}
         <div className="admins-list">
           <h3>Admins</h3>
           <ul>
@@ -210,8 +264,83 @@ const Users = () => {
                 </button>
               )
             )}
+            {auth && (auth.athurity === "الكل" || auth.athurity === "حذف") && (
+              <button
+                onClick={() => handleDelete(selectedAdmin.nationalID)}
+                style={{ backgroundColor: "red", color: "white" }}
+              >
+                حذف
+              </button>
+            )}
           </div>
         )}
+      </div>
+      <div className="add-admin-form">
+        <h3 style={{ fontWeight: " bold", fontSize: "22px", color: "darkred" }}>
+          إضافة ادمن جديد
+        </h3>
+        <Form>
+          <Form.Group controlId="formName">
+            <Form.Label>رقم الهوية الرئيسى</Form.Label>
+            <Form.Control
+              type="text"
+              value={addAdmin.superAdminNationalId}
+              onChange={(e) =>
+                setAddAdmin({
+                  ...addAdmin,
+                  superAdminNationalId: e.target.value,
+                })
+              }
+            />
+          </Form.Group>
+          <Form.Group controlId="formName">
+            <Form.Label>الاسم</Form.Label>
+            <Form.Control
+              type="text"
+              value={addAdmin.name}
+              onChange={(e) =>
+                setAddAdmin({ ...addAdmin, name: e.target.value })
+              }
+            />
+          </Form.Group>
+          <Form.Group controlId="formNationalID">
+            <Form.Label>رقم الهوية</Form.Label>
+            <Form.Control
+              type="text"
+              value={addAdmin.nationalID}
+              onChange={(e) =>
+                setAddAdmin({ ...addAdmin, nationalID: e.target.value })
+              }
+            />
+          </Form.Group>
+          <Form.Group controlId="formUserName">
+            <Form.Label>اسم المستخدم</Form.Label>
+            <Form.Control
+              type="text"
+              value={addAdmin.userName}
+              onChange={(e) =>
+                setAddAdmin({ ...addAdmin, userName: e.target.value })
+              }
+            />
+          </Form.Group>
+          <Form.Group controlId="formAthurity">
+            <Form.Label>الصلاحية</Form.Label>
+            <Form.Control
+              type="text"
+              value={addAdmin.athurity}
+              onChange={(e) =>
+                setAddAdmin({ ...addAdmin, athurity: e.target.value })
+              }
+            />
+          </Form.Group>
+          <button
+            type="button"
+            onClick={handleAddAdmin}
+            style={{ backgroundColor: "green", color: "white" }}
+          >
+            إضافة
+          </button>
+        </Form>
       </div>
     </div>
   );
