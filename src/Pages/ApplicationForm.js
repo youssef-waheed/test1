@@ -989,8 +989,8 @@ const App = () => {
             >
               <option value="."> ------ </option>
               <option value="عادي">عادي</option>
-              <option value="مميز فردي طلبة">مميز فردي طلبة</option>
-              <option value="مميز فردي طالبات">مميز فردي طالبات</option>
+              <option value="سكن مميز فردي طلبة">سكن مميز فردي طلبة</option>
+              <option value="سكن مميز فردي طالبات">سكن مميز فردي طالبات</option>
             </select>
 
             <p style={{ marginLeft: "10px", marginRight: "100px" }}> </p>
@@ -1476,8 +1476,8 @@ const App = () => {
             >
               <option value="."> ------ </option>
               <option value="عادي">عادي</option>
-              <option value="مميز فردي طلبة">مميز فردي طلبة</option>
-              <option value="مميز فردي طالبات">مميز فردي طالبات</option>
+              <option value="سكن مميز فردي طلبة">سكن مميز فردي طلبة</option>
+              <option value="سكن مميز فردي طالبات">سكن مميز فردي طالبات</option>
             </select>
             <p style={{ marginLeft: "10px", marginRight: "100px" }}> </p>
             <Checkbox
