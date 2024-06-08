@@ -313,6 +313,16 @@ const Users = () => {
               }
             />
           </Form.Group>
+          <Form.Group controlId="formNationalID">
+            <Form.Label>الرقم السري </Form.Label>
+            <Form.Control
+              type="text"
+              value={addAdmin.password}
+              onChange={(e) =>
+                setAddAdmin({ ...addAdmin, password: e.target.value })
+              }
+            />
+          </Form.Group>
           <Form.Group controlId="formUserName">
             <Form.Label>اسم المستخدم</Form.Label>
             <Form.Control
